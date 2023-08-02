@@ -26,6 +26,10 @@
 <script src="<?= base_url('assets'); ?>/js/file-upload.js"></script>
 <!-- End custom js for this page-->
 
+<script>
+document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
+
 </body>
 
 </html>

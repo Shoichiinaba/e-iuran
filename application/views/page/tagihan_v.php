@@ -141,260 +141,507 @@ select:focus+label {
 }
 </style>
 
-<!-- alerts -->
-<?php
-        $sukses_message = $this->session->flashdata('sukses');
-        $gagal_message = $this->session->flashdata('gagal');
-    ?>
-<?php if ($sukses_message): ?>
-<script>
-Swal.fire({
-    icon: 'success',
-    title: 'Berhasil!',
-    text: '<?php echo $sukses_message; ?>',
-});
-</script>
-<?php endif; ?>
-
-<?php if ($gagal_message): ?>
-<script>
-Swal.fire({
-    icon: 'error',
-    title: 'Gagal!',
-    text: '<?php echo $gagal_message; ?>',
-});
-</script>
-<?php endif; ?>
-<!-- akhir alerts -->
-
 <div class="main-panel">
     <div class="content-wrapper">
-        <div class="row">
-            <div class="col-lg-9 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body pb-2 pr-2">
-                        <h4 class="card-title">Buat Tagihan</h4>
-                        <div class="input-group pb-0">
-                            <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0">
-                                <div class="input-wrapper">
-                                    <label class="label-select">Bulan</label>
-                                    <select type="text" id="bln_tagihan" required class="col-lg-12">
-                                        <option value="Januari">Januari</option>
-                                        <option value="Februari">Februari</option>
-                                        <option value="Maret">Maret</option>
-                                        <option value="April">April</option>
-                                        <option value="Mei">Mei</option>
-                                        <option value="Juni">Juni</option>
-                                        <option value="Juli">Juli</option>
-                                        <option value="Agustus">Agustus</option>
-                                        <option value="September">September</option>
-                                        <option value="Oktober">Oktober</option>
-                                        <option value="November">November</option>
-                                        <option value="Desember">Desember</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0">
-                                <div class="input-wrapper">
-                                    <label class="label-select">Tahun</label>
-                                    <select type="text" id="thn_tagihan" required>
-                                        <option value="2022">2022</option>
-                                        <option value="2023">2023</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- data di hiden -->
-                            <?php foreach ($iuran as $data) { ?>
-                            <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
-                                <div class="input-wrapper">
-                                    <label class="label-select">Iuran</label>
-                                    <select type="text" id="id_iuran" class="col-lg-12" required>
-                                        <option value="<?= $data->id_iuran; ?>"><?= $data->nama_iuran; ?></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
-                                <div class="input-wrapper">
-                                    <input type="text" id="harga" class="col-lg-12" value="<?= $data->nominal; ?>">
-                                    <label class="label-in">harga / kubik</label>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
-                                <div class="input-wrapper">
-                                    <input type="text" id="perawatan" class="col-lg-12"
-                                        value="<?= $data->perawatan; ?>">
-                                    <label class="label-in">perawatan</label>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
-                                <div class="input-wrapper">
-                                    <input type="text" id="abunamen" class="col-lg-12" value="<?= $data->abunament; ?>">
-                                    <label class="label-in">Abunament</label>
-                                </div>
-                            </div>
-                            <?php } ?>
-                            <!-- akhir data hidden -->
-
-                            <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
-                                <div class="input-wrapper">
-                                    <label class="label-in">Kubik 1</label>
-                                    <?php foreach ($kubik as $data) { ?>
-                                    <input type="text" id="kubik-1" class="col-lg-12" value="<?= $data->kubik_in; ?>">
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
-                                <div class="input-wrapper">
-                                    <input type="text" id="kubik-in" class="col-lg-12" required>
-                                    <label class="label-in">Kubik 2</label>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
-                                <div class="input-wrapper">
-                                    <input type="text" id="kubik-2" class="col-lg-12" required>
-                                    <label class="label-in">Kubik hasil</label>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
-                                <div class="input-wrapper">
-                                    <input type="text" id="nominal" class="col-lg-12" required>
-                                    <label class="label-in">Nominal</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="demo">
-                            <button type="button" class="btn btn-outline-success btn-icon-text">
-                                <i class="ti-archive"> </i>
-                                Buat
-                            </button>
+        <form id="buat-tagihan">
+            <div class="row">
+                <div class="col-lg-3 grid-margin stretch-card mb-2 pt-2">
+                    <div class="card">
+                        <div class="form-group mt-3 col-lg-12 col-md-12 col-sm-12 col-xs-12 mr-0">
+                            <label class="label-select2">Pilih Warga</label>
+                            <select class="js-example-basic-single w-100" id="id_warga" name="id_warga">
+                                <option value="">....</option>
+                                <?php foreach ($warga as $data) { ?>
+                                <option value="<?= $data['id']; ?>" data-badge="<?= $data['badge']; ?>">
+                                    <?= $data['text']; ?>
+                                </option>
+                                <?php } ?>
+                            </select>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 grid-margin stretch-card">
-                <div class="card">
-                    <div class="form-group mt-3 col-lg-12 col-md-12 col-sm-12 col-xs-12 mr-0">
-                        <label class="label-select2">Pilih Warga</label>
-                        <select class="js-example-basic-single w-100">
-                            <option value="">....</option>
-                            <?php foreach ($warga as $data) { ?>
-                            <option value="<?= $data['id']; ?>" data-badge="<?= $data['badge']; ?>">
-                                <?= $data['text']; ?>
-                            </option>
-                            <?php } ?>
-                        </select>
+                <div class="col-lg-9 grid-margin stretch-card mb-2 pt-2">
+                    <div class="card">
+                        <div class="card-body pb-2 pr-2">
+                            <h4 class="card-title">Buat Tagihan</h4>
+
+                            <div class="input-group pb-0">
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0">
+                                    <div class="input-wrapper">
+                                        <label class="label-select">Bulan</label>
+                                        <select type="text" id="bln_tagihan" required class="col-lg-12">
+                                            <option value="Januari">Januari</option>
+                                            <option value="Februari">Februari</option>
+                                            <option value="Maret">Maret</option>
+                                            <option value="April">April</option>
+                                            <option value="Mei">Mei</option>
+                                            <option value="Juni">Juni</option>
+                                            <option value="Juli">Juli</option>
+                                            <option value="Agustus">Agustus</option>
+                                            <option value="September">September</option>
+                                            <option value="Oktober">Oktober</option>
+                                            <option value="November">November</option>
+                                            <option value="Desember">Desember</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0">
+                                    <div class="input-wrapper">
+                                        <label class="label-select">Tahun</label>
+                                        <select type="text" id="thn_tagihan" required>
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- data di hiden -->
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0">
+                                    <div class="input-wrapper">
+                                        <label class="label-in">invoice</label>
+                                        <input type="text" id="invoice" value="<?= $nomer; ?>" class="col-lg-12">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0" hidden>
+                                    <div class="input-wrapper">
+                                        <label class="label-in">rtrw</label>
+                                        <input type="text" id="id-rtrw" value="<?php echo $userdata->id_rtrw; ?>"
+                                            class="col-lg-12">
+                                    </div>
+                                </div>
+                                <?php foreach ($ifas as $data) { ?>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="lain-lain" class="col-lg-12"
+                                            value="<?= $data->nominal; ?>">
+                                    </div>
+                                </div>
+                                <?php } ?>
+                                <?php foreach ($iuran as $data) { ?>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
+                                    <div class="input-wrapper">
+                                        <label class="label-select">Iuran</label>
+                                        <select type="text" id="id_iuran" class="col-lg-12" required>
+                                            <option value="<?= $data->id_iuran; ?>"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="harga" class="col-lg-12" value="<?= $data->nominal; ?>">
+                                        <input type="text" id="harga1" class="col-lg-12"
+                                            value="<?= $data->nominal1; ?>">
+                                        <label class="label-in">harga / kubik</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="perawatan" class="col-lg-12"
+                                            value="<?= $data->perawatan; ?>">
+                                        <label class="label-in">perawatan</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="abunamen" class="col-lg-12"
+                                            value="<?= $data->abunament; ?>">
+                                    </div>
+                                </div>
+                                <?php } ?>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0" hidden>
+                                    <div class="input-wrapper">
+                                        <label class="label-in">abo1</label>
+                                        <input type="number" id="abo1" class="col-lg-12">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0" hidden>
+                                    <div class="input-wrapper">
+                                        <label class="label-in">perku</label>
+                                        <input type="number" id="perkubik" class="col-lg-12">
+                                    </div>
+                                </div>
+                                <!-- akhir data hidden -->
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0">
+                                    <div class="input-wrapper">
+                                        <label class="label-in">Kubik 1</label>
+                                        <input type="number" id="kubik-1" class="col-lg-12">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
+                                    <div class="input-wrapper">
+                                        <input type="number" id="kubik-in" class="col-lg-12" required>
+                                        <label class="label-in">Kubik 2</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
+                                    <div class="input-wrapper">
+                                        <input type="text" id="kubik-2" class="col-lg-12" readonly>
+                                        <label class="label-in">Kubik hasil</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
+                                    <div class="input-wrapper">
+                                        <input type="text" id="nominal" class="col-lg-12" readonly>
+                                        <label class="label-in">Nominal</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="demo">
+                                <button type="submit" class="btn btn-outline-success btn-icon-text">
+                                    <i class="ti-archive"> </i>
+                                    Buat
+                                </button>
+                            </div>
+                        </div>
+        </form>
+    </div>
+</div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body pt-2 pl-3">
+                <div class="d-flex align-items-center">
+                    <p class="card-title p-1">Data Tagihan</p>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table id="data-tagihan" class="display expandable-table" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>No. Invoice</th>
+                                        <th>Nama || No Rumah</th>
+                                        <th>Bulan</th>
+                                        <th>Tahun</th>
+                                        <th>Nominal</th>
+                                        <th>Tagihan Lain</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+</div>
 
-    <script>
-    $(document).ready(function() {
-        $('.js-example-basic-single').select2({
-            templateResult: function(data) {
-                if (!data.id) {
-                    return data.text;
-                }
+<!-- kode javascript untuk manipulasi data -->
+<script>
+$(document).ready(function() {
+    $('.js-example-basic-single').select2({
+        templateResult: function(data) {
+            if (!data.id) {
+                return data.text;
+            }
 
-                var badge = data.element.dataset.badge;
-                var $result = $('<span><div class="badge badge-info">' + badge + '</div> ' +
-                    data
-                    .text + '</span>');
-                return $result;
+            var badge = data.element.dataset.badge;
+            var $result = $('<span><div class="badge badge-info">' + badge + '</div> ' +
+                data
+                .text + '</span>');
+            return $result;
+        },
+        templateSelection: function(data) {
+            if (!data.id) {
+                return data.text;
+            }
+
+            var badge = data.element.dataset.badge;
+            var $result = $('<span><div class="badge badge-info">' + badge + '</div> ' +
+                data
+                .text + '</span>');
+            return $result;
+        }
+    });
+
+    // Fungsi untuk mengambil data kubik dari server
+    function getKubikData(id_warga) {
+        $.ajax({
+            type: 'GET',
+            url: 'Data_tagihan/get_meter',
+            data: {
+                id_warga: id_warga
             },
-            templateSelection: function(data) {
-                if (!data.id) {
-                    return data.text;
-                }
+            dataType: 'json',
+            success: function(response) {
+                $('#kubik-1').val(response.join(', '));
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+    // akhir Fungsi untuk mengambil data kubik dari server
 
-                var badge = data.element.dataset.badge;
-                var $result = $('<span><div class="badge badge-info">' + badge + '</div> ' +
-                    data
-                    .text + '</span>');
-                return $result;
+    $('.js-example-basic-single').on('change', function() {
+        var selectedId = $(this).val();
+        if (selectedId) {
+            getKubikData(
+                selectedId
+            );
+        } else {
+            $('#kubik-1').val('');
+        }
+    });
+    // kode ajax untuk membuat tagihan
+    $('#buat-tagihan').submit(function(event) {
+        event.preventDefault();
+
+        var id_rtrw = $('#id-rtrw').val();
+        var id_warga = $('#id_warga').val();
+        var id_iuran = $('#id_iuran').val();
+        var no_invoice = $('#invoice').val();
+        var bln_tagihan = $('#bln_tagihan').val();
+        var thn_tagihan = $('#thn_tagihan').val();
+        var kubik1 = $('#kubik-1').val();
+        var kubik_in = $('#kubik-in').val();
+        var hasil_kubik = $('#kubik-2').val();
+        var abunament = $('#abo1').val();
+        var perkubik = $('#perkubik').val();
+        var lain_lain = $('#lain-lain').val();
+        var nominal = $('#nominal').val();
+
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url('Data_tagihan/buat_tagihan') ?>',
+            data: {
+                id_rtrw: id_rtrw,
+                id_warga: id_warga,
+                id_iuran: id_iuran,
+                no_invoice: no_invoice,
+                thn_tagihan: thn_tagihan,
+                bln_tagihan: bln_tagihan,
+                kubik1: kubik1,
+                kubik_in: kubik_in,
+                hasil_kubik: hasil_kubik,
+                abunament: abunament,
+                perkubik: perkubik,
+                lain_lain: lain_lain,
+                nominal: nominal,
+
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status) {
+                    console.log(
+                        response);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Tagihan Berhasil Dibuat.',
+                    });
+                    // Bersihkan nilai input secara manual
+                    $('#id_warga').val('');
+                    $('#kubik-1').val('');
+                    $('#kubik-in').val('');
+                    $('#kubik-2').val('');
+                    $('#nominal').val('');
+                    // Bersihkan input lainnya sesuai kebutuhan
+
+                    window.location.href = "<?php echo base_url('Data_tagihan'); ?>";
+                } else {
+                    console.error('Terjadi kesalahan saat validasi data di server.');
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: 'Terjadi kesalahan saat validasi data di server.',
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: 'Terjadi kesalahan saat mengirim data ke server.',
+                });
             }
         });
     });
-    </script>
 
-    <!-- kode javascrip mengambil bulan dan tanggal hari ini -->
-    <script>
-    const selectBulan = document.getElementById('bln_tagihan');
-    const selectTahun = document.getElementById('thn_tagihan');
+    // datatable tagihan
+    window.crud = $('#data-tagihan').DataTable({
+        "paging": true,
+        "ordering": true,
+        "autoWidth": true,
+        "responsive": true,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "<?php echo base_url('Data_tagihan/get_tagihan') ?>",
+            type: "POST"
+        },
+        columns: [{
+                data: 'nomor_urut',
+                name: 'nomor_urut'
+            },
+            {
+                data: 'no_invoice',
+                name: 'no_invoice'
+            },
+            {
+                data: 'nama',
+                name: 'nama'
+            },
+            {
+                data: 'bln_tagihan',
+                name: 'bln_tagihan'
+            },
+            {
+                data: 'thn_tagihan',
+                name: 'thn_tagihan'
+            },
+            {
+                data: 'nominal',
+                name: 'nominal'
+            },
+            {
+                data: 'lain_lain',
+                name: 'lain_lain'
+            },
+            {
+                data: 'total',
+                name: 'total'
+            },
+            {
+                data: 'status',
+                name: 'status',
+                orderable: false,
+                searchable: false,
+                className: 'text-center'
+            },
+        ],
+        "columnDefs": [{
+            "targets": 0,
+            "className": "text-center",
+        }],
+    });
 
-    // Buat objek Date untuk mendapatkan bulan & tahun saat ini
-    const tanggalSekarang = new Date();
-    const tahunSekarang = new Date().getFullYear();
+});
+</script>
+<!-- akhirkode javascript untuk manipulasi data -->
 
-    const indeksBulanSekarang = tanggalSekarang.getMonth();
 
-    // Set nilai default select sesuai dengan indeks bulan saat ini
-    selectBulan.selectedIndex = indeksBulanSekarang;
+<!-- kode javascrip untuk perhitungan iuran -->
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<script>
+//kode javascrip mengambil bulan dan tanggal hari ini
+const selectBulan = document.getElementById('bln_tagihan');
+const selectTahun = document.getElementById('thn_tagihan');
 
-    // memilih tahun saat ini
-    for (let i = 0; i < selectTahun.options.length; i++) {
-        // Jika nilai opsi sama dengan tahun saat ini, set opsi tersebut menjadi default (selected)
-        if (parseInt(selectTahun.options[i].value) === tahunSekarang) {
-            selectTahun.options[i].selected = true;
-            break;
-        }
+// Buat objek Date untuk mendapatkan bulan & tahun saat ini
+const tanggalSekarang = new Date();
+const tahunSekarang = new Date().getFullYear();
+
+const indeksBulanSekarang = tanggalSekarang.getMonth();
+
+// Set nilai default select sesuai dengan indeks bulan saat ini
+selectBulan.selectedIndex = indeksBulanSekarang;
+
+// memilih tahun saat ini
+for (let i = 0; i < selectTahun.options.length; i++) {
+    // Jika nilai opsi sama dengan tahun saat ini, set opsi tersebut menjadi default (selected)
+    if (parseInt(selectTahun.options[i].value) === tahunSekarang) {
+        selectTahun.options[i].selected = true;
+        break;
     }
-    </script>
+}
 
-    <!-- kode javascript untuk disable input jka ada isinya -->
-    <script>
-    function checkInputStatus() {
-        var inputElement = document.getElementById('kubik-1');
-        var inputWrapper = document.querySelector('.input-wrapper');
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        if (inputElement.value.trim() !== '') {
-            inputElement.disabled = true; // Nonaktifkan input jika memiliki nilai
-            inputWrapper.classList.add(
-                'disabled');
+//  kode javascript untuk disable input jka ada isinya
+function checkInputStatus() {
+    var inputElement = document.getElementById('kubik-1');
+    var inputWrapper = document.querySelector('.input-wrapper');
+
+    if (inputElement.value.trim().length === 4) {
+        inputElement.disabled = true;
+        inputWrapper.classList.add(
+            'disabled');
+    } else {
+        inputElement.disabled = false;
+        inputWrapper.classList.remove('disabled');
+    }
+}
+
+// Panggil fungsi checkInputStatus() saat halaman dimuat dan saat nilai input berubah
+document.addEventListener('DOMContentLoaded', checkInputStatus);
+document.getElementById('kubik-1').addEventListener('input', checkInputStatus);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// kode untuk rumus menghitung biaya air.....
+const kubik1Input = document.getElementById('kubik-1');
+const kubikInInput = document.getElementById('kubik-in');
+const kubik2Input = document.getElementById('kubik-2');
+const hargaInput = document.getElementById('harga');
+const harga1Input = document.getElementById('harga1');
+const perawatanInput = document.getElementById('perawatan');
+const abunamenInput = document.getElementById('abunamen');
+const ab1Input = document.getElementById('abo1');
+const nominalInput = document.getElementById('nominal');
+const perkubikInput = document.getElementById('perkubik');
+
+// Fungsi untuk menghitung dan menampilkan hasilnya di kubik-2 dan nominal
+function hitungSelisih() {
+    const kubik1Value = parseFloat(kubik1Input.value);
+    const kubikInValue = parseFloat(kubikInInput.value);
+    const hargaValue = parseFloat(hargaInput.value);
+    const harga1Value = parseFloat(harga1Input.value);
+    const perawatanValue = parseFloat(perawatanInput.value);
+    const abunamenValue = parseFloat(abunamenInput.value);
+    const abo1 = parseFloat(ab1Input.value);
+    const perkubik = parseFloat(perkubikInput.value);
+
+    // Cek apakah input valid (berupa angka)
+    if (!isNaN(kubik1Value) && !isNaN(kubikInValue) && !isNaN(hargaValue) && !isNaN(perawatanValue)) {
+        const hasilKubik = kubikInValue - kubik1Value;
+
+        kubik2Input.value = hasilKubik;
+
+        let hargaHasil;
+
+        if (hasilKubik <= 10) {
+            hargaHasil = hasilKubik * hargaValue;
         } else {
-            inputElement.disabled = false; // Aktifkan input jika tidak ada nilai
-            inputWrapper.classList.remove('disabled');
+            hargaHasil = hasilKubik * harga1Value;
         }
-    }
 
-    // Panggil fungsi checkInputStatus() saat halaman dimuat dan saat nilai input berubah
-    document.addEventListener('DOMContentLoaded', checkInputStatus);
-    document.getElementById('kubik-1').addEventListener('input', checkInputStatus);
-    </script>
+        const hargafix = hargaHasil + perawatanValue;
 
-    <!-- kode untuk rumus menghitung biaya air -->
-    <script>
-    const kubik1Input = document.getElementById('kubik-1');
-    const kubikInInput = document.getElementById('kubik-in');
-    const kubik2Input = document.getElementById('kubik-2');
-    const hargaInput = document.getElementById('harga');
-    const perawatanInput = document.getElementById('perawatan');
-    // const abunamenInput = document.getElementById('abunamen');
-    const nominalInput = document.getElementById('nominal');
-
-    // Fungsi untuk menghitung dan menampilkan hasilnya di kubik-2 dan nominal
-    function hitungSelisih() {
-        const kubik1Value = parseFloat(kubik1Input.value);
-        const kubikInValue = parseFloat(kubikInInput.value);
-        const hargaValue = parseFloat(hargaInput.value);
-        const perawatanValue = parseFloat(perawatanInput.value);
-        // const abunamenValue = parseFloat(abunamenInput.value);
-
-        // Cek apakah input valid (berupa angka)
-        if (!isNaN(kubik1Value) && !isNaN(kubikInValue) && !isNaN(hargaValue) && !isNaN(perawatanValue)) {
-            const hasilKubik = kubikInValue - kubik1Value;
-            const hargaHasil = hasilKubik * hargaValue;
-            const hargafix = hargaHasil + perawatanValue;
-
-            kubik2Input.value = hasilKubik;
+        if (hasilKubik <= 1) {
+            ab1Input.value = abunamenValue;
+            nominalInput.value = abunamenValue;
+            perkubikInput.value = '';
+        } else {
+            ab1Input.value = perawatanValue;
             nominalInput.value = hargafix;
+            if (hasilKubik <= 10) {
+                perkubikInput.value = hargaValue;
+
+            } else {
+                perkubikInput.value = harga1Value;
+            }
         }
     }
+}
 
-    // Pasang event handler untuk memanggil fungsi hitungSelisih saat input berubah
-    kubik1Input.addEventListener('input', hitungSelisih);
-    kubikInInput.addEventListener('input', hitungSelisih);
-    hargaInput.addEventListener('input', hitungSelisih);
-    perawatanInput.addEventListener('input', hitungSelisih);
-    </script>
+// Pasang event handler untuk memanggil fungsi hitungSelisih saat input berubah
+kubik1Input.addEventListener('input', hitungSelisih);
+kubikInInput.addEventListener('input', hitungSelisih);
+hargaInput.addEventListener('input', hitungSelisih);
+// akhir kode untuk rumus menghitung biaya air.....
+</script>

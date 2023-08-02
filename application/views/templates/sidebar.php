@@ -1,6 +1,6 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" href="<?php echo site_url('Dashboard'); ?> ">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
@@ -19,7 +19,8 @@
                     </li>
                 </ul>
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="">Konfirmasi Tagihan</a>
+                    <li class="nav-item"> <a class="nav-link"
+                            href="<?php echo site_url('Data_tagihan/confm_tagihan'); ?>">Konfirmasi Tagihan</a>
                     </li>
                 </ul>
             </div>

@@ -60,4 +60,6 @@ class Auth extends CI_Controller
 		$this->session->set_flashdata('sukses', 'Anda Telah Keluar dari Aplikasi');
 		redirect('Auth');
 	}
+
+
 }

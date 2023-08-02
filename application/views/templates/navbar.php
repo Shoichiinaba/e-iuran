@@ -95,7 +95,6 @@
         </button>
     </div>
 </nav>
-
 <!-- settings-panel -->
 <div class="container-fluid page-body-wrapper">
     <div class="theme-setting-wrapper">
