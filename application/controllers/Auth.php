@@ -53,7 +53,7 @@ class Auth extends CI_Controller
 					'status' => "Loged in"
 				];
 				$this->session->set_userdata($session);
-				redirect('Client_dash');
+				redirect('Dashboard');
 			}
 		} else {
 			$this->session->set_flashdata('result_login', '<br>email Dan Password Harus Diisi.');
