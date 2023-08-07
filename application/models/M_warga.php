@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_warga extends CI_Model
 {
+
     public function get_total_warga($id,$role)
     {
         if ($role == 'Admin') {

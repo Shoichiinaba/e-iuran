@@ -12,9 +12,6 @@
     </div>
 </footer>
 
-<script>
-document.getElementById('currentYear').textContent = new Date().getFullYear();
-</script>
 
 </div>
 <!-- main-panel ends -->

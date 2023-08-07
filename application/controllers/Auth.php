@@ -93,7 +93,7 @@ class Auth extends CI_Controller
 
 			if ($data == false) {
 				$this->session->set_flashdata('result_login', '<br>Email atau Password yang anda masukkan salah.');
-				redirect('Auth');
+				redirect('Auth/admin');
 			} else {
 				$session = [
 					'userdata' => $data,
@@ -104,7 +104,7 @@ class Auth extends CI_Controller
 			}
 		} else {
 			$this->session->set_flashdata('result_login', '<br>email Dan Password Harus Diisi.');
-			redirect('Auth');
+			redirect('Auth/admin');
 		}
 	}
 }

@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>E-Iuran Admin</title>
+    <title>Hi-Care </title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/feather/feather.css">
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/ti-icons/css/themify-icons.css">
@@ -16,8 +16,14 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/vertical-layout-light/style.css">
     <!-- endinject -->
-    <link rel="shortcut icon" href="<?= base_url('assets'); ?>/images/auth/logo1.png" />
+    <link rel="shortcut icon" href="<?= base_url('assets'); ?>/images/logo_e/.png" />
 </head>
+<style>
+.log {
+    background-color: white;
+    border-bottom: none;
+}
+</style>
 
 <body>
     <div class="container-scroller">
@@ -26,11 +32,10 @@
                 <div class="row w-100 mx-0">
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-                            <div class="card-header text-center pt-4">
-                                <img src="<?= base_url(); ?>assets/images/auth/logo1.png" alt="Logo" width="50"
-                                    height="50">
+                            <div class="card-header text-center pt-4 log">
+                                <img src="<?= base_url(); ?>assets/images/logo_e/HI-CARE-logo.png" alt="Logo" width="80"
+                                    height="80">
                             </div>
-                            <h4 class="text-center">E-iuran</h4>
                             <h6 class="font-weight-light text-center">Sign in to continue.</h6>
                             <form action="<?= site_url('Auth/login') ?>" method="post">
                                 <!-- Alert -->

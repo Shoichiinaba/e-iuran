@@ -1,0 +1,14 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/kina3126/public_html/e-iuran.kanpa.co.id
+    - /bin/cp -R application $DEPLOYPATH
+    - /bin/cp -R assets $DEPLOYPATH
+    - /bin/cp -R assets_adm $DEPLOYPATH
+    - /bin/cp -R system $DEPLOYPATH
+    - /bin/cp .gitignore $DEPLOYPATH
+    - /bin/cp .cpanel.yml $DEPLOYPATH
+    - /bin/cp composer.json $DEPLOYPATH
+    - /bin/cp composer.lock $DEPLOYPATH
+    - /bin/cp license.txt $DEPLOYPATH
+    - /bin/cp index.php $DEPLOYPATH
+    # tetst/
