@@ -183,10 +183,6 @@
         background: #f2a2a7;
     }
 </style>
-<?php
-$no = 0;
-
-?>
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
@@ -206,7 +202,7 @@ $no = 0;
                     <div class="col-md-6 mb-3 stretch-card transparent">
                         <div class="card card-light-blue">
                             <div class="card-body">
-                                <h3 class=" mb-4 info-tunggakan font-weight-bold"><?= $no; ?> Bulan</h3>
+                                <h3 class=" mb-4 info-tunggakan font-weight-bold">Bulan</h3>
                                 <h5 class="mb-2">Tunggakan</h5>
                             </div>
                         </div>
@@ -214,7 +210,7 @@ $no = 0;
                     <div class="col-md-6 mb-3 stretch-card transparent">
                         <div class="card card-light-danger">
                             <div class="card-body">
-                                <h3 class="mb-4 info-total-tagihan font-weight-bold">Rp.100.000</h3>
+                                <h3 class="mb-4 info-total-tagihan font-weight-bold"></h3>
                                 <h5 class=" mb-2">Total tagihan</h5>
                             </div>
                         </div>
@@ -255,59 +251,89 @@ $no = 0;
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="col-xs-12 expandable-table dataTable table" style="width: 100%;display: table;overflow: auto;" aria-describedby="data-perum_info">
-                                <thead>
-                                    <tr>
-                                        <th rowspan="2" class="text-center pb-4">Bulan</th>
-                                        <th colspan="2" class="text-center">Angka Pada Meter</th>
-                                        <th rowspan="2" class="text-center pb-4">Pemaikaian</th>
-                                        <th rowspan="2" class="text-center pb-4">Tarif</th>
-                                        <th rowspan="2" class="text-center pb-4">Abunemen</th>
-                                        <th rowspan="2" class="text-center pb-4">Priode</th>
-                                        <th rowspan="2" class="text-center pb-4">Jumlah</th>
-                                    </tr>
-                                    <tr>
-                                        <center>
-                                            <th class="text-center">Awal</th>
-                                            <th class="text-center">Akhir</th>
-                                        </center>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $count_air = 0;
-                                    $count_iuran = 0;
-                                    foreach ($tagihan_air as $data) :
-                                        $no++;
-                                        $count_air += $data->nominal;
-                                        $count_iuran += $data->lain_lain;
-                                    ?>
-                                        <tr class="odd">
-                                            <td class="sorting_1"><?= $data->bln_tagihan; ?> / <?= $data->thn_tagihan; ?></td>
-                                            <td><?= $data->kubik1; ?></td>
-                                            <td><?= $data->kubik_in; ?></td>
-                                            <td><?= $data->hasil_kubik; ?></td>
-                                            <td>Rp.<?= number_format($data->perkubik, 0, ',', '.'); ?></td>
-                                            <td>Rp.<?= number_format($data->abunament, 0, ',', '.'); ?></td>
-                                            <td>1 Bulan</td>
-                                            <td>Rp.<?= number_format($data->nominal, 0, ',', '.'); ?></td>
+                            <div class="table-responsive">
+                                <table class=" expandable-table dataTable table" style="width: 100%;display: table;overflow: auto;" aria-describedby="data-perum_info">
+                                    <tbody>
+                                        <?php
+                                        $no = 0;
+                                        $count_air = 0;
+                                        $count_iuran = 0;
+                                        $jumlah = 0;
+                                        foreach ($tagihan_air as $data) :
+                                            $id_tagihan = $data->id_tagihan;
+                                            $ipl = $data->lain_lain;
+                                            $no++;
+                                            
+                                            $count_air += $data->nominal;
+                                            $count_iuran += $data->lain_lain;
+                                            $jumlah = $data->lain_lain += $data->nominal;
+                                            // $total_tagihan = ;
+                                        ?>
+                                            <tr style="background: #4b49ac;color: white;">
+                                                <td class="">Bulan</td>
+                                                <td class=""><?= $data->bln_tagihan; ?> / <?= $data->thn_tagihan; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="">IPL <?= $ipl; ?></td>
+                                                <td class="">Rp.<?= number_format($ipl, 0, ',', '.'); ?></td>
+                                            </tr>
+                                            <tr class="rinc-<?= $data->id_tagihan; ?>" hidden>
+                                                <td colspan="2" class="text-center" style="background: aquamarine;font-weight: bold;color: cornflowerblue;">Rincian Penggunaan air</td>
+                                            </tr>
+                                            <tr class="rinc-<?= $data->id_tagihan; ?>" hidden>
+                                                <td class="">Awal</td>
+                                                <td class=""><?= $data->kubik1; ?></td>
+                                            </tr>
+                                            <tr class="rinc-<?= $data->id_tagihan; ?>" hidden>
+                                                <td class="">Akhir</td>
+                                                <td class=""><?= $data->kubik_in; ?></td>
+                                            </tr>
+                                            <tr class="rinc-<?= $data->id_tagihan; ?>" hidden>
+                                                <td class="">Pemakaian</td>
+                                                <td class=""><?= $data->hasil_kubik; ?></td>
+                                            </tr>
+                                            <tr class="rinc-<?= $data->id_tagihan; ?>" hidden>
+                                                <td class="">Tarif</td>
+                                                <td class="">Rp.<?= number_format($data->perkubik, 0, ',', '.'); ?></td>
+                                            </tr>
+                                            <tr class="rinc-<?= $data->id_tagihan; ?>" hidden>
+                                                <td class="">Abunamen</td>
+                                                <td class="">Rp.<?= number_format($data->abunament, 0, ',', '.'); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="">Bayar air</td>
+                                                <td class="">Rp.<?= number_format($data->nominal, 0, ',', '.'); ?> | <a href="javascript:void(0)" type="button" class="lihat-rinc" data-id-tagihan="<?= $data->id_tagihan; ?>">Lihat Rincian</a></td>
+                                            </tr>
+                                            <tr>
+                                                <?php
+                                                ?>
+                                                <td class="">Jumlah</td>
+                                                <td class="">
+                                                    <div class=" form-check form-check-success m-0">
+                                                        <label class="form-check-label">
+                                                            <input type="checkbox" class="form-check-input cheklis-bayar" data-jumlah="<?= $jumlah; ?>" value="<?= $data->id_tagihan; ?>">
+                                                            Rp.<?= number_format($jumlah, 0, ',', '.'); ?> |
+                                                            <i class=" input-helper" style="color: #0090ff;cursor: pointer;"> Cheklis untuk bayar</i>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php
+                                        endforeach
+                                        ?>
+                                        <tr style="background: aliceblue; font-weight: bold;">
+                                            <td>Total bulan dibayar</td>
+                                            <td class="total-bulan">0 Bulan</td>
                                         </tr>
-                                    <?php
-                                    endforeach
-                                    ?>
-                                    <tr style="background: aliceblue; font-weight: bold;">
-                                        <td colspan="6">Iuran Bulanan</td>
-                                        <td class="total-bulan"><?= $no; ?> Bulan</td>
-                                        <td>Rp.<?= number_format($count_iuran, 0, ',', '.'); ?></td>
-                                    </tr>
-                                    <tr style="background:#2196f345; font-weight: bold;">
-                                        <td colspan="7">Total bayar</td>
-                                        <td class="total-tagihan">Rp.<?= number_format($count_air += $count_iuran, 0, ',', '.'); ?></td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>
+                                        <tr style="background:#2196f345; font-weight: bold;">
+                                            <td>Total bayar</td>
+                                            <td class="total-tagihan">Rp.0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <input type="text" id="id-tagihan" value="" hidden>
+                            <input type="text" id="subtotal" value="0" hidden>
                         </div>
                     </div>
                 </div>
@@ -328,19 +354,19 @@ $no = 0;
             </div> -->
         </div>
         <!-- <div class="row"> -->
-            <div class="card p-3 pb-3">
-                <ul class="pl-0 mb-0" style="display: flex;list-style: none;">
-                    <li class="mr-2">
-                        <button type="submit" class="btn btn-primary btn-md btn-riwayat-anda">Riwayat transaksi anda</button>
-                    </li>
-                    <li>
-                        <button type="submit" class="btn btn-light btn-md btn-riwayat-warga">Riwayat transaksi warga</button>
-                    </li>
-                </ul>
-                <!-- <div class="card-body"> -->
-                <div id="load-data-riwayat"></div>
-                <!-- </div> -->
-            </div>
+        <div class="card p-3 pb-3">
+            <ul class="pl-0 mb-0" style="display: flex;list-style: none;">
+                <li class="mr-2">
+                    <button type="submit" class="btn btn-primary btn-md btn-riwayat-anda">Riwayat transaksi anda</button>
+                </li>
+                <li>
+                    <button type="submit" class="btn btn-light btn-md btn-riwayat-warga">Riwayat transaksi warga</button>
+                </li>
+            </ul>
+            <!-- <div class="card-body"> -->
+            <div id="load-data-riwayat"></div>
+            <!-- </div> -->
+        </div>
         <!-- </div> -->
     </div>
     <div class="modal fade" id="modal-bayar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -410,7 +436,7 @@ $no = 0;
                 $('#bulan-val').val(total_bulan);
             });
             $('.info-tunggakan').text('<?= $no; ?> Bulan');
-            $('.info-total-tagihan').text('Rp.<?= number_format($count_air += $count_iuran, 0, ',', '.'); ?>');
+            $('.info-total-tagihan').text('Rp.<?= number_format($count_iuran += $count_air, 0, ',', '.'); ?>');
 
             if ('<?= $no; ?>' == '0') {
                 $('#inv-content').attr('hidden', true);
@@ -418,7 +444,41 @@ $no = 0;
                 $('#inv-content').removeAttr('hidden', true);
             }
         });
-
+        $('.lihat-rinc').click(function() {
+            // alert($(this).text())
+            if ($(this).text() == 'Lihat Rincian') {
+                $('.rinc-' + $(this).data('id-tagihan')).removeAttr('hidden', true)
+                    .addClass('open-' + $(this).data('id-tagihan'))
+                    .removeClass('rinc-' + $(this).data('id-tagihan'), true);
+                $(this).text('Tutup rincian').addClass('text-danger');
+            } else {
+                $('.open-' + $(this).data('id-tagihan')).attr('hidden', true)
+                    .removeClass('open-' + $(this).data('id-tagihan'))
+                    .addClass('rinc-' + $(this).data('id-tagihan'), true);
+                $(this).text('Lihat Rincian').removeClass('text-danger');
+            }
+        });
+        $('.form-check-input').click(function() {
+            if ($(this).is(":checked")) {
+                total = parseInt($('#subtotal').val()) + parseInt($(this).data('jumlah'));
+            } else {
+                total = parseInt($('#subtotal').val()) - parseInt($(this).data('jumlah'));
+            }
+            $('.total-bulan').text($(":checkbox:checked").length + ' Bulan')
+            $('#subtotal').val(total)
+            $('.total-tagihan').text('Rp. ' + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
+            $('#id-tagihan').val($('.form-check-input:checked').val())
+            var checkboxes = $('.form-check-input');
+            var result = "";
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    result += checkboxes[i].value + ",";
+                }
+            }
+            $('#id-tagihan').val(result)
+            // document.write("<p> You have selected : " +
+            //     result + "</p>");
+        });
 
         $(document).on("click", "#btn-upload", function() {
             var file = $(this).parents().find("#file-upload");
@@ -441,6 +501,7 @@ $no = 0;
         $('#btn-kirim').click(function() {
             const foto_bukti = $('#file-upload').prop('files')[0];
             let formData = new FormData();
+            formData.append('id-tagihan', $('#id-tagihan').val());
             formData.append('tgl-upload', $('#tgl-upload').val());
             formData.append('tagihan', $('#tagihan-val').val());
             formData.append('foto-bukti', foto_bukti);
@@ -452,9 +513,9 @@ $no = 0;
                 processData: false,
                 contentType: false,
                 success: function(data) {
-                    // alert(data);
+                    alert(data);
                     $('#modal-bayar').modal('hide');
-                    $('#inv-content').attr('hidden', true);
+                    // $('#inv-content').attr('hidden', true);
                     $('.btn-riwayat-anda').trigger('click')
                 },
                 error: function() {

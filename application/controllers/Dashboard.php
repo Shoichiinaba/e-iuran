@@ -41,32 +41,34 @@ class Dashboard extends AUTH_Controller
         $id_rtrw = $this->session->userdata('userdata')->id_rtrw;
         $tgl_upload = $this->input->post('tgl-upload');
         // $foto_bukti = $this->input->post('foto-bukti');
-        $tagihan = $this->input->post('tagihan');
         $code_tagihan = 'CT-' . $id_rtrw . $id_warga . date("dmy");
-
+        // $arr_id = $this->input->post('id-tagihan');
+        // $arr_id = $this->input->post('tagihan');
+        $id_tagihan = $this->input->post('id-tagihan');
         $config['upload_path'] = "./upload/";
         $config['allowed_types'] = 'gif|jpg|png';
         $config['encrypt_name'] = TRUE;
 
         $this->load->library('upload', $config);
+        $this->M_client->m_update_tagihan($code_tagihan, $id_tagihan);
+        // echo $id_tagihan;
 
-        if ($this->upload->do_upload("foto-bukti")) {
-            $data = array('upload_data' => $this->upload->data());
-            $foto_bukti = $data['upload_data']['file_name'];
-            $uploadedImage = $this->upload->data();
-            // echo $header_foto;
-            $data = [
-                'id_rtrw' => $id_rtrw,
-                'id_warga' => $id_warga,
-                'tgl_upload' => $tgl_upload,
-                'code_tagihan' => $code_tagihan,
-                'foto_bukti' => $foto_bukti,
-                'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),
-            ];
-            $this->M_client->m_upload_bukti($data);
-            $this->M_client->m_update_tagihan($code_tagihan, $id_warga);
-        }
-        exit;
+        // if ($this->upload->do_upload("foto-bukti")) {
+        //     $data = array('upload_data' => $this->upload->data());
+        //     $foto_bukti = $data['upload_data']['file_name'];
+        //     $uploadedImage = $this->upload->data();
+        //     // echo $header_foto;
+        //     $data = [
+        //         'id_rtrw' => $id_rtrw,
+        //         'id_warga' => $id_warga,
+        //         'tgl_upload' => $tgl_upload,
+        //         'code_tagihan' => $code_tagihan,
+        //         'foto_bukti' => $foto_bukti,
+        //         'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),
+        //     ];
+        //     $this->M_client->m_upload_bukti($data);
+        // }
+        // exit;
     }
     function get_data_riwayat()
     {
