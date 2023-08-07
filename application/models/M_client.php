@@ -68,12 +68,12 @@ class M_client extends CI_Model
         $result = $this->db->insert('transaksi', $data);
         return $result;
     }
-    function m_update_tagihan($code_tagihan,$id_warga)
+    function m_update_tagihan($code_tagihan, $id_tagihan)
     {
         $update = $this->db->set('code_tagihan', $code_tagihan)
             ->set('status', '1')
-            ->where('id_warga', $id_warga)
-            ->where('status', '0')
+            ->where_in('id_tagihan', explode(",", $id_tagihan))
+            // ->where('status', '0')
             ->update('tagihan');
         return $update;
     }
