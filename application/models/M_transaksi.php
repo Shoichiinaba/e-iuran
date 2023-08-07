@@ -82,6 +82,7 @@ class M_transaksi extends CI_Model
 
             $this->db->select('*');
             $this->db->where('tagihan.id_rtrw', $id);
+            $this->db->where('tagihan.status', 0);
             $total_warga = $this->db->count_all_results('tagihan');
             return $total_warga;
         }
@@ -127,9 +128,12 @@ class M_transaksi extends CI_Model
 
         } else if ($role == 'RT') {
 
-            $this->db->select('*');
-            $this->db->where('transaksi.id_rtrw', $id);
-            $total_warga = $this->db->count_all_results('transaksi');
+            $this->db->select('COUNT(*) AS `numrows`');
+            $this->db->from('transaksi trx');
+            $this->db->join('tagihan', 'tagihan.code_tagihan = trx.code_tagihan');
+            $this->db->where('trx.id_rtrw', $id);
+            $this->db->where('tagihan.status', 1);
+            $total_warga = $this->db->get()->row()->numrows;
             return $total_warga;
         }
 

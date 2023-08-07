@@ -42,9 +42,10 @@ class Dashboard extends AUTH_Controller
         $tgl_upload = $this->input->post('tgl-upload');
         // $foto_bukti = $this->input->post('foto-bukti');
         $tagihan = $this->input->post('tagihan');
+        $bulan = $this->input->post('bulan');
         $code_tagihan = 'CT-' . $id_rtrw . $id_warga . date("dmy");
 
-        $config['upload_path'] = "./upload/";
+        $config['upload_path'] = "./assets/images/bukti_tf/";
         $config['allowed_types'] = 'gif|jpg|png';
         $config['encrypt_name'] = TRUE;
 
@@ -59,6 +60,7 @@ class Dashboard extends AUTH_Controller
                 'id_rtrw' => $id_rtrw,
                 'id_warga' => $id_warga,
                 'tgl_upload' => $tgl_upload,
+                'periode' => $bulan,
                 'code_tagihan' => $code_tagihan,
                 'foto_bukti' => $foto_bukti,
                 'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),
@@ -98,7 +100,7 @@ class Dashboard extends AUTH_Controller
                         <table class=" expandable-table dataTable table" style="width: 100%;display: table;overflow: auto;" aria-describedby="data-perum_info">
                             <thead>
                                 <tr>
-                                
+
                                     <th class="text-center">No. Rumah</th>
                                     <th class="text-center">Pemilik</th>
                                     <th class="text-center">Tunggakan</th>
@@ -126,12 +128,12 @@ class Dashboard extends AUTH_Controller
                 echo '<td>Rp' . number_format($riwayat->lain_lain, 0, ',', '.') . '</td>';
                 echo '<td>Rp' . number_format($riwayat->lain_lain += $riwayat->nominal, 0, ',', '.') . '</td>';
                 if ($riwayat->status == '0') {
-                    echo '<td class="font-weight-bold"><i>Belum Bayar</i></td>';
+                    echo '<td class="font-weight-medium"><div class="badge badge-warning">Belum Bayar</div></td>';
                     echo '<td><button type="button" class="btn btn-primary btn-bayar btn-sm" data-bs-toggle="modal" data-bs-target="#modal-bayar">Bayar</button></td>';
                 } elseif ($riwayat->status == '1') {
-                    echo '<td class="font-weight-bold"><i>Menunggu konfirmasi</i></td>';
-                } elseif ($riwayat->status == '1') {
-                    echo '<td class="font-weight-bold">Lunas</td>';
+                    echo '<td class="font-weight-medium"><div class="badge badge-info">Menunggu Konfirmasi</div></td>';
+                } elseif ($riwayat->status == '2') {
+                    echo '<td class="font-weight-medium"><div class="badge badge-success">Lunas</div></td>';
                     echo '<td><button type="button" class="btn btn-primary btn-bayar btn-sm" data-bs-toggle="modal" data-bs-target="#modal-bayar">Print</button></td>';
                 }
                 echo '</tr>';
@@ -152,9 +154,10 @@ class Dashboard extends AUTH_Controller
                 foreach ($data['unpaid'] as $row) {
                     echo '<td class="text-center">' . $row->total . ' Bulan</td>';
                     if ($row->total <= '0') {
-                        echo '<td class="text-center"><i>Lunas</i></td>';
+                        echo '<td class="font-weight-medium"><div class="badge badge-success">Lunas</div></td>';
                     } else {
-                        echo '<td class="text-center"><i>Belum bayar</i></td>';
+                        echo '<td class="font-weight-medium"><div class="badge badge-warning">Belum Bayar</div></td>';
+
                         echo '<script>';
                         echo '$("#tr-' . $row->id_warga . '").addClass("Belumbayar", true)';
                         echo '</script>';

@@ -158,6 +158,4 @@ class Warga extends AUTH_Controller
         }
     }
 
-
-
 }

@@ -93,7 +93,7 @@ class Auth extends CI_Controller
 
 			if ($data == false) {
 				$this->session->set_flashdata('result_login', '<br>Email atau Password yang anda masukkan salah.');
-				redirect('Auth');
+				redirect('Auth/admin');
 			} else {
 				$session = [
 					'userdata' => $data,
@@ -104,20 +104,7 @@ class Auth extends CI_Controller
 			}
 		} else {
 			$this->session->set_flashdata('result_login', '<br>email Dan Password Harus Diisi.');
-			redirect('Auth');
+			redirect('Auth/admin');
 		}
 	}
-<<<<<<< HEAD
-
-	function logout()
-	{
-		$this->session->sess_destroy();
-		$this->session->set_flashdata('sukses', 'Anda Telah Keluar dari Aplikasi');
-		redirect('Auth');
-	}
-
-
 }
-=======
-}
->>>>>>> d4c9cd8c827ef05d0508823d3cb93f355e2fe846

@@ -166,8 +166,8 @@ class Data_tagihan extends AUTH_Controller
             'code_tagihan',
             'nama',
             'no_rumah',
-            'bln_tagihan',
-            'thn_tagihan',
+            'periode',
+            'tgl_upload',
             'nominal',
             'total',
         );
@@ -206,11 +206,11 @@ class Data_tagihan extends AUTH_Controller
                 'no_invoice'    => $bayar->no_invoice,
                 'code_tagihan'  => $bayar->code_tagihan,
                 'nama'          => $bayar->nama . ' &nbsp ' .'<td class="font-weight-medium"><div class="badge badge-info">' . $bayar->no_rumah . '</div></td>',
-                'bln_tagihan'   => $bayar->bln_tagihan,
-                'thn_tagihan'   => $bayar->thn_tagihan,
+                'periode'       => $bayar->periode,
+                'tgl_upload'    => $bayar->tgl_upload,
                 // 'nominal'       => $formatted_nominal,
                 'total'         => $formatted_jum,
-                'aksi'          => '<button type="button" data-toggle="modal" data-target="#modal-edit" class="btn btn-inverse-success btn-icon btn-sm" data-id-warga="'.$bayar->id_warga.'" data-bukti-upload="'.$bayar->bukti_upload.'" data-placement="top" title="approve">
+                'aksi'          => '<button type="button" data-toggle="modal" data-target="#modal-edit" class="btn btn-inverse-success btn-icon btn-sm" data-id-warga="'.$bayar->id_warga.'" data-foto-bukti="'.$bayar->foto_bukti.'" data-placement="top" title="approve">
                                     <i class="ti-eye"></i></button>'
             );
             $nomor_urut++;
@@ -252,6 +252,18 @@ class Data_tagihan extends AUTH_Controller
         $this->session->set_flashdata('sukses', 'Data berhasil dihapus.');
         return redirect('Data_iuran');
     }
+    public function get_trx_approv()
+    {
+        $id_warga = $this->input->post('id_warga');
 
+        $this->db->select('transaksi.code_tagihan, warga.nama, warga.no_rumah, transaksi.tgl_upload, transaksi.jumlah');
+        $this->db->from('transaksi');
+        $this->db->join('warga', 'warga.id_warga = transaksi.id_warga');
+        $this->db->where('transaksi.id_warga', $id_warga);
+        $query = $this->db->get();
+        $result = $query->result();
+
+        echo json_encode($result);
+    }
 
 }

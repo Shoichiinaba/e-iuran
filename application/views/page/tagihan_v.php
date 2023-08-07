@@ -195,7 +195,7 @@ select:focus+label {
                                     </div>
                                 </div>
                                 <!-- data di hiden -->
-                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0">
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0" hidden>
                                     <div class="input-wrapper">
                                         <label class="label-in">invoice</label>
                                         <input type="text" id="invoice" value="<?= $nomer; ?>" class="col-lg-12">

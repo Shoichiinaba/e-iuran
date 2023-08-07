@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>E-iuran Admin</title>
+    <title>Hi-Care Admin</title>
 
     <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -35,7 +35,7 @@
     <!-- endinject -->
 
     <!-- endinject -->
-    <link rel="shortcut icon" href="<?= base_url('assets'); ?>/images/logo_e/logoep.png" />
+    <link rel="shortcut icon" href="<?= base_url('assets'); ?>/images/logo_e/hi.png" />
 
     <!-- sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
