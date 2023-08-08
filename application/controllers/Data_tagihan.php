@@ -159,6 +159,16 @@ class Data_tagihan extends AUTH_Controller
         $this->load->view($this->template, $data);
     }
 
+    public function data_blmbyr()
+    {
+        $id = $this->session->userdata('userdata')->id_rtrw;
+        $role = $this->session->userdata('userdata')->role;
+        $data['userdata']       = $this->userdata;
+        // $data['bayar']          = $this->M_transaksi->get_bayar();
+        $data['content'] = 'page/belum_byr';
+        $this->load->view($this->template, $data);
+    }
+
     public function get_bayar()
     {
         $columns = array(
@@ -265,5 +275,77 @@ class Data_tagihan extends AUTH_Controller
 
         echo json_encode($result);
     }
+
+    // untuk menu warga belum bayar
+    function get_belumbyr() {
+        $columns = array(
+            'no_invoice',
+            'nama',
+            'no_rumah',
+            'bln_tagihan',
+            'thn_tagihan',
+            'lain',
+            'nominal',
+            'status',
+        );
+
+        $id = $this->session->userdata('userdata')->id_rtrw;
+        $role = $this->session->userdata('userdata')->role;
+        $limit = $this->input->post('length');
+        $offset = $this->input->post('start');
+        $order = $this->input->post('order');
+        $order_column = isset($order[0]['column']) ? $columns[$order[0]['column']] : '';
+        $order_dir = isset($order[0]['dir']) ? $order[0]['dir'] : '';
+
+        $total_records = $this->M_transaksi->get_total_blm($role, $id);
+        $filtered_records = $this->M_transaksi->get_filtered_blm($id, $role, $order_column, $order_dir, $limit, $offset);
+
+        if (!is_array($filtered_records)) {
+            echo json_encode(array(
+                'draw' => $this->input->post('draw'),
+                'recordsTotal' => 0,
+                'recordsFiltered' => 0,
+                'data' => array()
+            ));
+            return;
+        }
+
+        $data = array();
+        $starting_number = isset($_POST['start']) ? $_POST['start'] : 0;
+        $nomor_urut = $starting_number + 1;
+
+        foreach ($filtered_records as $tagih) {
+            $status = ($tagih->status == 0) ? '<td class="font-weight-medium"><div class="badge badge-danger">Belum Bayar</div></td>' : ($tagih->status == 2 ? '<td class="font-weight-medium"><div class="badge badge-success">Lunas</div></td>' : '<td class="font-weight-medium"><div class="badge badge-info">Status Lain</div></td>');
+            $total = $tagih->nominal + $tagih->lain_lain;
+
+            $formatted_nominal = 'Rp. ' . number_format($tagih->nominal, 0, ',', '.');
+            $formatted_lain = 'Rp. ' . number_format($tagih->lain_lain, 0, ',', '.');
+            $Rp_total = 'Rp. ' . number_format($total, 0, ',', '.');
+
+            $data[] = array(
+                'nomor_urut'    => $nomor_urut,
+                'no_invoice'    => $tagih->no_invoice,
+                'nama'          => $tagih->nama . ' &nbsp ' .'<td class="font-weight-medium"><div class="badge badge-info">' . $tagih->no_rumah . '</div></td>',
+                'bln_tagihan'   => $tagih->bln_tagihan,
+                'thn_tagihan'   => $tagih->thn_tagihan,
+                'nominal'       => $formatted_nominal,
+                'lain_lain'     => $formatted_lain,
+                'total'         => $Rp_total,
+                'status'        => $status,
+            );
+            $nomor_urut++;
+        }
+
+        $response = array(
+            'draw' => $this->input->post('draw'),
+            'recordsTotal' => $total_records,
+            'recordsFiltered' => $total_records,
+            'data' => $data
+        );
+
+        echo json_encode($response);
+    }
+
+    // akhir untuk menu warga belum bayar
 
 }
