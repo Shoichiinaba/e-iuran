@@ -75,8 +75,7 @@
                         <div class="card card-light-danger">
                             <div class="card-body">
                                 <p class="mb-4">Belum Bayar</p>
-                                <p class="fs-30 mb-2">34040</p>
-                                <p>2.00% (30 days)</p>
+                                <!-- <p class="fs-30 mb-2"><?=$data->belum_bayar; ?></p> -->
                             </div>
                         </div>
                     </div>

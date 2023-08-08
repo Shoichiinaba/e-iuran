@@ -18,18 +18,21 @@ class Dashboard extends AUTH_Controller
     public function index()
     {
         $role = $this->session->userdata('userdata')->role;
+
         if ($role == 'Warga') {
             // LOAD PAGE DASHBOARD WARGA
             $id_warga = $this->session->userdata('userdata')->id_warga;
             // $data['group_by_bln']          = $this->M_client->m_group_by_bln($id_warga);
-            $data['tagihan_air']          = $this->M_client->m_tagihan_air($id_warga);
-            $data['biodata']          = $this->M_client->m_biodata($id_warga);
-            $data['userdata']         = $this->userdata;
-            $data['content']        = 'warga/dashboard';
+            $data['tagihan_air']     = $this->M_client->m_tagihan_air($id_warga);
+            $data['biodata']         = $this->M_client->m_biodata($id_warga);
+            $data['userdata']        = $this->userdata;
+            $data['content']         = 'warga/dashboard';
             $this->load->view($this->template, $data);
         } else {
             // LOAD PAGE DASHBOARD ADMIN, RT
-            $data['userdata']         = $this->userdata;
+            $id = $this->session->userdata('userdata')->id_rtrw;
+            $data['userdata']       = $this->userdata;
+            // $data['b_bayar']        = $this->M_dashboard->jumlah_blm();
             $data['content']        = 'page/dashboard_v';
             $this->load->view($this->template, $data);
         }
@@ -40,10 +43,7 @@ class Dashboard extends AUTH_Controller
         $id_warga = $this->session->userdata('userdata')->id_warga;
         $id_rtrw = $this->session->userdata('userdata')->id_rtrw;
         $tgl_upload = $this->input->post('tgl-upload');
-        // $foto_bukti = $this->input->post('foto-bukti');
         $code_tagihan = 'CT-' . $id_rtrw . $id_warga . date("dmy");
-        // $arr_id = $this->input->post('id-tagihan');
-        // $arr_id = $this->input->post('tagihan');
         $id_tagihan = $this->input->post('id-tagihan');
         $config['upload_path'] = "./upload/";
         $config['allowed_types'] = 'gif|jpg|png';
@@ -51,24 +51,6 @@ class Dashboard extends AUTH_Controller
 
         $this->load->library('upload', $config);
         $this->M_client->m_update_tagihan($code_tagihan, $id_tagihan);
-        // echo $id_tagihan;
-
-        // if ($this->upload->do_upload("foto-bukti")) {
-        //     $data = array('upload_data' => $this->upload->data());
-        //     $foto_bukti = $data['upload_data']['file_name'];
-        //     $uploadedImage = $this->upload->data();
-        //     // echo $header_foto;
-        //     $data = [
-        //         'id_rtrw' => $id_rtrw,
-        //         'id_warga' => $id_warga,
-        //         'tgl_upload' => $tgl_upload,
-        //         'code_tagihan' => $code_tagihan,
-        //         'foto_bukti' => $foto_bukti,
-        //         'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),
-        //     ];
-        //     $this->M_client->m_upload_bukti($data);
-        // }
-        // exit;
     }
     function get_data_riwayat()
     {
