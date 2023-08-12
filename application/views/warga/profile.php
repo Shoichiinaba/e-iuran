@@ -107,7 +107,7 @@ Swal.fire({
                                                 class="col-sm-3 col-form-label">Username</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" placeholder="Username"
-                                                    name="username" value="<?php echo $userdata->no_rumah; ?>" disabled>
+                                                    name="no_rumah" value="<?php echo $userdata->no_rumah; ?>" disabled>
                                             </div>
                                         </div>
 
@@ -134,8 +134,8 @@ Swal.fire({
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="form-group pb-0 mb-0">
-                                            <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="form-group pb-0 mb-0 mt-2">
+                                            <div class="col-sm-offset-2 col-sm-10 ml-0 pl-0">
                                                 <button type="submit" class="btn btn-warning mr-2 ti-thumb-up">
                                                     Submit</button>
                                             </div>
@@ -175,8 +175,8 @@ Swal.fire({
                                                     placeholder="Password Konfirmasi" autocomplete="new-password">
                                             </div>
                                         </div>
-                                        <div class="form-group pb-0 mb-0">
-                                            <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="form-group pb-0 mb-0 mt-2">
+                                            <div class="col-sm-offset-2 col-sm-10 ml-0 pl-0">
                                                 <button type="submit" class="btn btn-warning mr-2 ti-thumb-up">
                                                     Submit</button>
                                             </div>

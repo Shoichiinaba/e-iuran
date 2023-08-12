@@ -13,22 +13,22 @@ class M_transaksi extends CI_Model
         return $query->result();
     }
 
-    public function get_iuran($id)
+    public function get_iuran($id_rtrw)
     {
         $this->db->select('iuran.id, iuran.id_iuran, iuran.id_rtrw, iuran.nominal, iuran.nominal1, iuran.perawatan, iuran.abunament, nama_iuran.nama ');
         $this->db->from('iuran');
         $this->db->join('nama_iuran', 'nama_iuran.id_iuran = iuran.id_iuran');
-        $this->db->where('id_rtrw', $id);
+        $this->db->where('id_rtrw', $id_rtrw);
         $this->db->where('iuran.id_iuran', 1);
         $query = $this->db->get();
         return $query->result();
     }
 
-    public function iuran_fas($id)
+    public function iuran_fas($id_rtrw)
     {
         $this->db->select('iuran.id, iuran.id_iuran, iuran.id_rtrw, iuran.nominal');
         $this->db->from('iuran');
-        $this->db->where('id_rtrw', $id);
+        $this->db->where('id_rtrw', $id_rtrw);
         $this->db->where('iuran.id_iuran', 3);
         $query = $this->db->get();
         return $query->result();
@@ -123,17 +123,17 @@ class M_transaksi extends CI_Model
 
             $current_month_name = $bulan_indonesia[$current_month];
 
-        $this->db->select('*');
-        $this->db->from('tagihan');
-        $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
-        $this->db->where('tagihan.id_rtrw', $id);
-        $this->db->where('tagihan.status', 0);
-        $this->db->where('bln_tagihan', $current_month_name);
-        $this->db->where('thn_tagihan', $current_year);
-        $this->db->order_by($order_column, $order_dir);
-        $this->db->limit($limit, $offset);
-        $query = $this->db->get();
-        return $query->result();
+            $this->db->select('*');
+            $this->db->from('tagihan');
+            $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
+            $this->db->where('tagihan.id_rtrw', $id);
+            $this->db->where('tagihan.status', 0);
+            $this->db->where('bln_tagihan', $current_month_name);
+            $this->db->where('thn_tagihan', $current_year);
+            $this->db->order_by($order_column, $order_dir);
+            $this->db->limit($limit, $offset);
+            $query = $this->db->get();
+            return $query->result();
         }
     }
 
@@ -210,76 +210,91 @@ class M_transaksi extends CI_Model
         $this->db->where('id_warga', $id);
         $this->db->update('tagihan', $troop_);
     }
+
 // akhir untuk model konfirmasi tagihan
 
-    // untuk data warga belum bayar
+    // untuk data transaksi tagihan warga
 
-
-    public function get_total_blm($role, $id)
+    function get_filter()
     {
-        if ($role == 'Admin') {
-
-            return $this->db->count_all_results('tagihan');
-
-        } else if ($role == 'RT') {
-
-            $this->db->select('*');
-            $this->db->where('tagihan.id_rtrw', $id);
-            $this->db->where('tagihan.status', 0);
-            $this->db->where('tagihan.status', 2);
-            $total_warga = $this->db->count_all_results('tagihan');
-            return $total_warga;
-        }
-
-    }
-
-    public function get_filtered_blm($id, $role, $order_column, $order_dir, $limit, $offset)
-    {
-        if ($role == 'Admin') {
-
-        $this->db->select('*');
+        $this->db->select('thn_tagihan, status');
         $this->db->from('tagihan');
-        $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
-        $this->db->where('tagihan.status', 0);
-        $this->db->or_where('tagihan.status', 2);
-        $this->db->order_by($order_column, $order_dir);
-        $this->db->limit($limit, $offset);
+        $this->db->order_by('thn_tagihan', 'ASC');
+        $this->db->group_by('thn_tagihan');
         $query = $this->db->get();
         return $query->result();
+    }
 
-        } else if ($role == 'RT') {
+    // start datatables
+    var $column_order = array(null, 'no_invoice', 'bln_tagihan', 'thn_tagihan');
+    var $column_search = array('no_invoice','nama', 'bln_tagihan', 'thn_tagihan', 'status');
+    var $order = array('id_tagihan' => 'asc'); // default order
 
-        $this->db->select('*');
-        $this->db->from('tagihan');
-        $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
-        $this->db->where('tagihan.id_rtrw', $id);
-        $this->db->where('tagihan.status', 0);
-        $this->db->or_where('tagihan.status', 2);
-        $this->db->order_by('bln_tagihan', 'ASC');
+    private function _get_datatables_query($id, $role, $bulan_filter, $status_filter, $tahun_filter) {
+        if ($role == 'Admin') {
 
-        if (!empty($search_value)) {
+            $this->db->select('*');
+            $this->db->from('tagihan');
+            $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
+            $this->db->where_in('tagihan.status', array(0, 2));
 
-            $this->db->group_start();
-            $this->db->like('nama', $search_value);
-            $this->db->or_like('no_invoice', $search_value);
-            $this->db->group_end();
-        }
+    } else if ($role == 'RT') {
 
-        if (!empty($order_column) && !empty($order_dir)) {
-            $this->db->order_by($order_column, $order_dir);
-        }
+            $this->db->select('*');
+            $this->db->from('tagihan');
+            $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
+            $this->db->where('tagihan.id_rtrw', $id);
+            $this->db->where_in('tagihan.status', array(0, 2));
 
-        $this->db->limit($limit, $offset);
-        $query = $this->db->get();
+            if ($bulan_filter) {
+                $this->db->where('tagihan.bln_tagihan', $bulan_filter);
+            }
+            if ($status_filter !== '') {
+                $this->db->where('tagihan.status', $status_filter);
+            }
+            if ($tahun_filter !== '') {
+                $this->db->where('tagihan.thn_tagihan', $tahun_filter);
+            }
 
-        if ($query) {
-            return $query->result();
-        } else {
-            return false;
+            $i = 0;
+            foreach ($this->column_search as $item) {
+                if(@$_POST['search']['value']) {
+                    if($i===0) {
+                        $this->db->group_start();
+                        $this->db->like($item, $_POST['search']['value']);
+                    } else {
+                        $this->db->or_like($item, $_POST['search']['value']);
+                    }
+                    if(count($this->column_search) - 1 == $i)
+                        $this->db->group_end();
+                }
+                $i++;
+            }
+
+            if(isset($_POST['order'])) {
+                $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+            }  else if(isset($this->order)) {
+                $order = $this->order;
+                $this->db->order_by(key($order), $order[key($order)]);
+            }
         }
     }
-}
-    // akhir untuk data warga belum bayar
-
+    function get_datatables($id, $role, $bulan_filter, $status_filter, $tahun_filter ) {
+        $this->_get_datatables_query($id, $role, $bulan_filter, $status_filter, $tahun_filter);
+        if(@$_POST['length'] != -1)
+        $this->db->limit(@$_POST['length'], @$_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    function count_filtered($id,$role, $bulan_filter, $status_filter, $tahun_filter) {
+        $this->_get_datatables_query($id, $role, $bulan_filter, $status_filter, $tahun_filter);
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+    function count_all() {
+        $this->db->from('tagihan');
+        return $this->db->count_all_results();
+    }
+    // end datatables
 
 }

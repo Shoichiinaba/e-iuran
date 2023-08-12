@@ -81,7 +81,7 @@ Swal.fire({
 
     <!-- Modal tambah data -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Tambah Warga</h5>
@@ -258,62 +258,36 @@ Swal.fire({
     <!-- data warga -->
     <script>
     $(document).ready(function() {
-        window.crud = $('#data-warga').DataTable({
+        $('#data-warga').DataTable({
             "paging": true,
-            "ordering": true,
             "autoWidth": true,
+            "search": true,
             "responsive": true,
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "<?php echo base_url('Warga/get_warga') ?>",
-                type: "POST"
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "<?=site_url('Warga/get_warga')?>",
+                "type": "POST",
             },
-            columns: [{
-                    data: 'nomor_urut',
-                    name: 'nomor_urut'
-                },
-                {
-                    data: 'perum',
-                    name: 'perum'
-                },
-                {
-                    data: 'nama',
-                    name: 'nama'
-                },
-                {
-                    data: 'no_rumah',
-                    name: 'no_rumah'
-                },
-                {
-                    data: 'no_hp',
-                    name: 'no_hp'
-                },
-                {
-                    data: 'rt',
-                    name: 'rt'
-                },
-                {
-                    data: 'rw',
-                    name: 'rw'
-                },
-                {
-                    data: 'keterangan',
-                    name: 'keterangan'
-                },
-                {
-                    data: 'aksi',
-                    name: 'aksi',
-                    orderable: false,
-                    searchable: false,
-                    className: 'text-center'
-                },
-            ],
+
             "columnDefs": [{
-                "targets": 0,
-                "className": "text-center",
-            }],
-        });
+                    "targets": [4, 5, 8],
+                    "className": 'text-right'
+                },
+                {
+                    "targets": [1, 2, 3],
+                    "className": 'text-left'
+                },
+                {
+                    "targets": [0, 5, 6],
+                    "className": 'text-center'
+                },
+                {
+                    "targets": [4, 7, 8],
+                    "orderable": false
+                },
+            ]
+        })
     });
 
     function hapusData(id) {

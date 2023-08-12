@@ -55,8 +55,8 @@
                         <div class="card card-tale">
                             <div class="card-body">
                                 <p class="mb-4">Menunggu Konfirmasi</p>
-                                <p class="fs-30 mb-2">4006</p>
-                                <p>10.00% (30 days)</p>
+                                <p class="fs-30 mb-2"><?=$menunggu; ?> Orang</p>
+
                             </div>
                         </div>
                     </div>
@@ -64,8 +64,8 @@
                         <div class="card card-dark-blue">
                             <div class="card-body">
                                 <p class="mb-4">Lunas</p>
-                                <p class="fs-30 mb-2">61344</p>
-                                <p>22.00% (30 days)</p>
+                                <p class="fs-30 mb-2"><?=$lunas; ?> Orang</p>
+
                             </div>
                         </div>
                     </div>
@@ -75,16 +75,16 @@
                         <div class="card card-light-danger">
                             <div class="card-body">
                                 <p class="mb-4">Belum Bayar</p>
-                                <!-- <p class="fs-30 mb-2"><?=$data->belum_bayar; ?></p> -->
+                                <p class="fs-30 mb-2"><?=$b_bayar; ?> Orang</p>
+
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 stretch-card transparent">
                         <div class="card card-light-blue">
                             <div class="card-body">
-                                <p class="mb-4">Number of Clients</p>
-                                <p class="fs-30 mb-2">47033</p>
-                                <p>0.22% (30 days)</p>
+                                <p class="mb-4">Total Warga</p>
+                                <p class="fs-30 mb-2"><?=$jum_warga; ?> Orang</p>
                             </div>
                         </div>
                     </div>

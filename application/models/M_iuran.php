@@ -4,12 +4,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class M_iuran extends CI_Model
 {
 
-    public function get_iuran($id)
+    public function get_iuran($id_rtrw)
     {
         $this->db->select('*, nama_iuran.nama');
         $this->db->from('iuran');
         $this->db->join('nama_iuran', 'nama_iuran.id_iuran = iuran.id_iuran');
-        $this->db->where('id_rtrw', $id);
+        $this->db->where('id_rtrw', $id_rtrw);
         $query = $this->db->get();
         return $query->result();
 

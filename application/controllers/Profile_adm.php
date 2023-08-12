@@ -7,10 +7,13 @@ class Profile_adm extends AUTH_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('M_admin');
+		$this->load->model('M_dashboard');
 	}
 
 	function index() {
 		$data['userdata'] 		= $this->userdata;
+		$id_rtrw = $this->session->userdata('userdata')->id_rtrw;
+		$data['menunggu']       = $this->M_dashboard->jumlah_byr($id_rtrw);
 		$data['content'] 		= "page/profile";
         $this->load->view($this->template, $data);
 	}
@@ -20,7 +23,10 @@ class Profile_adm extends AUTH_Controller {
 		$this->form_validation->set_rules('nama', 'Nama', 'trim');
 
 		$id = $this->userdata->id;
-		$data = $this->input->post('');
+		$data = array(
+			'username' => $this->input->post('username'),
+			'nama' => $this->input->post('nama')
+		);
 		if ($this->form_validation->run() == TRUE) {
 			$config['upload_path'] = './assets/images/user/';
 			$config['allowed_types'] = 'png|jpg';

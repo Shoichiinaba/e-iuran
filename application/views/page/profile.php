@@ -66,11 +66,8 @@ Swal.fire({
                         </div>
                         <div class="border-top mt-2">
                             <div class="row mt-3 mb-0">
-                                <div class=" col-5">
+                                <div class=" col-6">
                                     <h6>Username</h6>
-                                </div>
-                                <div class="col-2">
-                                    <h6>||</h6>
                                 </div>
                                 <div class="col-5">
                                     <h6 class="text-info font-weight-bold"><?php echo $userdata->username; ?></h6>

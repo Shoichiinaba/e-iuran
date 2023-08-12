@@ -13,6 +13,7 @@ class Dashboard extends AUTH_Controller
     {
         parent::__construct();
         $this->load->model('M_client');
+        $this->load->model('M_dashboard');
     }
 
     public function index()
@@ -32,7 +33,10 @@ class Dashboard extends AUTH_Controller
             // LOAD PAGE DASHBOARD ADMIN, RT
             $id = $this->session->userdata('userdata')->id_rtrw;
             $data['userdata']       = $this->userdata;
-            // $data['b_bayar']        = $this->M_dashboard->jumlah_blm();
+            $data['b_bayar']        = $this->M_dashboard->jumlah_blm($id);
+            $data['menunggu']       = $this->M_dashboard->jumlah_app($id);
+            $data['lunas']          = $this->M_dashboard->jumlah_lnas($id);
+            $data['jum_warga']      = $this->M_dashboard->jumlah_warga($id);
             $data['content']        = 'page/dashboard_v';
             $this->load->view($this->template, $data);
         }
@@ -82,7 +86,6 @@ class Dashboard extends AUTH_Controller
                         <table class=" expandable-table dataTable table" style="width: 100%;display: table;overflow: auto;" aria-describedby="data-perum_info">
                             <thead>
                                 <tr>
-
                                     <th class="text-center">No. Rumah</th>
                                     <th class="text-center">Pemilik</th>
                                     <th class="text-center">Tunggakan</th>

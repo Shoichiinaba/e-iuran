@@ -9,14 +9,16 @@ class Data_iuran extends AUTH_Controller
     {
         parent::__construct();
         $this->load->model('M_iuran');
+        $this->load->model('M_dashboard');
 
     }
 
 	public function index()
 	{
+        $id_rtrw = $this->session->userdata('userdata')->id_rtrw;
         $data['userdata'] 		= $this->userdata;
-        $id = $this->session->userdata('userdata')->id_rtrw;
-        $data['iuran']          = $this->M_iuran->get_iuran($id);
+        $data['iuran']          = $this->M_iuran->get_iuran($id_rtrw);
+        $data['menunggu']       = $this->M_dashboard->jumlah_byr($id_rtrw);
         $data['nama']          = $this->M_iuran->get_nama();
         $data['content']        = 'page/iuran_v';
         $this->load->view($this->template, $data);

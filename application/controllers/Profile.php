@@ -19,7 +19,10 @@ class Profile extends AUTH_Controller {
 		$this->form_validation->set_rules('nama', 'Nama', 'trim|required');
 
 		$id = $this->userdata->id_warga;
-		$data = $this->input->post('');
+		$data = array(
+			'no_rumah' => $this->input->post('no_rumah'),
+			'nama' => $this->input->post('nama')
+		);
 		if ($this->form_validation->run() == TRUE) {
 			$config['upload_path'] = './assets/images/user/';
 			$config['allowed_types'] = 'png|jpg';
