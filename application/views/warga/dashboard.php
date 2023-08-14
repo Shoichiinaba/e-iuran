@@ -178,10 +178,6 @@
         -ms-transform: translateY(-20px);
         transform: translateY(-20px);
     }
-
-    .Belumbayar {
-        background: #f2a2a7;
-    }
 </style>
 <div class="main-panel">
     <div class="content-wrapper">
@@ -199,34 +195,39 @@
         <div class="">
             <div class="transparent">
                 <div class="row">
-                    <div class="col-md-6 mb-3 stretch-card transparent">
+                    <div id="btn-tunggakan" class="col-md-6 mb-4 stretch-card transparent">
                         <div class="card card-light-blue">
                             <div class="card-body">
-                                <h3 class=" mb-4 info-tunggakan font-weight-bold">Bulan</h3>
-                                <h5 class="mb-2">Tunggakan</h5>
+                                <p class="mb-2 font-weight-bold">Tunggakan</p>
+                                <p class="fs-30 mb-2 info-total-tagihan"></p>
+                                <p class="info-tunggakan">2 Bulan</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3 stretch-card transparent">
+                    <div id="btn-konf-byr" class="col-md-6 mb-4 stretch-card transparent">
                         <div class="card card-light-danger">
                             <div class="card-body">
-                                <h3 class="mb-4 info-total-tagihan font-weight-bold"></h3>
-                                <h5 class=" mb-2">Total tagihan</h5>
+                                <p class="mb-2 font-weight-bold">Menunggu Pembayaran</p>
+                                <p class="fs-30 mb-2 info-total-konf-byr">Rp.0</p>
+                                <p class="info-konf-byr">0 Bulan</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div id="load-info"></div>
         </div>
-        <div id="inv-content" class=" border-bg-inv mb-3" hidden>
-            <?php foreach ($biodata as $data) : ?>
+        <div id="inv-content" class=" border-bg-inv mb-3">
+            <?php foreach ($biodata as $data) {
+                $nm_perum = $data->nm_perum;
+            ?>
                 <div class="row mx-auto mt-5 mb-4">
                     <div class="col-lg-6 col-md-6 col-12 logo-e">
                         <img src="<?= base_url('assets'); ?>/images/logo_e/logoe.png" class="mr-2" alt="-iuran" style="height: auto;width: 6rem;">
                         <i style="font-size: 36px;font-weight: bold;top: 8px;position: absolute;">iuran</i>
                     </div>
                     <div class="col-lg-6 col-md-6 col-12 pt-2">
-                        <h4 class="text-inv mb-0" style="font-weight: bold;font-family: sans-serif;">INVOICE | <i class="text-danger">BELUM DIBAYAR</i></h4>
+                        <h4 class="text-inv mb-0" style="font-weight: bold;font-family: sans-serif;">STATUS | <i class="text-danger status-inv">BELUM DIBAYAR</i></h4>
                         <p class="text-inv"></p>
                     </div>
                 </div>
@@ -241,9 +242,12 @@
                     <div class="col-lg-6 col-md-6 col-12 mt-3">
                         <h5 class=" text-byr">Dibayarkan ke :</h5>
                         <p class="mb-0 text-byr">Pengelola <?= $data->nm_perum; ?></p>
+                        <p class="mb-0 text-byr">AN. Nama Pemilik REK</p>
+                        <p class="mb-0 text-byr">Rek. #0000xxxxxx</p>
+                        <p class="mb-0 text-byr">Bank BCA</p>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            <?php }; ?>
             <div class="row pl-3 pr-3">
                 <div class="card mt-3">
                     <div class="card-header">
@@ -253,85 +257,12 @@
                         <div class="table-responsive">
                             <div class="table-responsive">
                                 <table class=" expandable-table dataTable table" style="width: 100%;display: table;overflow: auto;" aria-describedby="data-perum_info">
-                                    <tbody>
-                                        <?php
-                                        $no = 0;
-                                        $count_air = 0;
-                                        $count_iuran = 0;
-                                        $jumlah = 0;
-                                        foreach ($tagihan_air as $data) :
-                                            $id_tagihan = $data->id_tagihan;
-                                            $ipl = $data->lain_lain;
-                                            $no++;
-                                            
-                                            $count_air += $data->nominal;
-                                            $count_iuran += $data->lain_lain;
-                                            $jumlah = $data->lain_lain += $data->nominal;
-                                            // $total_tagihan = ;
-                                        ?>
-                                            <tr style="background: #4b49ac;color: white;">
-                                                <td class="">Bulan</td>
-                                                <td class=""><?= $data->bln_tagihan; ?> / <?= $data->thn_tagihan; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="">IPL <?= $ipl; ?></td>
-                                                <td class="">Rp.<?= number_format($ipl, 0, ',', '.'); ?></td>
-                                            </tr>
-                                            <tr class="rinc-<?= $data->id_tagihan; ?>" hidden>
-                                                <td colspan="2" class="text-center" style="background: aquamarine;font-weight: bold;color: cornflowerblue;">Rincian Penggunaan air</td>
-                                            </tr>
-                                            <tr class="rinc-<?= $data->id_tagihan; ?>" hidden>
-                                                <td class="">Awal</td>
-                                                <td class=""><?= $data->kubik1; ?></td>
-                                            </tr>
-                                            <tr class="rinc-<?= $data->id_tagihan; ?>" hidden>
-                                                <td class="">Akhir</td>
-                                                <td class=""><?= $data->kubik_in; ?></td>
-                                            </tr>
-                                            <tr class="rinc-<?= $data->id_tagihan; ?>" hidden>
-                                                <td class="">Pemakaian</td>
-                                                <td class=""><?= $data->hasil_kubik; ?></td>
-                                            </tr>
-                                            <tr class="rinc-<?= $data->id_tagihan; ?>" hidden>
-                                                <td class="">Tarif</td>
-                                                <td class="">Rp.<?= number_format($data->perkubik, 0, ',', '.'); ?></td>
-                                            </tr>
-                                            <tr class="rinc-<?= $data->id_tagihan; ?>" hidden>
-                                                <td class="">Abunamen</td>
-                                                <td class="">Rp.<?= number_format($data->abunament, 0, ',', '.'); ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="">Bayar air</td>
-                                                <td class="">Rp.<?= number_format($data->nominal, 0, ',', '.'); ?> | <a href="javascript:void(0)" type="button" class="lihat-rinc" data-id-tagihan="<?= $data->id_tagihan; ?>">Lihat Rincian</a></td>
-                                            </tr>
-                                            <tr>
-                                                <?php
-                                                ?>
-                                                <td class="">Jumlah</td>
-                                                <td class="">
-                                                    <div class=" form-check form-check-success m-0">
-                                                        <label class="form-check-label">
-                                                            <input type="checkbox" class="form-check-input cheklis-bayar" data-jumlah="<?= $jumlah; ?>" value="<?= $data->id_tagihan; ?>">
-                                                            Rp.<?= number_format($jumlah, 0, ',', '.'); ?> |
-                                                            <i class=" input-helper" style="color: #0090ff;cursor: pointer;"> Cheklis untuk bayar</i>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <?php
-                                        endforeach
-                                        ?>
-                                        <tr style="background: aliceblue; font-weight: bold;">
-                                            <td>Total bulan dibayar</td>
-                                            <td class="total-bulan">0 Bulan</td>
-                                        </tr>
-                                        <tr style="background:#2196f345; font-weight: bold;">
-                                            <td>Total bayar</td>
-                                            <td class="total-tagihan">Rp.0</td>
-                                        </tr>
+                                    <tbody id="load-data">
+
                                     </tbody>
                                 </table>
                             </div>
+                            <input type="text" id="code-tagihan" value="" hidden>
                             <input type="text" id="id-tagihan" value="" hidden>
                             <input type="text" id="subtotal" value="0" hidden>
                         </div>
@@ -339,8 +270,11 @@
                 </div>
             </div>
             <div class="row pl-3 pr-3">
+                <div id="col-btn-byr" class="col" hidden>
+                    <button type="submit" class="btn btn-danger float-right col-12 btn-batal-byr">Batalkan pembayaran</button>
+                </div>
                 <div class="col">
-                    <button type="submit" class="btn btn-primary float-right btn-bayar" data-bs-toggle="modal" data-bs-target="#modal-bayar">Bayar</button>
+                    <button type="submit" class="btn btn-primary float-right btn-bayar col-12" data-bs-toggle="modal" data-bs-target="#modal-bayar">Buat pembayaran</button>
                 </div>
             </div>
             <!-- <div class="row pl-3 pr-3">
@@ -354,19 +288,7 @@
             </div> -->
         </div>
         <!-- <div class="row"> -->
-        <div class="card p-3 pb-3">
-            <ul class="pl-0 mb-0" style="display: flex;list-style: none;">
-                <li class="mr-2">
-                    <button type="submit" class="btn btn-primary btn-md btn-riwayat-anda">Riwayat transaksi anda</button>
-                </li>
-                <li>
-                    <button type="submit" class="btn btn-light btn-md btn-riwayat-warga">Riwayat transaksi warga</button>
-                </li>
-            </ul>
-            <!-- <div class="card-body"> -->
-            <div id="load-data-riwayat"></div>
-            <!-- </div> -->
-        </div>
+
         <!-- </div> -->
     </div>
     <div class="modal fade" id="modal-bayar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -401,6 +323,15 @@
                         </div>
                     </div>
                     <div class="row mt-3">
+                        <div class="col">
+                            <h5 class="pl-2">Dibayarkan ke :</h5>
+                            <p class="mb-0 pl-2">Pengelola <?= $nm_perum; ?></p>
+                            <p class="mb-0 pl-2">AN. Nama Pemilik REK</p>
+                            <p class="mb-0 pl-2">Rek. #0000xxxxxx</p>
+                            <p class="mb-0 pl-2">Bank BCA</p>
+                        </div>
+                    </div>
+                    <div class="row mt-3 upload-bukti">
                         <div class="input-group col-xs-12">
                             <input type="file" id="file-upload" hidden>
                             <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload bukti bayar">
@@ -410,7 +341,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row ">
                     <!-- <div class="col"> -->
                     <center>
                         <img id="preview-bukti" src="" class="img-fluid" style="max-width: 50%;">
@@ -419,7 +350,7 @@
                 </div>
                 <hr>
                 <div class="row pl-3 pr-3 mb-3">
-                    <button type="button" id="btn-kirim" class="btn btn-success col-12 btn-bayar" data-dismiss="modal">Kirim</button>
+                    <button type="button" id="btn-kirim" class="btn btn-success col-12" data-dismiss="modal" value="buat">Submit</button>
                 </div>
             </div>
         </div>
@@ -429,130 +360,224 @@
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
         $(document).ready(function() {
+            load_info();
             $('.btn-bayar').click(function() {
                 var total_tagihan = $('.total-tagihan').text();
                 var total_bulan = $('.total-bulan').text();
                 $('#tagihan-val').val(total_tagihan);
                 $('#bulan-val').val(total_bulan);
             });
-            $('.info-tunggakan').text('<?= $no; ?> Bulan');
-            $('.info-total-tagihan').text('Rp.<?= number_format($count_iuran += $count_air, 0, ',', '.'); ?>');
 
-            if ('<?= $no; ?>' == '0') {
-                $('#inv-content').attr('hidden', true);
-            } else {
-                $('#inv-content').removeAttr('hidden', true);
-            }
-        });
-        $('.lihat-rinc').click(function() {
-            // alert($(this).text())
-            if ($(this).text() == 'Lihat Rincian') {
-                $('.rinc-' + $(this).data('id-tagihan')).removeAttr('hidden', true)
-                    .addClass('open-' + $(this).data('id-tagihan'))
-                    .removeClass('rinc-' + $(this).data('id-tagihan'), true);
-                $(this).text('Tutup rincian').addClass('text-danger');
-            } else {
-                $('.open-' + $(this).data('id-tagihan')).attr('hidden', true)
-                    .removeClass('open-' + $(this).data('id-tagihan'))
-                    .addClass('rinc-' + $(this).data('id-tagihan'), true);
-                $(this).text('Lihat Rincian').removeClass('text-danger');
-            }
-        });
-        $('.form-check-input').click(function() {
-            if ($(this).is(":checked")) {
-                total = parseInt($('#subtotal').val()) + parseInt($(this).data('jumlah'));
-            } else {
-                total = parseInt($('#subtotal').val()) - parseInt($(this).data('jumlah'));
-            }
-            $('.total-bulan').text($(":checkbox:checked").length + ' Bulan')
-            $('#subtotal').val(total)
-            $('.total-tagihan').text('Rp. ' + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
-            $('#id-tagihan').val($('.form-check-input:checked').val())
-            var checkboxes = $('.form-check-input');
-            var result = "";
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    result += checkboxes[i].value + ",";
+            $(document).on("click", "#btn-upload", function() {
+                var file = $(this).parents().find("#file-upload");
+                file.trigger("click");
+            });
+            $('#file-upload').change(function(e) {
+                var fileName = e.target.files[0].name;
+                $(".file-upload-info").val(fileName);
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    // get loaded data and render thumbnail.
+                    document.getElementById("preview-bukti").src = e.target.result;
+
+                };
+                // read the image file as a data URL.
+                reader.readAsDataURL(this.files[0]);
+            });
+
+            $('#btn-kirim').click(function() {
+                // alert($(this).val());
+                if ($(this).val() == 'buat') {
+                    let formData = new FormData();
+                    formData.append('id-tagihan', $('#id-tagihan').val());
+                    formData.append('tgl-upload', $('#tgl-upload').val());
+                    formData.append('tagihan', $('#tagihan-val').val());
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "<?php echo site_url('Dashboard/buat_pembayaran'); ?>",
+                        data: formData,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: function(data) {
+                            // alert(data);
+                            load_info();
+                            // konf_byr();
+                            $('#modal-bayar').modal('hide');
+                        },
+                        error: function() {
+                            $('#btn-tunggakan').trigger('click');
+                            alert("Data Gagal Diupload");
+                        }
+                    });
+                } else if ($(this).val() == 'konfirmasi') {
+                    const foto_bukti = $('#file-upload').prop('files')[0];
+                    let formData = new FormData();
+                    formData.append('code-tagihan', $('#code-tagihan').val());
+                    formData.append('foto-bukti', foto_bukti);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "<?php echo site_url('Dashboard/upload_bukti'); ?>",
+                        data: formData,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: function(data) {
+                            // alert(data);
+                            load_info();
+                            // tunggakan();
+                            $('#modal-bayar').modal('hide');
+                        },
+                        error: function() {
+                            alert("Data Gagal Diupload");
+                        }
+                    });
+
                 }
+            });
+
+            
+        });
+        
+        $('.upload-bukti').hide();
+        $('#btn-tunggakan').click(function() {
+            tunggakan();
+        });
+        $('#btn-konf-byr').click(function() {
+            if ($('.info-konf-byr').text() == '0 Bulan') {
+                // alert('yaa')
+            } else {
+                konf_byr();
             }
-            $('#id-tagihan').val(result)
-            // document.write("<p> You have selected : " +
-            //     result + "</p>");
+
         });
 
-        $(document).on("click", "#btn-upload", function() {
-            var file = $(this).parents().find("#file-upload");
-            file.trigger("click");
+        $('.btn-batal-byr').click(function() {
+            var el = this;
+            var confirmalert = confirm("Are you sure?");
+            if (confirmalert == true) {
+
+                let formData = new FormData();
+                formData.append('code-tagihan', $('#code-tagihan').val());
+                $.ajax({
+                    type: 'POST',
+                    url: "<?php echo site_url('Dashboard/batal_byr'); ?>",
+                    data: formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        // alert(data);
+                        load_info();
+                        // tunggakan();
+                        // $('#inv-content').attr('hidden', true);
+                        // $('.btn-riwayat-anda').trigger('click')
+                    },
+                    error: function() {
+                        alert("Data Gagal Diupload");
+                    }
+                });
+            }
         });
-        $('#file-upload').change(function(e) {
-            var fileName = e.target.files[0].name;
-            $(".file-upload-info").val(fileName);
 
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                // get loaded data and render thumbnail.
-                document.getElementById("preview-bukti").src = e.target.result;
 
-            };
-            // read the image file as a data URL.
-            reader.readAsDataURL(this.files[0]);
-        });
+        function tunggakan() {
 
-        $('#btn-kirim').click(function() {
-            const foto_bukti = $('#file-upload').prop('files')[0];
+            var action = 'tunggakan'
+            var status = '0';
+            $('#col-btn-byr').attr('hidden', true);
+            $('.upload-bukti').hide();
+            $('.status-inv').text('BELUM BAYAR');
+            $('.btn-bayar').text('Buat pembayaran').removeClass('btn-warning').addClass('btn-primary');
+            $('#btn-kirim').val('buat')
+            $('#code-tagihan').val('')
+            load_data(action, status);
+        };
+
+        function konf_byr() {
+            var action = 'konf-byr';
+            var status = '3';
+            $('#col-btn-byr').removeAttr('hidden', true);
+            $('.upload-bukti').show();
+            $('.status-inv').text('MENUNGGU PEMBAYARAN');
+            $('.btn-bayar').text('Konfirmasi pembayaran').removeClass('btn-primary').addClass('btn-warning')
+            $('#btn-kirim').val('konfirmasi')
+            load_data(action, status);
+
+        }
+
+        function load_data(action, status) {
             let formData = new FormData();
-            formData.append('id-tagihan', $('#id-tagihan').val());
-            formData.append('tgl-upload', $('#tgl-upload').val());
-            formData.append('tagihan', $('#tagihan-val').val());
-            formData.append('foto-bukti', foto_bukti);
+            formData.append('action', action);
+            formData.append('status', status);
             $.ajax({
                 type: 'POST',
-                url: "<?php echo site_url('Dashboard/upload_bukti'); ?>",
+                url: "<?php echo site_url('Dashboard/get_data_blm_bayar'); ?>",
                 data: formData,
                 cache: false,
                 processData: false,
                 contentType: false,
                 success: function(data) {
-                    alert(data);
-                    $('#modal-bayar').modal('hide');
-                    // $('#inv-content').attr('hidden', true);
-                    $('.btn-riwayat-anda').trigger('click')
+                    // alert(data);
+                    $('#load-data').html(data);
+                    $('.lihat-rinc').click(function() {
+                        // alert($(this).text())
+                        if ($(this).text() == 'Lihat Rincian') {
+                            $('.rinc-' + $(this).data('id-tagihan')).removeAttr('hidden', true)
+                                .addClass('open-' + $(this).data('id-tagihan'))
+                                .removeClass('rinc-' + $(this).data('id-tagihan'), true);
+                            $(this).text('Tutup rincian').addClass('text-danger');
+                        } else {
+                            $('.open-' + $(this).data('id-tagihan')).attr('hidden', true)
+                                .removeClass('open-' + $(this).data('id-tagihan'))
+                                .addClass('rinc-' + $(this).data('id-tagihan'), true);
+                            $(this).text('Lihat Rincian').removeClass('text-danger');
+                        }
+                    });
+                    $('#subtotal').val('0')
+                    $('#id-tagihan').val('')
+                    $('.form-check-input').click(function() {
+                        if ($(this).is(":checked")) {
+                            total = parseInt($('#subtotal').val()) + parseInt($(this).data('jumlah'));
+                        } else {
+                            total = parseInt($('#subtotal').val()) - parseInt($(this).data('jumlah'));
+                        }
+                        $('.total-bulan').text($(":checkbox:checked").length + ' Bulan')
+                        $('#subtotal').val(total)
+                        $('.total-tagihan').text('Rp. ' + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
+                        $('#id-tagihan').val($('.form-check-input:checked').val())
+                        var checkboxes = $('.form-check-input');
+                        var result = "";
+                        for (var i = 0; i < checkboxes.length; i++) {
+                            if (checkboxes[i].checked) {
+                                result += checkboxes[i].value + ",";
+                            }
+                        }
+                        $('#id-tagihan').val(result)
+                        // document.write("<p> You have selected : " +
+                        //     result + "</p>");
+                    });
                 },
                 error: function() {
                     alert("Data Gagal Diupload");
                 }
             });
-        });
-        $('.btn-riwayat-anda').click(function() {
-            $('.btn-riwayat-anda').addClass('btn-primary').removeClass('btn-light')
-            $('.btn-riwayat-warga').addClass('btn-light').removeClass('btn-primary')
-            var action = 'anda';
-            get_data_riwayat(action);
-        });
-        $('.btn-riwayat-warga').click(function() {
-            $('.btn-riwayat-warga').addClass('btn-primary').removeClass('btn-light')
-            $('.btn-riwayat-anda').addClass('btn-light').removeClass('btn-primary')
-            var action = 'warga';
-            get_data_riwayat(action);
-        });
-        var action = 'anda';
-        get_data_riwayat(action)
+        }
 
-        function get_data_riwayat(action) {
-            // alert(action);
-            let formData = new FormData();
-            formData.append('action', action);
-
+        function load_info() {
             $.ajax({
-                type: 'POST',
-                url: "<?php echo site_url('Dashboard/get_data_riwayat'); ?>",
-                data: formData,
+                // type: 'POST',
+                url: "<?php echo site_url('Dashboard/info'); ?>",
+                // data: formData,
                 cache: false,
                 processData: false,
                 contentType: false,
                 success: function(data) {
-                    $('#load-data-riwayat').html(data);
-
+                    // alert(data);
+                    $('#load-info').html(data);
                 },
                 error: function() {
                     alert("Data Gagal Diupload");

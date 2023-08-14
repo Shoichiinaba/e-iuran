@@ -1,6 +1,6 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" href="<?php echo site_url('Dashboard'); ?> ">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
@@ -77,6 +77,12 @@
                 <a class="nav-link" href="<?php echo site_url('User_profil'); ?> ">
                     <i class="icon-grid menu-icon"></i>
                     <span class="menu-title">Profil saya</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo site_url('Riwayat_transaksi'); ?> ">
+                    <i class="icon-grid menu-icon"></i>
+                    <span class="menu-title">Riwayat transaksi</span>
                 </a>
             </li>
         <?php endif; ?>

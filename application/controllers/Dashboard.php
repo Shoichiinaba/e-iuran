@@ -9,6 +9,7 @@ class Dashboard extends AUTH_Controller
     public $session;
     public $input;
     public $upload;
+    public $db;
     public function __construct()
     {
         parent::__construct();
@@ -20,9 +21,10 @@ class Dashboard extends AUTH_Controller
         $role = $this->session->userdata('userdata')->role;
         if ($role == 'Warga') {
             // LOAD PAGE DASHBOARD WARGA
+            $status = '0';
             $id_warga = $this->session->userdata('userdata')->id_warga;
             // $data['group_by_bln']          = $this->M_client->m_group_by_bln($id_warga);
-            $data['tagihan_air']          = $this->M_client->m_tagihan_air($id_warga);
+            $data['tagihan_air']          = $this->M_client->m_tagihan_air($id_warga, $status);
             $data['biodata']          = $this->M_client->m_biodata($id_warga);
             $data['userdata']         = $this->userdata;
             $data['content']        = 'warga/dashboard';
@@ -34,140 +36,212 @@ class Dashboard extends AUTH_Controller
             $this->load->view($this->template, $data);
         }
     }
-    // function Warga
-    function upload_bukti()
+    function info()
     {
+        $total = '0';
+        $id_warga = $this->session->userdata('userdata')->id_warga;
+        $data['info_tunggakan']          = $this->M_client->m_info_tunggakan($id_warga);
+        $data['info_konf_byr']          = $this->M_client->m_info_konf_byr($id_warga);
+        foreach ($data['info_tunggakan'] as $row) {
+            echo '<script>
+            $(".info-tunggakan").text("' . $row->bulan . ' Bulan");
+            $(".info-total-tagihan").text("Rp. ' . number_format($row->total, 0, ",", ".") . '");
+            </script>';
+        }
+        // if ($data['info_konf_byr']->num_rows() > 0) {
+
+        foreach ($data['info_konf_byr'] as $row) {
+            echo '<script>
+            $(".info-konf-byr").text("' . $row->bulan . ' Bulan");
+            $(".info-total-konf-byr").text("Rp. ' . number_format($row->total, 0, ",", ".") . '");
+            if( $(".info-konf-byr").text() =="0 Bulan"){
+                tunggakan();
+            }else{
+                konf_byr();
+            }
+            </script>';
+        }
+        // }
+        echo '<script>
+        // if(' . $total . ' == "0"){
+        //     tunggakan();
+        // }else{
+        //     konf_byr();
+        // }
+        </script>';
+    }
+    function get_data_blm_bayar()
+    {
+
+        $action = $this->input->post('action');
+        $status = $this->input->post('status');
+        $id_warga = $this->session->userdata('userdata')->id_warga;
+        $data['tagihan_air']          = $this->M_client->m_tagihan_air($id_warga, $status);
+        $no = 0;
+        $count_air = 0;
+        $count_iuran = 0;
+        $jumlah = 0;
+        // echo $code_tagihan;
+        // echo $action;
+        foreach ($data['tagihan_air'] as $row) {
+            $id_tagihan = $row->id_tagihan;
+            $ipl = $row->lain_lain;
+            $no++;
+
+            $count_air += $row->nominal;
+            $count_iuran += $row->lain_lain;
+            $jumlah = $row->lain_lain += $row->nominal;
+            // $total_tagihan = ;
+            echo '<tr style="background: #4b49ac;color: white;">';
+            echo '    <td class="">Bulan</td>';
+            echo '    <td class="">' . $row->bln_tagihan . ' / ' . $row->thn_tagihan . '</td>';
+            echo '</tr>';
+            echo '<tr>';
+            echo '    <td class="">IPL</td>';
+            echo '    <td class="">Rp.' . number_format($ipl, 0, ',', '.') . '</td>';
+            echo '</tr>';
+            echo '<tr class="rinc-' . $row->id_tagihan . '" hidden>';
+            echo '    <td colspan="2" class="text-center" style="background: aquamarine;font-weight: bold;color: cornflowerblue;">Rincian Penggunaan air</td>';
+            echo '</tr>';
+            echo '<tr class="rinc-' . $row->id_tagihan . '" hidden>';
+            echo '    <td class="">Awal</td>';
+            echo '    <td class="">' . $row->kubik1 . '</td>';
+            echo '</tr>';
+            echo '<tr class="rinc-' . $row->id_tagihan . '" hidden>';
+            echo '    <td class="">Akhir</td>';
+            echo '    <td class="">' . $row->kubik_in . '</td>';
+            echo '</tr>';
+            echo '<tr class="rinc-' . $row->id_tagihan . '" hidden>';
+            echo '    <td class="">Pemakaian</td>';
+            echo '    <td class="">' . $row->hasil_kubik . '</td>';
+            echo '</tr>';
+            echo '<tr class="rinc-' . $row->id_tagihan . '" hidden>';
+            echo '    <td class="">Tarif</td>';
+            echo '    <td class="">Rp.' . number_format($row->perkubik, 0, ',', '.') . '</td>';
+            echo '</tr>';
+            echo '<tr class="rinc-' . $row->id_tagihan . '" hidden>';
+            echo '    <td class="">Abunamen</td>';
+            echo '    <td class="">Rp.' . number_format($row->abunament, 0, ',', '.') . '</td>';
+            echo '</tr>';
+            echo '<tr>';
+            echo '    <td class="">Bayar air</td>';
+            echo '    <td class="">Rp.' . number_format($row->nominal, 0, ',', '.') . ' | <a href="javascript:void(0)" type="button" class="lihat-rinc" data-id-tagihan="' . $row->id_tagihan . '">Lihat Rincian</a></td>';
+            echo '</tr>';
+            if ($action == 'tunggakan') {
+                echo '<tr>';
+                echo '    <td class="">Jumlah</td>';
+                echo '    <td class="">';
+                echo '        <div class=" form-check form-check-success m-0">';
+                echo '            <label class="form-check-label">';
+                echo '                <input type="checkbox" class="form-check-input cheklis-bayar" data-jumlah="' . $jumlah . '" value="' . $row->id_tagihan . '">';
+                echo '                Rp.' . number_format($jumlah, 0, ',', '.') . ' |';
+                echo '                <i class=" input-helper" style="color: #0090ff;cursor: pointer;"> Cheklis untuk bayar</i>';
+                echo '            </label>';
+                echo '        </div>';
+                echo '    </td>';
+                echo '</tr>';
+            } elseif ($action == 'konf-byr') {
+                echo '<tr>';
+                echo '    <td class="">Jumlah</td>';
+                echo '    <td class="">';
+                echo '        <div class=" form-check form-check-success m-0">';
+                echo '            <label class="form-check-label">';
+                echo '                <input type="checkbox" class="form-check-input cheklis-bayar" data-jumlah="' . $jumlah . '" value="' . $row->id_tagihan . '">';
+                echo '                Rp.' . number_format($jumlah, 0, ',', '.') . '';
+                echo '                <i class=" input-helper" style="color: #0090ff;cursor: pointer;"></i>';
+                echo '            </label>';
+                echo '        </div>';
+                echo '    </td>';
+                echo '</tr>';
+            }
+        };
+        if ($action == 'tunggakan') {
+            $total_bulan = '0';
+            $total_tagihan = '0';
+        } elseif ($action == 'konf-byr') {
+            $total_bulan = $no;
+            $total_tagihan = number_format($count_iuran += $count_air, 0, ',', '.');
+            echo '<script>';
+            echo '$("#code-tagihan").val("' . $row->code_tagihan . '");';
+            echo '$(".cheklis-bayar").prop("checked", true).attr("disabled", true).text("aaa");';
+            echo '</script>';
+        }
+        echo '<tr style="background: aliceblue; font-weight: bold;">';
+        echo '    <td>Total bulan dibayar</td>';
+        echo '    <td class="total-bulan">' . $total_bulan . ' Bulan</td>';
+        echo '</tr>';
+        echo '<tr style="background:#2196f345; font-weight: bold;">';
+        echo '    <td>Total bayar</td>';
+        echo '    <td class="total-tagihan">Rp.' . $total_tagihan . '</td>';
+        echo '</tr>';
+    }
+    function buat_pembayaran()
+    {
+        $this->db->select("RIGHT(transaksi.code_tagihan, 4) as kode", FALSE);
+        $this->db->order_by('code_tagihan', 'DESC');
+        $this->db->limit(1);
+
+        $query_ = $this->db->get('transaksi');
+        if ($query_->num_rows() <> 0) {
+            $data_ = $query_->row();
+            $kode_ = intval($data_->kode) + 1;
+        } else {
+            $kode_ = 1;
+        }
         $id_warga = $this->session->userdata('userdata')->id_warga;
         $id_rtrw = $this->session->userdata('userdata')->id_rtrw;
         $tgl_upload = $this->input->post('tgl-upload');
-        // $foto_bukti = $this->input->post('foto-bukti');
-        $code_tagihan = 'CT-' . $id_rtrw . $id_warga . date("dmy");
-        // $arr_id = $this->input->post('id-tagihan');
-        // $arr_id = $this->input->post('tagihan');
+        $tagihan = $this->input->post('tagihan');
+        $status = '3';
+        $tahun = date("y");
+        $bulan = date("m");
         $id_tagihan = $this->input->post('id-tagihan');
+        $kode_max_ = str_pad($kode_, 4, "0", STR_PAD_LEFT);
+        $code_tagihan = "CT" . '-' . $id_rtrw . $bulan . $tahun . '-' . $kode_max_;
+
+        $data = [
+            'id_rtrw' => $id_rtrw,
+            'id_warga' => $id_warga,
+            'tgl_upload' => $tgl_upload,
+            'code_tagihan' => $code_tagihan,
+            'foto_bukti' => '',
+            'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),
+        ];
+        $this->M_client->m_upload_transaksi($data);
+        $this->M_client->m_update_tagihan($code_tagihan, $status, $id_tagihan);
+
+        // return $no_invoice;
+    }
+    function batal_byr()
+    {
+        $id_warga = $this->session->userdata('userdata')->id_warga;
+        $code_tagihan = $this->input->post('code-tagihan');
+        $status = '0';
+        $this->M_client->m_delete_transaksi($code_tagihan);
+        $this->M_client->m_update_tagihan_batal_pembayaran($code_tagihan, $status);
+    }
+    // function Warga
+    function upload_bukti()
+    {
+        $code_tagihan = $this->input->post('code-tagihan');
+        $status = '1';
         $config['upload_path'] = "./upload/";
         $config['allowed_types'] = 'gif|jpg|png';
         $config['encrypt_name'] = TRUE;
 
         $this->load->library('upload', $config);
-        $this->M_client->m_update_tagihan($code_tagihan, $id_tagihan);
-        // echo $id_tagihan;
 
-        // if ($this->upload->do_upload("foto-bukti")) {
-        //     $data = array('upload_data' => $this->upload->data());
-        //     $foto_bukti = $data['upload_data']['file_name'];
-        //     $uploadedImage = $this->upload->data();
-        //     // echo $header_foto;
-        //     $data = [
-        //         'id_rtrw' => $id_rtrw,
-        //         'id_warga' => $id_warga,
-        //         'tgl_upload' => $tgl_upload,
-        //         'code_tagihan' => $code_tagihan,
-        //         'foto_bukti' => $foto_bukti,
-        //         'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),
-        //     ];
-        //     $this->M_client->m_upload_bukti($data);
-        // }
-        // exit;
-    }
-    function get_data_riwayat()
-    {
-        $table_anda = '<div class="table-responsive">
-                            <table class=" expandable-table dataTable table" style="width: 100%;display: table;overflow: auto;" aria-describedby="data-perum_info">
-                                <thead>
-                                    <tr>
-                                        <th rowspan="2" class="text-center pb-4">Bulan</th>
-                                        <th colspan="2" class="text-center">Angka Pada Meter</th>
-                                        <th rowspan="2" class="text-center pb-4">Pemaikaian</th>
-                                        <th rowspan="2" class="text-center pb-4">Tarif</th>
-                                        <th rowspan="2" class="text-center pb-4">Abunemen</th>
-                                        <th rowspan="2" class="text-center pb-4">Priode</th>
-                                        <th rowspan="2" class="text-center pb-4">Jumlah</th>
-                                        <th rowspan="2" class="text-center pb-4">Iuran</th>
-                                        <th rowspan="2" class="text-center pb-4">Total bayar</th>
-                                        <th rowspan="2" class="text-center pb-4">Status</th>
-                                        <th rowspan="2" class="text-center pb-4">Aksi</th>
-                                    </tr>
-                                    <tr>
-                                        <center>
-                                            <th class="text-center">Awal</th>
-                                            <th class="text-center">Akhir</th>
-                                        </center>
-                                    </tr>
-                                </thead>';
+        if ($this->upload->do_upload("foto-bukti")) {
+            $data = array('upload_data' => $this->upload->data());
+            $foto_bukti = $data['upload_data']['file_name'];
+            $uploadedImage = $this->upload->data();
+            // echo $header_foto;
 
-        $table_warga = '<div class="table-responsive">
-                        <table class=" expandable-table dataTable table" style="width: 100%;display: table;overflow: auto;" aria-describedby="data-perum_info">
-                            <thead>
-                                <tr>
-                                
-                                    <th class="text-center">No. Rumah</th>
-                                    <th class="text-center">Pemilik</th>
-                                    <th class="text-center">Tunggakan</th>
-                                    <th class="text-center">Status</th>
-                                </tr>
-                            </thead>';
-        $table_end = '</table>
-                </div>';
-        $action = $this->input->post('action');
-        if ($action == 'anda') {
-            echo $table_anda;
-            echo '<tbody>';
-            $id_warga = $this->session->userdata('userdata')->id_warga;
-            $data['riwayat_anda']          = $this->M_client->m_riwayat_anda($id_warga);
-            foreach ($data['riwayat_anda'] as $riwayat) {
-                echo '<tr>';
-                echo '<td>' . $riwayat->bln_tagihan . ' / ' . $riwayat->thn_tagihan . '</td>';
-                echo '<td>' . $riwayat->kubik1 . '</td>';
-                echo '<td>' . $riwayat->kubik_in . '</td>';
-                echo '<td>' . $riwayat->hasil_kubik . '</td>';
-                echo '<td>Rp' . number_format($riwayat->perkubik, 0, ',', '.') . '</td>';
-                echo '<td>Rp' . number_format($riwayat->abunament, 0, ',', '.') . '</td>';
-                echo '<td>1 Bulan</td>';
-                echo '<td>Rp' . number_format($riwayat->nominal, 0, ',', '.') . '</td>';
-                echo '<td>Rp' . number_format($riwayat->lain_lain, 0, ',', '.') . '</td>';
-                echo '<td>Rp' . number_format($riwayat->lain_lain += $riwayat->nominal, 0, ',', '.') . '</td>';
-                if ($riwayat->status == '0') {
-                    echo '<td class="font-weight-bold"><i>Belum Bayar</i></td>';
-                    echo '<td><button type="button" class="btn btn-primary btn-bayar btn-sm" data-bs-toggle="modal" data-bs-target="#modal-bayar">Bayar</button></td>';
-                } elseif ($riwayat->status == '1') {
-                    echo '<td class="font-weight-bold"><i>Menunggu konfirmasi</i></td>';
-                } elseif ($riwayat->status == '1') {
-                    echo '<td class="font-weight-bold">Lunas</td>';
-                    echo '<td><button type="button" class="btn btn-primary btn-bayar btn-sm" data-bs-toggle="modal" data-bs-target="#modal-bayar">Print</button></td>';
-                }
-                echo '</tr>';
-            }
-            echo '</tbody>';
-            echo $table_end;
-        } elseif ($action == 'warga') {
-            echo $table_warga;
-            echo '<tbody>';
-            $id_warga = $this->session->userdata('userdata')->id_warga;
-            $data['riwayat_warga']          = $this->M_client->m_riwayat_warga($id_warga);
-            foreach ($data['riwayat_warga'] as $riwayat) {
-                echo '<tr id="tr-' . $riwayat->id_warga . '" class="">';
-                echo '<td>' . $riwayat->no_rumah . '</td>';
-                echo '<td class="text-center">' . $riwayat->nama . '</td>';
-                $id = $riwayat->id_warga;
-                $data['unpaid']          = $this->M_client->m_unpaid($id);
-                foreach ($data['unpaid'] as $row) {
-                    echo '<td class="text-center">' . $row->total . ' Bulan</td>';
-                    if ($row->total <= '0') {
-                        echo '<td class="text-center"><i>Lunas</i></td>';
-                    } else {
-                        echo '<td class="text-center"><i>Belum bayar</i></td>';
-                        echo '<script>';
-                        echo '$("#tr-' . $row->id_warga . '").addClass("Belumbayar", true)';
-                        echo '</script>';
-                    }
-                }
-                echo '</tr>';
-            }
-            echo '</tbody>';
-
-            echo $table_end;
+            $this->M_client->m_update_transaksi($code_tagihan, $foto_bukti);
+            $this->M_client->m_update_tagihan_pembayaran($code_tagihan, $status);
         }
+        exit;
     }
+
     // END function Warga
 }
