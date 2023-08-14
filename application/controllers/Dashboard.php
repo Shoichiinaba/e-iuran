@@ -6,6 +6,7 @@ class Dashboard extends AUTH_Controller
     var $template = 'templates/index';
     public $userdata;
     public $M_client;
+    public $M_dashboard;
     public $session;
     public $input;
     public $upload;
@@ -14,11 +15,13 @@ class Dashboard extends AUTH_Controller
     {
         parent::__construct();
         $this->load->model('M_client');
+        $this->load->model('M_dashboard');
     }
 
     public function index()
     {
         $role = $this->session->userdata('userdata')->role;
+
         if ($role == 'Warga') {
             // LOAD PAGE DASHBOARD WARGA
             $status = '0';
@@ -31,7 +34,12 @@ class Dashboard extends AUTH_Controller
             $this->load->view($this->template, $data);
         } else {
             // LOAD PAGE DASHBOARD ADMIN, RT
-            $data['userdata']         = $this->userdata;
+            $id = $this->session->userdata('userdata')->id_rtrw;
+            $data['userdata']       = $this->userdata;
+            $data['b_bayar']        = $this->M_dashboard->jumlah_blm($id);
+            $data['menunggu']       = $this->M_dashboard->jumlah_app($id);
+            $data['lunas']          = $this->M_dashboard->jumlah_lnas($id);
+            $data['jum_warga']      = $this->M_dashboard->jumlah_warga($id);
             $data['content']        = 'page/dashboard_v';
             $this->load->view($this->template, $data);
         }

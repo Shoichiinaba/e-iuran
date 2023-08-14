@@ -10,78 +10,59 @@ class Warga extends AUTH_Controller
         parent::__construct();
         $this->load->model('M_warga');
         $this->load->model('M_perumahan');
+        $this->load->model('M_dashboard');
 
     }
 
 	public function index()
 	{
         $id = $this->session->userdata('userdata')->id_perum;
+        $id_rtrw = $this->session->userdata('userdata')->id_rtrw;
         $data['userdata'] 		= $this->userdata;
         $data['perum']          = $this->M_perumahan->get_perum();
+        $data['menunggu']       = $this->M_dashboard->jumlah_byr($id_rtrw);
         $data['rtrw']          = $this->M_perumahan->get_rtrw();
         $data['warga']          = $this->M_warga->get_warga();
         $data['content']        = 'page/warga_v';
         $this->load->view($this->template, $data);
     }
 
-    public function get_warga()
-    {
-        $columns = array(
-            'id_warga',
-            'nama',
-            'perum',
-            'no_rumah',
-            'no_hp',
-            'keterangan',
-            'rt',
-            'rw',
-            ''
-        );
-
+    function get_warga() {
         $id = $this->session->userdata('userdata')->id_rtrw;
         $role = $this->session->userdata('userdata')->role;
-        $limit = $this->input->post('length');
-        $offset = $this->input->post('start');
-        $order = $this->input->post('order');
-        $order_column = isset($order[0]['column']) ? $columns[$order[0]['column']] : '';
-        $order_dir = isset($order[0]['dir']) ? $order[0]['dir'] : '';
 
-        $total_records = $this->M_warga->get_total_warga($id, $role);
-        $filtered_records = $this->M_warga->get_filtered_warga($limit, $offset, $order_column, $order_dir, $id, $role);
-
-
+        $list = $this->M_warga->get_datatables($id, $role);
         $data = array();
-        $starting_number = isset($_POST['start']) ? $_POST['start'] : 0; // Mengambil nomor urut awal berdasarkan halaman saat ini
-        $nomor_urut = $starting_number + 1;
-        foreach ($filtered_records as $wargas) {
-            $data[] = array(
-                'nomor_urut' => $nomor_urut,
-                'id_warga' =>$wargas->id_warga,
-                'perum' =>'<td class="font-weight-medium"><div class="badge badge-primary">'.$wargas->perum.'</div></td>',
-                'nama' => $wargas->nama,
-                'no_rumah' =>'<td class="font-weight-medium"><div class="badge badge-info">'.$wargas->no_rumah.'</div></td>',
-                'no_hp' => $wargas->no_hp,
-                'rt' => $wargas->rt,
-                'rw' => $wargas->rw,
-                'keterangan' => $wargas->keterangan,
-                'aksi' => '<button type="button" class="btn btn-inverse-danger btn-icon btn-sm" onclick="hapusData(' . $wargas->id_warga . ')">
-                                <i class="ti-trash"></i>
-                            </button>
-                            <button type="button" data-toggle="modal" data-target="#modal-edit' . $wargas->id_warga . '" class="btn btn-inverse-success btn-icon btn-sm" data-placement="top" title="Edit">
-                                <i class="ti-pencil-alt"></i>
-                            </button>'
-            );
-            $nomor_urut++;
+        $no = @$_POST['start'];
+        foreach ($list as $warga) {
+
+            $no++;
+            $row = array();
+            $row[] = $no.".";
+            $row[] = '<td class="font-weight-medium"><div class="badge badge-primary">'.$warga->perum.'</div></td>';
+            $row[] = $warga->nama;
+            $row[] = '<td class="font-weight-medium"><div class="badge badge-info">' . $warga->no_rumah . '</div></td>';
+            $row[] = $warga->no_hp;
+            $row[] = $warga->rt;
+            $row[] = $warga->rw;
+            $row[] = $warga->keterangan;
+            $row[] = '<button type="button" class="btn btn-inverse-danger btn-icon btn-sm" onclick="hapusData(' . $warga->id_warga . ')">
+                        <i class="ti-trash"></i>
+                      </button>
+                      <button type="button" data-toggle="modal" data-target="#modal-edit' . $warga->id_warga . '" class="btn btn-inverse-success btn-icon btn-sm" data-placement="top" title="Edit">
+                      <i class="ti-pencil-alt"></i>
+                      </button>';
+
+            $data[] = $row;
         }
-
-        $response = array(
-            'draw' => $this->input->post('draw'),
-            'recordsTotal' => $total_records,
-            'recordsFiltered' => $total_records,
-            'data' => $data
-        );
-
-        echo json_encode($response);
+        $output = array(
+                    "draw" => @$_POST['draw'],
+                    "recordsTotal" => $this->M_warga->count_all(),
+                    "recordsFiltered" => $this->M_warga->count_filtered($id, $role),
+                    "data" => $data,
+                );
+        // output to json format
+        echo json_encode($output);
     }
 
     public function hapus_data()
@@ -157,7 +138,5 @@ class Warga extends AUTH_Controller
             redirect('Warga');
         }
     }
-
-
 
 }
