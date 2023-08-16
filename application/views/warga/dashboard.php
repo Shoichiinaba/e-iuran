@@ -178,6 +178,10 @@
         -ms-transform: translateY(-20px);
         transform: translateY(-20px);
     }
+
+    div:where(.swal2-icon) {
+        top: 32px;
+    }
 </style>
 <div class="main-panel">
     <div class="content-wrapper">
@@ -207,10 +211,55 @@
                     <div id="btn-konf-byr" class="col-md-6 mb-4 stretch-card transparent">
                         <div class="card card-light-danger">
                             <div class="card-body">
-                                <p class="mb-2 font-weight-bold">Menunggu Pembayaran</p>
+                                <p class="mb-2 font-weight-bold">Menunggu Pembayaran </p>
                                 <p class="fs-30 mb-2 info-total-konf-byr">Rp.0</p>
                                 <p class="info-konf-byr">0 Bulan</p>
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="count-tgl">Berakhir : <div class="float-right" id="countdown"></div></span>
+                                    </div>
+                                </div>
                             </div>
+                            <?php
+                            // date_default_timezone_set('Asia/Jakarta');
+                            // echo date("H:i");
+                            ?>
+                            <script>
+                                // var end = new Date('08/15/2023 10:1 AM');
+                                // if ($('.info-konf-byr').text() == '0 Bulan') {
+
+                                // } else {
+
+                                //     var _second = 1000;
+                                //     var _minute = _second * 60;
+                                //     var _hour = _minute * 60;
+                                //     var _day = _hour * 24;
+                                //     var timer;
+
+                                //     function showRemaining() {
+                                //         var now = new Date();
+                                //         var distance = end - now;
+                                //         if (distance < 0) {
+
+                                //             clearInterval(timer);
+                                //             document.getElementById('countdown').innerHTML = 'EXPIRED!';
+
+                                //             return;
+                                //         }
+                                //         var days = Math.floor(distance / _day);
+                                //         var hours = Math.floor((distance % _day) / _hour);
+                                //         var minutes = Math.floor((distance % _hour) / _minute);
+                                //         var seconds = Math.floor((distance % _minute) / _second);
+
+                                //         document.getElementById('countdown').innerHTML = days + 'days ';
+                                //         document.getElementById('countdown').innerHTML += hours + 'hrs ';
+                                //         document.getElementById('countdown').innerHTML += minutes + 'mins ';
+                                //         document.getElementById('countdown').innerHTML += seconds + 'secs';
+                                //     }
+
+                                //     timer = setInterval(showRemaining, 1000);
+                                // }
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -223,11 +272,11 @@
             ?>
                 <div class="row mx-auto mt-5 mb-4">
                     <div class="col-lg-6 col-md-6 col-12 logo-e">
-                        <img src="<?= base_url('assets'); ?>/images/logo_e/logoe.png" class="mr-2" alt="-iuran" style="height: auto;width: 6rem;">
-                        <i style="font-size: 36px;font-weight: bold;top: 8px;position: absolute;">iuran</i>
+                        <img src="<?= base_url('assets'); ?>/images/logo_e/hicare.png" class="mr-2" alt="-iuran" style="height: auto;width: 10rem;">
+                        <i style="font-size: 36px;font-weight: bold;top: 8px;position: absolute;"></i>
                     </div>
                     <div class="col-lg-6 col-md-6 col-12 pt-2">
-                        <h4 class="text-inv mb-0" style="font-weight: bold;font-family: sans-serif;">STATUS | <i class="text-danger status-inv">BELUM DIBAYAR</i></h4>
+                        <h4 class="text-inv mb-0" style="font-weight: bold;font-family: sans-serif; top: 27px; position: relative;">STATUS | <i class="text-danger status-inv">BELUM DIBAYAR</i></h4>
                         <p class="text-inv"></p>
                     </div>
                 </div>
@@ -262,7 +311,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <input type="text" id="code-tagihan" value="" hidden>
+
                             <input type="text" id="id-tagihan" value="" hidden>
                             <input type="text" id="subtotal" value="0" hidden>
                         </div>
@@ -274,7 +323,7 @@
                     <button type="submit" class="btn btn-danger float-right col-12 btn-batal-byr">Batalkan pembayaran</button>
                 </div>
                 <div class="col">
-                    <button type="submit" class="btn btn-primary float-right btn-bayar col-12" data-bs-toggle="modal" data-bs-target="#modal-bayar">Buat pembayaran</button>
+                    <button type="submit" class="btn btn-primary float-right btn-bayar col-12">Buat pembayaran</button>
                 </div>
             </div>
             <!-- <div class="row pl-3 pr-3">
@@ -299,7 +348,7 @@
                 </div>
                 <div class="modal-body pt-1 pl-2 pr-2 pb-1">
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-8">
+                        <div class="col-lg-7 col-md-7 col-12">
                             <div class="input-wrapper">
                                 <div class="input-group">
                                     <span class="input-group-text text-body"><i class="ti-calendar"></i></span>
@@ -361,7 +410,23 @@
     <script>
         $(document).ready(function() {
             load_info();
+
             $('.btn-bayar').click(function() {
+                if ($('.btn-bayar').val() == "disabled") {
+                    $(function() {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Selesaikan pembayaran terlebih dahulu atau batalkan pembayaran jika ingin membuat tagihan baru..",
+                            // footer: "<a href="#">Why do I have this issue?</a>"
+                        }).then(function() {
+                            window.location = "<?= base_url('Dashboard'); ?>";
+                        });
+
+                    });
+                }
+                $('#modal-bayar').modal('hide');
+
                 var total_tagihan = $('.total-tagihan').text();
                 var total_bulan = $('.total-bulan').text();
                 $('#tagihan-val').val(total_tagihan);
@@ -380,7 +445,6 @@
                 reader.onload = function(e) {
                     // get loaded data and render thumbnail.
                     document.getElementById("preview-bukti").src = e.target.result;
-
                 };
                 // read the image file as a data URL.
                 reader.readAsDataURL(this.files[0]);
@@ -438,12 +502,14 @@
 
                 }
             });
-
-            
         });
-        
+
         $('.upload-bukti').hide();
         $('#btn-tunggakan').click(function() {
+            if ($(".info-konf-byr").text() == "0 Bulan") {
+            }else{
+                $(".btn-bayar").removeAttr("data-bs-toggle", "modal").removeAttr("data-bs-target", "#modal-bayar").val("disabled");
+            }
             tunggakan();
         });
         $('#btn-konf-byr').click(function() {
@@ -451,6 +517,8 @@
                 // alert('yaa')
             } else {
                 konf_byr();
+                $(".btn-bayar").attr("data-bs-toggle", "modal").attr("data-bs-target", "#modal-bayar").val("");
+
             }
 
         });
@@ -459,47 +527,50 @@
             var el = this;
             var confirmalert = confirm("Are you sure?");
             if (confirmalert == true) {
-
-                let formData = new FormData();
-                formData.append('code-tagihan', $('#code-tagihan').val());
-                $.ajax({
-                    type: 'POST',
-                    url: "<?php echo site_url('Dashboard/batal_byr'); ?>",
-                    data: formData,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    success: function(data) {
-                        // alert(data);
-                        load_info();
-                        // tunggakan();
-                        // $('#inv-content').attr('hidden', true);
-                        // $('.btn-riwayat-anda').trigger('click')
-                    },
-                    error: function() {
-                        alert("Data Gagal Diupload");
-                    }
-                });
+                delete_tagihan();
             }
         });
 
+        function delete_tagihan() {
+            let formData = new FormData();
+            formData.append('code-tagihan', $('#code-tagihan').val());
+            $.ajax({
+                type: 'POST',
+                url: "<?php echo site_url('Dashboard/batal_byr'); ?>",
+                data: formData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    // alert(data);
+                    window.location.replace("<?= base_url('Dashboard'); ?>");
+                    // tunggakan();
+                    // $('#inv-content').attr('hidden', true);
+                    // $('.btn-riwayat-anda').trigger('click')
+                },
+                error: function() {
+                    alert("Data Gagal Diupload");
+                }
+            });
+        }
 
         function tunggakan() {
 
             var action = 'tunggakan'
             var status = '0';
+            // $('.count-tgl').attr('hidden', true);
             $('#col-btn-byr').attr('hidden', true);
             $('.upload-bukti').hide();
             $('.status-inv').text('BELUM BAYAR');
             $('.btn-bayar').text('Buat pembayaran').removeClass('btn-warning').addClass('btn-primary');
             $('#btn-kirim').val('buat')
-            $('#code-tagihan').val('')
             load_data(action, status);
         };
 
         function konf_byr() {
             var action = 'konf-byr';
             var status = '3';
+            // $('.count-tgl').removeAttr('hidden', true);
             $('#col-btn-byr').removeAttr('hidden', true);
             $('.upload-bukti').show();
             $('.status-inv').text('MENUNGGU PEMBAYARAN');
@@ -541,9 +612,14 @@
                     $('#id-tagihan').val('')
                     $('.form-check-input').click(function() {
                         if ($(this).is(":checked")) {
+                            $(".btn-bayar").attr("data-bs-toggle", "modal").attr("data-bs-target", "#modal-bayar").val("");
                             total = parseInt($('#subtotal').val()) + parseInt($(this).data('jumlah'));
                         } else {
                             total = parseInt($('#subtotal').val()) - parseInt($(this).data('jumlah'));
+                            if (total == '0') {
+                                // alert('yaa');
+                                $(".btn-bayar").removeAttr("data-bs-toggle", "modal").removeAttr("data-bs-target", "#modal-bayar").val("");
+                            }
                         }
                         $('.total-bulan').text($(":checkbox:checked").length + ' Bulan')
                         $('#subtotal').val(total)

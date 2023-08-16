@@ -56,27 +56,57 @@ class Dashboard extends AUTH_Controller
             $(".info-total-tagihan").text("Rp. ' . number_format($row->total, 0, ",", ".") . '");
             </script>';
         }
-        // if ($data['info_konf_byr']->num_rows() > 0) {
 
+        // if ($data['info_konf_byr']->num_rows() > 0) {
         foreach ($data['info_konf_byr'] as $row) {
+            $date = $row->tgl_upload;
+            // pendefinisian tanggal awal 
+            $tgl2 = date('d-m-Y h:i', strtotime('+1 days', strtotime($date)));
+            // operasi penjumlahan tanggal sebanyak 1 hari 
+            echo '<input type="text" id="code-tagihan" value="' . $row->code_tagihan . '" hidden>';
             echo '<script>
+            
             $(".info-konf-byr").text("' . $row->bulan . ' Bulan");
             $(".info-total-konf-byr").text("Rp. ' . number_format($row->total, 0, ",", ".") . '");
             if( $(".info-konf-byr").text() =="0 Bulan"){
                 tunggakan();
+                $(".count-tgl").attr("hidden", true);
+                
             }else{
+                $(".count-tgl").removeAttr("hidden", true);
+                $(".btn-bayar").attr("data-bs-toggle", "modal").attr("data-bs-target", "#modal-bayar").val("");
                 konf_byr();
-            }
+                var end = new Date("' . preg_replace('/-/', '/', date('m-d-Y h:i', strtotime($tgl2))) . '");
+                var _second = 1000;
+                var _minute = _second * 60;
+                var _hour = _minute * 60;
+                var _day = _hour * 24;
+                var timer;
+                function showRemaining() {
+                    var now = new Date();
+                    var distance = end - now;
+                    if (distance < 0) {
+                        clearInterval(timer);
+                        document.getElementById("countdown").innerHTML = "EXPIRED!";
+                        delete_tagihan();
+                        return;
+                    }
+                    var days = Math.floor(distance / _day);
+                    var hours = Math.floor((distance % _day) / _hour);
+                    var minutes = Math.floor((distance % _hour) / _minute);
+                    var seconds = Math.floor((distance % _minute) / _second);
+                    // document.getElementById("countdown").innerHTML = days + "days ";
+                    document.getElementById("countdown").innerHTML = hours + " Jam ";
+                    document.getElementById("countdown").innerHTML += minutes + " Menit ";
+                    document.getElementById("countdown").innerHTML += seconds + " Detik";
+                }
+                timer = setInterval(showRemaining, 1000);
+                
+            };
+
             </script>';
         }
         // }
-        echo '<script>
-        // if(' . $total . ' == "0"){
-        //     tunggakan();
-        // }else{
-        //     konf_byr();
-        // }
-        </script>';
     }
     function get_data_blm_bayar()
     {
@@ -206,11 +236,12 @@ class Dashboard extends AUTH_Controller
         $id_tagihan = $this->input->post('id-tagihan');
         $kode_max_ = str_pad($kode_, 4, "0", STR_PAD_LEFT);
         $code_tagihan = "CT" . '-' . $id_rtrw . $bulan . $tahun . '-' . $kode_max_;
-
+        date_default_timezone_set('Asia/Jakarta');
+        // echo date("H:i");
         $data = [
             'id_rtrw' => $id_rtrw,
             'id_warga' => $id_warga,
-            'tgl_upload' => $tgl_upload,
+            'tgl_upload' => $tgl_upload . ' ' . date("H:i"),
             'code_tagihan' => $code_tagihan,
             'foto_bukti' => '',
             'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),

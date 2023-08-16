@@ -32,6 +32,7 @@ class M_client extends CI_Model
     {
         $this->db->select('*, COUNT(tagihan.status = 3) as bulan, SUM(lain_lain + nominal) as total');
         $this->db->from('tagihan');
+        $this->db->join('transaksi', 'transaksi.code_tagihan = tagihan.code_tagihan');
         $this->db->where('tagihan.id_warga', $id_warga);
         $this->db->where('status', '3');
         // $this->db->group_by('tagihan.id_warga');
