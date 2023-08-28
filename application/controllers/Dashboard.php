@@ -1,5 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+use Carbon\Carbon;
+use Xendit\Invoice;
 
 class Dashboard extends AUTH_Controller
 {
@@ -44,6 +46,7 @@ class Dashboard extends AUTH_Controller
             $this->load->view($this->template, $data);
         }
     }
+
     function info()
     {
         $total = '0';
@@ -60,18 +63,18 @@ class Dashboard extends AUTH_Controller
         // if ($data['info_konf_byr']->num_rows() > 0) {
         foreach ($data['info_konf_byr'] as $row) {
             $date = $row->tgl_upload;
-            // pendefinisian tanggal awal 
+            // pendefinisian tanggal awal
             $tgl2 = date('d-m-Y h:i', strtotime('+1 days', strtotime($date)));
-            // operasi penjumlahan tanggal sebanyak 1 hari 
+            // operasi penjumlahan tanggal sebanyak 1 hari
             echo '<input type="text" id="code-tagihan" value="' . $row->code_tagihan . '" hidden>';
             echo '<script>
-            
+
             $(".info-konf-byr").text("' . $row->bulan . ' Bulan");
             $(".info-total-konf-byr").text("Rp. ' . number_format($row->total, 0, ",", ".") . '");
             if( $(".info-konf-byr").text() =="0 Bulan"){
                 tunggakan();
                 $(".count-tgl").attr("hidden", true);
-                
+
             }else{
                 $(".count-tgl").removeAttr("hidden", true);
                 $(".btn-bayar").attr("data-bs-toggle", "modal").attr("data-bs-target", "#modal-bayar").val("");
@@ -101,13 +104,14 @@ class Dashboard extends AUTH_Controller
                     document.getElementById("countdown").innerHTML += seconds + " Detik";
                 }
                 timer = setInterval(showRemaining, 1000);
-                
+
             };
 
             </script>';
         }
         // }
     }
+
     function get_data_blm_bayar()
     {
 
@@ -213,44 +217,202 @@ class Dashboard extends AUTH_Controller
         echo '    <td class="total-tagihan">Rp.' . $total_tagihan . '</td>';
         echo '</tr>';
     }
+
+    // xendit
+    function show_saldo(){
+        xendit_loaded();
+        $getBalance = \Xendit\Balance::getBalance('CASH');
+        var_dump($getBalance);
+    }
+
+    function callback_invoice(){
+        xendit_loaded();
+        $this->db->trans_begin();
+        try{
+            $rawRequest = file_get_contents("php://input");
+            $request = json_decode($rawRequest, true);
+
+            $_id = $request['id'];
+            $_externalId = $request['external_id'];
+            $_userId = $request['user_id'];
+            $_status = $request['status'];
+            $_paidAmount = $request['paid_amount'];
+            $_paidAt = $request['paid_at'];
+            $_paymentChannel = $request['payment_channel'];
+            $_paymentDestination = $request['payment_destination'];
+
+            $status = '1';
+            if($_status == 'PAID'){
+                $status = '2';
+                $date_convert = Carbon::parse($_paidAt);
+
+                $date = $date_convert->format('m-d-Y');
+                $time = $date_convert->format('H:i:s');
+
+                $this->db
+                ->set('code_tagihan', $_externalId)
+                ->set('status', $status)
+                ->where([
+                    'code_tagihan' => $_externalId
+                ])
+                ->update('tagihan');
+
+                $transfer_exists = $this->db->get_where('transaksi', [
+                    'code_tagihan' => $_externalId
+                ])->num_rows();
+
+                if($transfer_exists == 0){
+
+                    $user = $this->db->select("*")
+                    ->from('tagihan')
+                    ->join('transaksi', 'transaksi.code_tagihan = tagihan.code_tagihan')
+                    ->where('transaksi.code_tagihan', $_externalId)
+                    ->get()->result()[0];
+
+                    $this->db->insert('transaksi', [
+                        'foto_bukti' => $_paymentChannel,
+                        'tgl_byr' => $date,
+                    ]);
+
+                }
+
+
+            }else if($_status == 'EXPIRED'){
+                $status = '3';
+                $this->db->set('status', $status)
+                ->where(['code_tagihan' => $_externalId])
+                ->update('tagihan');
+            }
+            if ($this->db->trans_status() === FALSE){
+                    $this->db->trans_rollback();
+            }else{
+                    $this->db->trans_commit();
+            }
+            return $this->output->set_content_type('application/json')
+            ->set_output(json_encode([
+                'status' => true,
+                'message' => 'Get Request Active',
+                'detail' => $request,
+            ]));
+        }catch(Exception $e) {
+            $this->db->trans_rollback();
+            return $this->output->set_content_type('application/json')
+            ->set_output(json_encode([
+                'status' => false,
+                'errors' => [
+                    'message' => $e->getMessage(),
+                    'type' => 'input',
+                ],
+                'detail' => [],
+            ]));
+        }
+
+    }
+
     function buat_pembayaran()
     {
-        $this->db->select("RIGHT(transaksi.code_tagihan, 4) as kode", FALSE);
-        $this->db->order_by('code_tagihan', 'DESC');
-        $this->db->limit(1);
+        xendit_loaded();
+        $this->db->trans_begin();
 
-        $query_ = $this->db->get('transaksi');
-        if ($query_->num_rows() <> 0) {
-            $data_ = $query_->row();
-            $kode_ = intval($data_->kode) + 1;
-        } else {
-            $kode_ = 1;
+        try {
+
+            $this->db->select("RIGHT(transaksi.code_tagihan, 4) as kode", FALSE);
+            $this->db->order_by('code_tagihan', 'DESC');
+            $this->db->limit(1);
+
+            $query_ = $this->db->get('transaksi');
+            if ($query_->num_rows() <> 0) {
+                $data_ = $query_->row();
+                $kode_ = intval($data_->kode) + 1;
+            } else {
+                $kode_ = 1;
+            }
+
+            // session
+            $userData = $this->session->userdata('userdata');
+            $id_warga = $userData->id_warga;
+            $id_rtrw = $userData->id_rtrw;
+            // akhir session
+
+            $tgl_upload = $this->input->post('tgl-upload');
+            $tagihan = $this->input->post('tagihan');
+            $status = '1';
+            $tahun = date("y");
+            $bulan = date("m");
+            $id_tagihan = explode(',', $this->input->post('id-tagihan'));
+            $kode_max_ = str_pad($kode_, 4, "0", STR_PAD_LEFT);
+            $code_tagihan = "CT" . '-' . $id_rtrw . $bulan . $tahun . '-' . $kode_max_;
+            date_default_timezone_set('Asia/Jakarta');
+
+            // code xendit
+            $data_faktur = [
+                "external_id" => $code_tagihan,
+                "description" => "Pembayaran Tagihan $code_tagihan $userData->nama $userData->no_rumah",
+                "amount" => preg_replace('/[Rp. ]/', '', $tagihan),
+                'invoice_duration' => 86400,
+                'customer' => [
+                    'given_names' => $userData->nama,
+                    'surname' => $userData->no_rumah,
+                    'mobile_number' => $userData->no_hp,
+                ],
+            ];
+
+            $createInvoice = Invoice::create($data_faktur);
+            $payment_url = $createInvoice['invoice_url'];
+            // redirect($payment_url);
+            // var_dump($createInvoice);
+
+            $data = [
+                'id_rtrw' => $id_rtrw,
+                'id_warga' => $id_warga,
+                'tgl_upload' => $tgl_upload . ' ' . date("H:i"),
+                'code_tagihan' => $code_tagihan,
+                'foto_bukti' => '',
+                'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),
+
+            ];
+            $this->M_client->m_upload_transaksi($data);
+            $this->M_client->m_update_tagihan($code_tagihan, $status, $id_tagihan);
+
+            $this->db->trans_commit();
+
+            return $this->output->set_content_type('application/json')
+            ->set_output(json_encode([
+                'status' => true,
+                'errors' => [],
+                'detail' => [
+                    'redirect_url' => $payment_url,
+                ],
+            ]));
+
+
+        } catch (\Xendit\Exceptions\ApiException $e) {
+            $this->db->trans_rollback();
+            return $this->output->set_content_type('application/json')
+            ->set_output(json_encode([
+                'status' => false,
+                'errors' => [
+                    'message' => $e->getMessage(),
+                    'type' => 'xendit',
+                ],
+                'detail' => [],
+            ]));
+
+        }catch(Exception $e) {
+            $this->db->trans_rollback();
+            return $this->output->set_content_type('application/json')
+            ->set_output(json_encode([
+                'status' => false,
+                'errors' => [
+                    'message' => $e->getMessage(),
+                    'type' => 'input',
+                ],
+                'detail' => [],
+            ]));
         }
-        $id_warga = $this->session->userdata('userdata')->id_warga;
-        $id_rtrw = $this->session->userdata('userdata')->id_rtrw;
-        $tgl_upload = $this->input->post('tgl-upload');
-        $tagihan = $this->input->post('tagihan');
-        $status = '3';
-        $tahun = date("y");
-        $bulan = date("m");
-        $id_tagihan = $this->input->post('id-tagihan');
-        $kode_max_ = str_pad($kode_, 4, "0", STR_PAD_LEFT);
-        $code_tagihan = "CT" . '-' . $id_rtrw . $bulan . $tahun . '-' . $kode_max_;
-        date_default_timezone_set('Asia/Jakarta');
-        // echo date("H:i");
-        $data = [
-            'id_rtrw' => $id_rtrw,
-            'id_warga' => $id_warga,
-            'tgl_upload' => $tgl_upload . ' ' . date("H:i"),
-            'code_tagihan' => $code_tagihan,
-            'foto_bukti' => '',
-            'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),
-        ];
-        $this->M_client->m_upload_transaksi($data);
-        $this->M_client->m_update_tagihan($code_tagihan, $status, $id_tagihan);
-
-        // return $no_invoice;
     }
+
+
     function batal_byr()
     {
         $id_warga = $this->session->userdata('userdata')->id_warga;
@@ -259,12 +421,13 @@ class Dashboard extends AUTH_Controller
         $this->M_client->m_delete_transaksi($code_tagihan);
         $this->M_client->m_update_tagihan_batal_pembayaran($code_tagihan, $status);
     }
+
     // function Warga
     function upload_bukti()
     {
         $code_tagihan = $this->input->post('code-tagihan');
         $status = '1';
-        $config['upload_path'] = "./upload/";
+        $config['upload_path'] = "./assets/images/bukti_tf/";
         $config['allowed_types'] = 'gif|jpg|png';
         $config['encrypt_name'] = TRUE;
 

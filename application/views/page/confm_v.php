@@ -172,10 +172,6 @@ Swal.fire({
                 data: 'nomor_urut',
                 name: 'nomor_urut'
             },
-            // {
-            //     data: 'no_invoice',
-            //     name: 'no_invoice'
-            // },
             {
                 data: 'code_tagihan',
                 name: 'code_tagihan'

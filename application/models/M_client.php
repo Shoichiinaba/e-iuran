@@ -68,6 +68,7 @@ class M_client extends CI_Model
         $result = $this->db->insert('transaksi', $data);
         return $result;
     }
+
     function m_update_transaksi($code_tagihan, $foto_bukti)
     {
         $update = $this->db->set('foto_bukti', $foto_bukti)
@@ -76,15 +77,31 @@ class M_client extends CI_Model
             ->update('transaksi');
         return $update;
     }
+
     function m_update_tagihan($code_tagihan, $status, $id_tagihan)
     {
+        if (is_array($id_tagihan)) {
+            $id_tagihan = implode(",", $id_tagihan);
+        }
+
         $update = $this->db->set('code_tagihan', $code_tagihan)
             ->set('status', $status)
             ->where_in('id_tagihan', explode(",", $id_tagihan))
-            // ->where('status', '0')
             ->update('tagihan');
         return $update;
     }
+
+
+    // function m_update_tagihan($code_tagihan, $status, $id_tagihan)
+    // {
+    //     $update = $this->db->set('code_tagihan', $code_tagihan)
+    //         ->set('status', $status)
+    //         ->where_in('id_tagihan', explode(",", $id_tagihan))
+    //         // ->where('status', '0')
+    //         ->update('tagihan');
+    //     return $update;
+    // }
+
     function m_update_tagihan_pembayaran($code_tagihan, $status)
     {
         $update = $this->db->set('status', $status)

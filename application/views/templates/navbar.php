@@ -29,6 +29,7 @@
                     <?php if ($userdata->role == 'RT') : ?>
                     <span class="badge badge-warning navbar-badge"><?=$menunggu; ?></span>
                     <?php endif; ?>
+
                     <?php if ($userdata->role == 'Warga') : ?>
                     <span class="badge badge-danger navbar-badge"></span>
                     <?php endif; ?>
@@ -50,6 +51,7 @@
                                 Atas nama
                             </p>
                         </div>
+
                         <?php endif; ?>
                         <?php if ($userdata->role == 'Warga') : ?>
                         <div class="preview-thumbnail">
