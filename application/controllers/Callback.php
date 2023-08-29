@@ -49,7 +49,7 @@ class Callback extends CI_Controller
                     [
                         // 'code_tagihan' => $_externalId,
                         'foto_bukti' => $_paymentChannel,
-                        // 'tgl_byr' => $date,
+                        'tgl_byr' => $_paidAt,
                     ]);
 
                 }
