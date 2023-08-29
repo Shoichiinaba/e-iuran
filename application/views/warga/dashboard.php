@@ -561,7 +561,7 @@ div:where(.swal2-icon) {
 
     function konf_byr() {
         var action = 'konf-byr';
-        var status = '3';
+        var status = '1';
         // $('.count-tgl').removeAttr('hidden', true);
         $('#col-btn-byr').removeAttr('hidden', true);
         $('.upload-bukti').show();
