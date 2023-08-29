@@ -31,10 +31,10 @@ class Callback extends CI_Controller
             $status = '1';
             if($_status == 'PAID'){
                 $status = '2';
-                $date_convert = Carbon::parse($_paidAt);
+                // $date_convert = Carbon::parse($_paidAt);
 
-                $date = $date_convert->format('m-d-Y');
-                $time = $date_convert->format('H:i:s');
+                // $date = $date_convert->format('m-d-Y');
+                // $time = $date_convert->format('H:i:s');
 
                 $this->db->set('status', $status)
                 ->where('code_tagihan', $_externalId)
