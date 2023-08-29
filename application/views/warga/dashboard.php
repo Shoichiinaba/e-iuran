@@ -182,6 +182,14 @@ select:focus+label {
 div:where(.swal2-icon) {
     top: 32px;
 }
+
+#btn-loader {
+    background-color: none;
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+}
 </style>
 <div class="main-panel">
     <div class="content-wrapper">
@@ -221,46 +229,6 @@ div:where(.swal2-icon) {
                                     </div>
                                 </div>
                             </div>
-                            <?php
-                            // date_default_timezone_set('Asia/Jakarta');
-                            // echo date("H:i");
-                            ?>
-                            <script>
-                            // var end = new Date('08/15/2023 10:1 AM');
-                            // if ($('.info-konf-byr').text() == '0 Bulan') {
-
-                            // } else {
-
-                            //     var _second = 1000;
-                            //     var _minute = _second * 60;
-                            //     var _hour = _minute * 60;
-                            //     var _day = _hour * 24;
-                            //     var timer;
-
-                            //     function showRemaining() {
-                            //         var now = new Date();
-                            //         var distance = end - now;
-                            //         if (distance < 0) {
-
-                            //             clearInterval(timer);
-                            //             document.getElementById('countdown').innerHTML = 'EXPIRED!';
-
-                            //             return;
-                            //         }
-                            //         var days = Math.floor(distance / _day);
-                            //         var hours = Math.floor((distance % _day) / _hour);
-                            //         var minutes = Math.floor((distance % _hour) / _minute);
-                            //         var seconds = Math.floor((distance % _minute) / _second);
-
-                            //         document.getElementById('countdown').innerHTML = days + 'days ';
-                            //         document.getElementById('countdown').innerHTML += hours + 'hrs ';
-                            //         document.getElementById('countdown').innerHTML += minutes + 'mins ';
-                            //         document.getElementById('countdown').innerHTML += seconds + 'secs';
-                            //     }
-
-                            //     timer = setInterval(showRemaining, 1000);
-                            // }
-                            </script>
                         </div>
                     </div>
                 </div>
@@ -334,19 +302,8 @@ div:where(.swal2-icon) {
                     <button type="submit" class="btn btn-primary float-right btn-bayar col-12">Buat pembayaran</button>
                 </div>
             </div>
-            <!-- <div class="row pl-3 pr-3">
-                <h4>Keterangan :</h4>
-                <u class="ml-4">
-                    <li></li>
-                    <li>1</li>
-                    <li>1</li>
-                    <li>1</li>
-                </u>
-            </div> -->
         </div>
-        <!-- <div class="row"> -->
 
-        <!-- </div> -->
     </div>
     <div class="modal fade" id="modal-bayar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-md">
@@ -380,7 +337,7 @@ div:where(.swal2-icon) {
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-3">
+                    <!-- <div class="row mt-3">
                         <div class="col">
                             <h5 class="pl-2">Dibayarkan ke :</h5>
                             <p class="mb-0 pl-2">Pengelola <?= $nm_perum; ?></p>
@@ -388,7 +345,7 @@ div:where(.swal2-icon) {
                             <p class="mb-0 pl-2">Rek. #0000xxxxxx</p>
                             <p class="mb-0 pl-2">Bank BCA</p>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row mt-3 upload-bukti">
                         <div class="input-group col-xs-12">
                             <input type="file" id="file-upload" hidden>
@@ -409,10 +366,18 @@ div:where(.swal2-icon) {
                     <!-- </div> -->
                 </div>
                 <hr>
-                <div class="row pl-3 pr-3 mb-3">
+                <!-- <div class="row pl-3 pr-3 mb-3">
                     <button type="button" id="btn-kirim" class="btn btn-success col-12" data-dismiss="modal"
                         value="buat">Submit</button>
+                </div> -->
+
+                <div class="row pl-3 pr-3 mb-3">
+                    <button type="button" id="btn-kirim" class="btn btn-success col-12" data-dismiss="modal"
+                        value="buat">
+                        <span id="btn-text">Submit</span>
+                    </button>
                 </div>
+
             </div>
         </div>
     </div>
@@ -464,6 +429,17 @@ div:where(.swal2-icon) {
 
         $('#btn-kirim').click(function() {
             // alert($(this).val());
+            var $btn = $(this);
+            var originalText = $btn.html();
+
+            $btn.html(`
+                        <span id="btn-text">${originalText}</span>
+                        <span id="btn-loader" class="d-none">
+                        <span class="spinner-border spinner-border-sm btn-loader" role="status" aria-hidden="true"></span>
+                        Loading...
+                        </span>
+                    `);
+
             if ($(this).val() == 'buat') {
                 let formData = new FormData();
                 formData.append('id-tagihan', $('#id-tagihan').val());
@@ -478,19 +454,18 @@ div:where(.swal2-icon) {
                     processData: false,
                     contentType: false,
                     success: function(data) {
-
                         if (data.status) {
-                            // alert(data);
                             window.location.href = data.detail.redirect_url;
                             load_info();
-                            // konf_byr();
                             $('#modal-bayar').modal('hide');
                         }
-
                     },
                     error: function() {
                         $('#btn-tunggakan').trigger('click');
                         alert("Data Gagal Diupload");
+                    },
+                    complete: function() {
+                        $btn.html(originalText);
                     }
                 });
             } else if ($(this).val() == 'konfirmasi') {
@@ -507,16 +482,16 @@ div:where(.swal2-icon) {
                     processData: false,
                     contentType: false,
                     success: function(data) {
-                        // alert(data);
                         load_info();
-                        // tunggakan();
                         $('#modal-bayar').modal('hide');
                     },
                     error: function() {
                         alert("Data Gagal Diupload");
+                    },
+                    complete: function() {
+                        $btn.html(originalText);
                     }
                 });
-
             }
         });
     });
@@ -690,6 +665,24 @@ div:where(.swal2-icon) {
                 format: 'DD-MM-YYYY'
             }
 
+        });
+    });
+    </script>
+
+    <script>
+    $(document).ready(function() {
+        $('#btn-kirim').on('click', function() {
+            $('#btn-text').addClass('d-none');
+            $('#btn-loader').removeClass('d-none');
+
+            // Lakukan tindakan yang diperlukan di sini, misalnya pengiriman data
+
+            // Simulasikan penundaan selama 2 detik sebagai contoh
+            setTimeout(function() {
+                // Setelah tindakan selesai, tampilkan kembali teks tombol dan sembunyikan loader
+                $('#btn-text').removeClass('d-none');
+                $('#btn-loader').addClass('d-none');
+            }, 2000);
         });
     });
     </script>
