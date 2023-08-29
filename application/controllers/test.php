@@ -1,0 +1,70 @@
+function callback_invoice() {
+$this->load->database(); // Pastikan database dimuat sebelum digunakan
+$this->db->trans_start(); // Memulai transaksi
+
+try {
+$rawRequest = file_get_contents("php://input");
+$request = json_decode($rawRequest, true);
+
+$_externalId = $request['external_id'];
+$_status = $request['status'];
+$_paidAmount = $request['paid_amount'];
+$_paidAt = $request['paid_at'];
+$_paymentChannel = $request['payment_channel'];
+$_paymentDestination = $request['payment_destination'];
+
+if ($_status === 'PAID') {
+$status = '2';
+$date_convert = Carbon::parse($_paidAt);
+$date = $date_convert->format('m-d-Y');
+$time = $date_convert->format('H:i:s');
+
+$this->db->set('status', $status)
+->where('code_tagihan', $_externalId)
+->update('tagihan');
+
+$transfer_exists = $this->db->get_where('transaksi', [
+'code_tagihan' => $_externalId
+])->num_rows();
+
+if ($transfer_exists === 0) {
+$this->db->insert('transaksi', [
+'code_tagihan' => $_externalId,
+'foto_bukti' => $_paymentChannel,
+'tgl_byr' => $date,
+]);
+}
+} elseif ($_status === 'EXPIRED') {
+$status = '3';
+$this->db->set('status', $status)
+->where('code_tagihan', $_externalId)
+->update('tagihan');
+}
+
+if ($this->db->trans_status() === FALSE) {
+$this->db->trans_rollback();
+} else {
+$this->db->trans_commit();
+}
+
+$response = [
+'status' => true,
+'message' => 'Permintaan Diterima',
+'detail' => $request,
+];
+} catch (Exception $e) {
+$this->db->trans_rollback();
+$response = [
+'status' => false,
+'errors' => [
+'message' => $e->getMessage(),
+'type' => 'input',
+],
+'detail' => [],
+];
+}
+
+$this->output
+->set_content_type('application/json')
+->set_output(json_encode($response));
+}

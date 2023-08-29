@@ -229,12 +229,13 @@ class Dashboard extends AUTH_Controller
         xendit_loaded();
         $this->db->trans_begin();
         try{
+
             $rawRequest = file_get_contents("php://input");
             $request = json_decode($rawRequest, true);
 
-            $_id = $request['id'];
+            // $_id = $request['id'];
             $_externalId = $request['external_id'];
-            $_userId = $request['user_id'];
+            // $_userId = $request['user_id'];
             $_status = $request['status'];
             $_paidAmount = $request['paid_amount'];
             $_paidAt = $request['paid_at'];
@@ -249,27 +250,18 @@ class Dashboard extends AUTH_Controller
                 $date = $date_convert->format('m-d-Y');
                 $time = $date_convert->format('H:i:s');
 
-                $this->db
-                ->set('code_tagihan', $_externalId)
-                ->set('status', $status)
-                ->where([
-                    'code_tagihan' => $_externalId
-                ])
+                $this->db->set('status', $status)
+                ->where('code_tagihan', $_externalId)
                 ->update('tagihan');
 
                 $transfer_exists = $this->db->get_where('transaksi', [
                     'code_tagihan' => $_externalId
                 ])->num_rows();
 
-                if($transfer_exists == 0){
-
-                    $user = $this->db->select("*")
-                    ->from('tagihan')
-                    ->join('transaksi', 'transaksi.code_tagihan = tagihan.code_tagihan')
-                    ->where('transaksi.code_tagihan', $_externalId)
-                    ->get()->result()[0];
-
-                    $this->db->insert('transaksi', [
+                if ($transfer_exists === 0) {
+                    $this->db->insert('transaksi',
+                    [
+                        // 'code_tagihan' => $_externalId,
                         'foto_bukti' => $_paymentChannel,
                         'tgl_byr' => $date,
                     ]);
@@ -283,17 +275,19 @@ class Dashboard extends AUTH_Controller
                 ->where(['code_tagihan' => $_externalId])
                 ->update('tagihan');
             }
+
             if ($this->db->trans_status() === FALSE){
                     $this->db->trans_rollback();
             }else{
                     $this->db->trans_commit();
             }
-            return $this->output->set_content_type('application/json')
-            ->set_output(json_encode([
-                'status' => true,
-                'message' => 'Get Request Active',
-                'detail' => $request,
-            ]));
+
+            $response = [
+            'status' => true,
+            'message' => 'Permintaan Diterima',
+            'detail' => $request,
+            ];
+
         }catch(Exception $e) {
             $this->db->trans_rollback();
             return $this->output->set_content_type('application/json')
@@ -306,6 +300,9 @@ class Dashboard extends AUTH_Controller
                 'detail' => [],
             ]));
         }
+        $this->output
+             ->set_content_type('application/json')
+             ->set_output(json_encode($response));
 
     }
 
