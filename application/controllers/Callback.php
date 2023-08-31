@@ -45,9 +45,9 @@ class Callback extends CI_Controller
                 ])->num_rows();
 
                 if ($transfer_exists === 0) {
-                    $this->db->insert('transaksi',
+                    $this->db->update('transaksi',
                     [
-                        // 'code_tagihan' => $_externalId,
+                        'code_tagihan' => $_externalId,
                         'foto_bukti' => $_paymentChannel,
                         'tgl_byr' => $_paidAt,
                     ]);
