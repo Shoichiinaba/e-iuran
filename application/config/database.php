@@ -77,12 +77,12 @@ $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	// Offline development
-	'username' => 'root',
-	'password' => '',
+	// 'username' => 'root',
+	// 'password' => '',
 
 	// Online Production
-	// 'username' => 'kina3126_e-iuran',
-	// 'password' => 'kanpa2020',
+	'username' => 'kina3126_e-iuran',
+	'password' => 'kanpa2020',
 
 	'database' => 'kina3126_e-iuran',
 	'dbdriver' => 'mysqli',
