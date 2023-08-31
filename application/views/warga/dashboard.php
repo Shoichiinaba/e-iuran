@@ -337,15 +337,6 @@ div:where(.swal2-icon) {
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="row mt-3">
-                        <div class="col">
-                            <h5 class="pl-2">Dibayarkan ke :</h5>
-                            <p class="mb-0 pl-2">Pengelola <?= $nm_perum; ?></p>
-                            <p class="mb-0 pl-2">AN. Nama Pemilik REK</p>
-                            <p class="mb-0 pl-2">Rek. #0000xxxxxx</p>
-                            <p class="mb-0 pl-2">Bank BCA</p>
-                        </div>
-                    </div> -->
                     <div class="row mt-3 upload-bukti">
                         <div class="input-group col-xs-12">
                             <input type="file" id="file-upload" hidden>
@@ -665,24 +656,6 @@ div:where(.swal2-icon) {
                 format: 'DD-MM-YYYY'
             }
 
-        });
-    });
-    </script>
-
-    <script>
-    $(document).ready(function() {
-        $('#btn-kirim').on('click', function() {
-            $('#btn-text').addClass('d-none');
-            $('#btn-loader').removeClass('d-none');
-
-            // Lakukan tindakan yang diperlukan di sini, misalnya pengiriman data
-
-            // Simulasikan penundaan selama 2 detik sebagai contoh
-            setTimeout(function() {
-                // Setelah tindakan selesai, tampilkan kembali teks tombol dan sembunyikan loader
-                $('#btn-text').removeClass('d-none');
-                $('#btn-loader').addClass('d-none');
-            }, 2000);
         });
     });
     </script>

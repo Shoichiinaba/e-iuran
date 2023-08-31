@@ -30,11 +30,11 @@ class M_client extends CI_Model
     }
     function m_info_konf_byr($id_warga)
     {
-        $this->db->select('*, COUNT(tagihan.status = 3) as bulan, SUM(lain_lain + nominal) as total');
+        $this->db->select('*, COUNT(tagihan.status = 1) as bulan, SUM(lain_lain + nominal) as total');
         $this->db->from('tagihan');
         $this->db->join('transaksi', 'transaksi.code_tagihan = tagihan.code_tagihan');
         $this->db->where('tagihan.id_warga', $id_warga);
-        $this->db->where('status', '3');
+        $this->db->where('status', '1');
         // $this->db->group_by('tagihan.id_warga');
         // $this->db->order_by('tagihan.id_tagihan');
         $query = $this->db->get();
