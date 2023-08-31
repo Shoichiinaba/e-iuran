@@ -11,11 +11,10 @@ class Callback extends CI_Controller
         parent::__construct();
     }
 
-    function callback_invoice(){
+    function callback_invoice() {
         xendit_loaded();
         $this->db->trans_begin();
-        try{
-
+        try {
             $rawRequest = file_get_contents("php://input");
             $request = json_decode($rawRequest, true);
 
@@ -29,76 +28,64 @@ class Callback extends CI_Controller
             $_paymentDestination = $request['payment_destination'];
 
             $status = '1';
-            if($_status == 'PAID'){
+            if ($_status == 'PAID') {
                 $status = '2';
-                // $date_convert = Carbon::parse($_paidAt);
-
-                // $date = $date_convert->format('m-d-Y');
-                // $time = $date_convert->format('H:i:s');
 
                 $this->db->set('status', $status)
-                ->where('code_tagihan', $_externalId)
-                ->update('tagihan');
+                    ->where('code_tagihan', $_externalId)
+                    ->update('tagihan');
 
-                $this->db->set
-                ('foto_bukti', $_paymentChannel)
-                ('tgl_byr', $_paidAt)
-                ->where('code_tagihan', $_externalId)
-                ->update('transaksi');
-
-                $transfer_exists = $this->db->get_where('transaksi',
-                    [
-                        'code_tagihan' => $_externalId,
-                        'foto_bukti' => $_paymentChannel,
-                        'tgl_byr' => $_paidAt,
-                    ])->num_rows();
+                $transfer_exists = $this->db->get_where('transaksi', [
+                    'code_tagihan' => $_externalId
+                ])->num_rows();
 
                 if ($transfer_exists === 0) {
-                    $this->db->update('transaksi',
-                    [
+                    $this->db->insert('transaksi', [
                         'code_tagihan' => $_externalId,
                         'foto_bukti' => $_paymentChannel,
                         'tgl_byr' => $_paidAt,
                     ]);
-
+                } else {
+                    $this->db->set('foto_bukti', $_paymentChannel)
+                        ->set('tgl_byr', $_paidAt)
+                        ->where('code_tagihan', $_externalId)
+                        ->update('transaksi');
                 }
-
-
-            }else if($_status == 'EXPIRED'){
+            } else if ($_status == 'EXPIRED') {
                 $status = '3';
                 $this->db->set('status', $status)
-                ->where(['code_tagihan' => $_externalId])
-                ->update('tagihan');
+                    ->where(['code_tagihan' => $_externalId])
+                    ->update('tagihan');
             }
 
-            if ($this->db->trans_status() === FALSE){
-                    $this->db->trans_rollback();
-            }else{
-                    $this->db->trans_commit();
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+            } else {
+                $this->db->trans_commit();
             }
 
             $response = [
-            'status' => true,
-            'message' => 'Permintaan Diterima',
-            'detail' => $request,
+                'status' => true,
+                'message' => 'Permintaan Diterima',
+                'detail' => $request,
             ];
 
-        }catch(Exception $e) {
+        } catch (Exception $e) {
             $this->db->trans_rollback();
             return $this->output->set_content_type('application/json')
-            ->set_output(json_encode([
-                'status' => false,
-                'errors' => [
-                    'message' => $e->getMessage(),
-                    'type' => 'input',
-                ],
-                'detail' => [],
-            ]));
+                ->set_output(json_encode([
+                    'status' => false,
+                    'errors' => [
+                        'message' => $e->getMessage(),
+                        'type' => 'input',
+                    ],
+                    'detail' => [],
+                ]));
         }
         $this->output
-             ->set_content_type('application/json')
-             ->set_output(json_encode($response));
-
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
     }
+
 
 }

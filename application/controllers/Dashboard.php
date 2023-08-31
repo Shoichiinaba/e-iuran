@@ -290,40 +290,40 @@ class Dashboard extends AUTH_Controller
 
             $this->db->trans_commit();
 
-            return $this->output->set_content_type('application/json')
-            ->set_output(json_encode([
+            $response = [
                 'status' => true,
                 'errors' => [],
                 'detail' => [
                     'redirect_url' => $payment_url,
                 ],
-            ]));
+            ];
 
 
         } catch (\Xendit\Exceptions\ApiException $e) {
             $this->db->trans_rollback();
-            return $this->output->set_content_type('application/json')
-            ->set_output(json_encode([
+            $response = [
                 'status' => false,
                 'errors' => [
                     'message' => $e->getMessage(),
                     'type' => 'xendit',
                 ],
                 'detail' => [],
-            ]));
+            ];
 
-        }catch(Exception $e) {
+        }catch (Exception $e) {
             $this->db->trans_rollback();
-            return $this->output->set_content_type('application/json')
-            ->set_output(json_encode([
+            $response = [
                 'status' => false,
                 'errors' => [
                     'message' => $e->getMessage(),
                     'type' => 'input',
                 ],
                 'detail' => [],
-            ]));
+            ];
         }
+        return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($response));
     }
 
 

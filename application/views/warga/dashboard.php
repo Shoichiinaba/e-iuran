@@ -357,10 +357,6 @@ div:where(.swal2-icon) {
                     <!-- </div> -->
                 </div>
                 <hr>
-                <!-- <div class="row pl-3 pr-3 mb-3">
-                    <button type="button" id="btn-kirim" class="btn btn-success col-12" data-dismiss="modal"
-                        value="buat">Submit</button>
-                </div> -->
 
                 <div class="row pl-3 pr-3 mb-3">
                     <button type="button" id="btn-kirim" class="btn btn-success col-12" data-dismiss="modal"
