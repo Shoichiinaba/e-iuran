@@ -275,15 +275,13 @@ class Dashboard extends AUTH_Controller
 
             $createInvoice = Invoice::create($data_faktur);
             $payment_url = $createInvoice['invoice_url'];
-            // redirect($payment_url);
-            // var_dump($createInvoice);
 
             $data = [
                 'id_rtrw' => $id_rtrw,
                 'id_warga' => $id_warga,
                 'tgl_upload' => $tgl_upload . ' ' . date("H:i"),
                 'code_tagihan' => $code_tagihan,
-                'foto_bukti' => '',
+                // 'foto_bukti' => '',
                 'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),
 
             ];

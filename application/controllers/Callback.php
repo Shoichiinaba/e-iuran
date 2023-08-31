@@ -19,9 +19,9 @@ class Callback extends CI_Controller
             $rawRequest = file_get_contents("php://input");
             $request = json_decode($rawRequest, true);
 
-            // $_id = $request['id'];
+            $_id = $request['id'];
             $_externalId = $request['external_id'];
-            // $_userId = $request['user_id'];
+            $_userId = $request['user_id'];
             $_status = $request['status'];
             $_paidAmount = $request['paid_amount'];
             $_paidAt = $request['paid_at'];
@@ -40,9 +40,18 @@ class Callback extends CI_Controller
                 ->where('code_tagihan', $_externalId)
                 ->update('tagihan');
 
-                $transfer_exists = $this->db->get_where('transaksi', [
-                    'code_tagihan' => $_externalId
-                ])->num_rows();
+                $this->db->set
+                ('foto_bukti', $_paymentChannel)
+                ('tgl_byr', $_paidAt)
+                ->where('code_tagihan', $_externalId)
+                ->update('transaksi');
+
+                $transfer_exists = $this->db->get_where('transaksi',
+                    [
+                        'code_tagihan' => $_externalId,
+                        'foto_bukti' => $_paymentChannel,
+                        'tgl_byr' => $_paidAt,
+                    ])->num_rows();
 
                 if ($transfer_exists === 0) {
                     $this->db->update('transaksi',
