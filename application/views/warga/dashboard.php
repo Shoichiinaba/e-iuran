@@ -264,9 +264,6 @@ div:where(.swal2-icon) {
                 <div class="col-lg-6 col-md-6 col-12 mt-3">
                     <h5 class=" text-byr">Dibayarkan ke :</h5>
                     <p class="mb-0 text-byr">Pengelola <?= $data->nm_perum; ?></p>
-                    <p class="mb-0 text-byr">AN. Nama Pemilik REK</p>
-                    <p class="mb-0 text-byr">Rek. #0000xxxxxx</p>
-                    <p class="mb-0 text-byr">Bank BCA</p>
                 </div>
             </div>
             <?php }; ?>
@@ -357,14 +354,17 @@ div:where(.swal2-icon) {
                     <!-- </div> -->
                 </div>
                 <hr>
-
                 <div class="row pl-3 pr-3 mb-3">
                     <button type="button" id="btn-kirim" class="btn btn-success col-12" data-dismiss="modal"
                         value="buat">
                         <span id="btn-text">Submit</span>
+                        <span id="btn-loader" class="d-none">
+                            <span class="spinner-border spinner-border-sm btn-loader" role="status"
+                                aria-hidden="true"></span>
+                            Loading...
+                        </span>
                     </button>
                 </div>
-
             </div>
         </div>
     </div>
@@ -417,15 +417,10 @@ div:where(.swal2-icon) {
         $('#btn-kirim').click(function() {
             // alert($(this).val());
             var $btn = $(this);
-            var originalText = $btn.html();
+            var originalText = $btn.find('#btn-text').text();
 
-            $btn.html(`
-                        <span id="btn-text">${originalText}</span>
-                        <span id="btn-loader" class="d-none">
-                        <span class="spinner-border spinner-border-sm btn-loader" role="status" aria-hidden="true"></span>
-                        Loading...
-                        </span>
-                    `);
+            $btn.find('#btn-text').addClass('d-none');
+            $btn.find('#btn-loader').removeClass('d-none');
 
             if ($(this).val() == 'buat') {
                 let formData = new FormData();
@@ -452,7 +447,9 @@ div:where(.swal2-icon) {
                         alert("Data Gagal Diupload");
                     },
                     complete: function() {
-                        $btn.html(originalText);
+                        $btn.find('#btn-text').removeClass('d-none');
+                        $btn.find('#btn-loader').addClass('d-none');
+                        $btn.prop('disabled', false);
                     }
                 });
             } else if ($(this).val() == 'konfirmasi') {
@@ -476,7 +473,9 @@ div:where(.swal2-icon) {
                         alert("Data Gagal Diupload");
                     },
                     complete: function() {
-                        $btn.html(originalText);
+                        $btn.find('#btn-text').removeClass('d-none');
+                        $btn.find('#btn-loader').addClass('d-none');
+                        $btn.prop('disabled', false);
                     }
                 });
             }

@@ -52,7 +52,7 @@ class Callback extends CI_Controller
                         ->update('transaksi');
                 }
             } else if ($_status == 'EXPIRED') {
-                $status = '3';
+                $status = '0';
                 $this->db->set('status', $status)
                     ->where(['code_tagihan' => $_externalId])
                     ->update('tagihan');

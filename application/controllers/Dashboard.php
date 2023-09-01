@@ -28,11 +28,10 @@ class Dashboard extends AUTH_Controller
             // LOAD PAGE DASHBOARD WARGA
             $status = '0';
             $id_warga = $this->session->userdata('userdata')->id_warga;
-            // $data['group_by_bln']          = $this->M_client->m_group_by_bln($id_warga);
-            $data['tagihan_air']          = $this->M_client->m_tagihan_air($id_warga, $status);
+            $data['tagihan_air']      = $this->M_client->m_tagihan_air($id_warga, $status);
             $data['biodata']          = $this->M_client->m_biodata($id_warga);
             $data['userdata']         = $this->userdata;
-            $data['content']        = 'warga/dashboard';
+            $data['content']          = 'warga/dashboard';
             $this->load->view($this->template, $data);
         } else {
             // LOAD PAGE DASHBOARD ADMIN, RT
@@ -281,7 +280,6 @@ class Dashboard extends AUTH_Controller
                 'id_warga' => $id_warga,
                 'tgl_upload' => $tgl_upload . ' ' . date("H:i"),
                 'code_tagihan' => $code_tagihan,
-                // 'foto_bukti' => '',
                 'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),
 
             ];
@@ -358,6 +356,5 @@ class Dashboard extends AUTH_Controller
         }
         exit;
     }
-
     // END function Warga
 }
