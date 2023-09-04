@@ -319,6 +319,8 @@ class Data_tagihan extends AUTH_Controller
             $row[] = $formatted_lain;
             $row[] = $Rp_total;
             $row[] = $status;
+            // $row[] = $foto_bukti;
+            // $row[] = $tgl_byr;
 
             $data[] = $row;
         }

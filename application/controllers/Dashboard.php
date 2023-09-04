@@ -281,6 +281,7 @@ class Dashboard extends AUTH_Controller
                 'tgl_upload' => $tgl_upload . ' ' . date("H:i"),
                 'code_tagihan' => $code_tagihan,
                 'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),
+                'url_payment' =>  $payment_url,
 
             ];
             $this->M_client->m_upload_transaksi($data);

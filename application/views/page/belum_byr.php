@@ -189,6 +189,8 @@ Swal.fire({
                                                     <th>Tagihan Lain</th>
                                                     <th>Total</th>
                                                     <th>Status</th>
+                                                    <!-- <th>Bank</th>
+                                                    <th>tgl. Bayar</th> -->
                                                 </tr>
                                             </thead>
                                             </tbody>
