@@ -28,7 +28,6 @@ class Callback extends CI_Controller
             $_paymentDestination = $request['payment_destination'];
 
             $status = '1';
-
             if ($_status == 'PAID') {
                 $status = '2';
 
@@ -53,8 +52,8 @@ class Callback extends CI_Controller
                         ->update('transaksi');
                 }
 
-                header('Location: Dashboard.php');
-                exit;
+                // Redirect ke Dashboard jika status PAID
+                redirect(site_url('Dashboard'));
             } else if ($_status == 'EXPIRED') {
                 $status = '0';
                 $this->db->set('status', $status)

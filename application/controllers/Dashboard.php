@@ -294,6 +294,7 @@ class Dashboard extends AUTH_Controller
                 'errors' => [],
                 'detail' => [
                     'redirect_url' => $payment_url,
+                    // 'redirect_url' => site_url('Dashboard'),
                 ],
             ];
 
