@@ -434,17 +434,17 @@ div:where(.swal2-icon) {
                     processData: false,
                     contentType: false,
                     success: function(data) {
-                        if (data.status) {
-                            window.location.href = data.detail.redirect_url;
-                            load_info();
-                            $('#modal-bayar').modal('hide');
-                        }
-
                         // if (data.status) {
-                        //     window.open(data.detail.redirect_url);
+                        //     window.location.href = data.detail.redirect_url;
                         //     load_info();
                         //     $('#modal-bayar').modal('hide');
                         // }
+
+                        if (data.status) {
+                            window.open(data.detail.redirect_url);
+                            load_info();
+                            $('#modal-bayar').modal('hide');
+                        }
 
                     },
                     error: function() {

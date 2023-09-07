@@ -35,9 +35,6 @@ class Callback extends CI_Controller
                     ->where('code_tagihan', $_externalId)
                     ->update('tagihan');
 
-                    // Tambahkan pesan log
-                    error_log('Redirecting to Dashboard');
-
                 $transfer_exists = $this->db->get_where('transaksi', [
                     'code_tagihan' => $_externalId
                 ])->num_rows();
@@ -54,10 +51,6 @@ class Callback extends CI_Controller
                         ->where('code_tagihan', $_externalId)
                         ->update('transaksi');
                     }
-
-                    // Redirect ke Dashboard jika status PAID
-                    header("Location: " . site_url('Dashboard'));
-                    exit;
 
             } else if ($_status == 'EXPIRED') {
                 $status = '0';
