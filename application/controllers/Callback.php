@@ -26,7 +26,6 @@ class Callback extends CI_Controller
             $_paidAt = $request['paid_at'];
             $_paymentChannel = $request['payment_channel'];
             $_paymentDestination = $request['payment_destination'];
-            // $_virtualAccount = $request['virtual_account'];
 
             $status = '1';
             if ($_status == 'PAID') {
@@ -45,12 +44,10 @@ class Callback extends CI_Controller
                         'code_tagihan' => $_externalId,
                         'foto_bukti' => $_paymentChannel,
                         'tgl_byr' => $_paidAt,
-                        // 'virtual_account' => $_virtualAccount,
                     ]);
                 } else {
                     $this->db->set('foto_bukti', $_paymentChannel)
                         ->set('tgl_byr', $_paidAt)
-                        // ->set('virtual_account', $_virtualAccount)
                         ->where('code_tagihan', $_externalId)
                         ->update('transaksi');
                 }
