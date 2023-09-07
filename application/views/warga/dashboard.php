@@ -407,10 +407,8 @@ div:where(.swal2-icon) {
 
             var reader = new FileReader();
             reader.onload = function(e) {
-                // get loaded data and render thumbnail.
                 document.getElementById("preview-bukti").src = e.target.result;
             };
-            // read the image file as a data URL.
             reader.readAsDataURL(this.files[0]);
         });
 
@@ -441,6 +439,13 @@ div:where(.swal2-icon) {
                             load_info();
                             $('#modal-bayar').modal('hide');
                         }
+
+                        // if (data.status) {
+                        //     window.open(data.detail.redirect_url);
+                        //     load_info();
+                        //     $('#modal-bayar').modal('hide');
+                        // }
+
                     },
                     error: function() {
                         $('#btn-tunggakan').trigger('click');

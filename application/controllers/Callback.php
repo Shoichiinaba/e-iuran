@@ -28,6 +28,7 @@ class Callback extends CI_Controller
             $_paymentDestination = $request['payment_destination'];
 
             $status = '1';
+
             if ($_status == 'PAID') {
                 $status = '2';
 
@@ -51,6 +52,9 @@ class Callback extends CI_Controller
                         ->where('code_tagihan', $_externalId)
                         ->update('transaksi');
                 }
+
+                header('Location: Dashboard.php');
+                exit;
             } else if ($_status == 'EXPIRED') {
                 $status = '0';
                 $this->db->set('status', $status)
@@ -86,6 +90,5 @@ class Callback extends CI_Controller
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
     }
-
 
 }

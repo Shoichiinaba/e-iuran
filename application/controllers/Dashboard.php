@@ -297,7 +297,6 @@ class Dashboard extends AUTH_Controller
                 ],
             ];
 
-
         } catch (\Xendit\Exceptions\ApiException $e) {
             $this->db->trans_rollback();
             $response = [
