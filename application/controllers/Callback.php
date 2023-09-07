@@ -54,15 +54,16 @@ class Callback extends CI_Controller
                         ->where('code_tagihan', $_externalId)
                         ->update('transaksi');
 
-                        // Redirect ke Dashboard jika status PAID
-                        redirect(site_url('Dashboard'));
-                }
+                    }
 
-            } else if ($_status == 'EXPIRED') {
-                $status = '0';
-                $this->db->set('status', $status)
-                    ->where(['code_tagihan' => $_externalId])
-                    ->update('tagihan');
+                    // Redirect ke Dashboard jika status PAID
+                    redirect(site_url('Dashboard'));
+
+            // } else if ($_status == 'EXPIRED') {
+            //     $status = '0';
+            //     $this->db->set('status', $status)
+            //         ->where(['code_tagihan' => $_externalId])
+            //         ->update('tagihan');
             }
 
             if ($this->db->trans_status() === FALSE) {
