@@ -29,6 +29,8 @@ class Dashboard extends AUTH_Controller
             $status = '0';
             $id_warga = $this->session->userdata('userdata')->id_warga;
             $data['tagihan_air']      = $this->M_client->m_tagihan_air($id_warga, $status);
+            $data['transaksi']        = $this->M_client->m_transaksi($id_warga, 1);
+            // var_dump($id_warga);
             $data['biodata']          = $this->M_client->m_biodata($id_warga);
             $data['userdata']         = $this->userdata;
             $data['content']          = 'warga/dashboard';
@@ -41,6 +43,7 @@ class Dashboard extends AUTH_Controller
             $data['menunggu']       = $this->M_dashboard->jumlah_app($id);
             $data['lunas']          = $this->M_dashboard->jumlah_lnas($id);
             $data['jum_warga']      = $this->M_dashboard->jumlah_warga($id);
+            $data['get_saldo']      = $this->M_dashboard->saldo($id);
             $data['content']        = 'page/dashboard_v';
             $this->load->view($this->template, $data);
         }
@@ -220,9 +223,13 @@ class Dashboard extends AUTH_Controller
     // xendit
     function show_saldo(){
         xendit_loaded();
+        // $d = Carbon::now();
+        // echo $d;
+        // die('');
         $getBalance = \Xendit\Balance::getBalance('CASH');
         var_dump($getBalance);
     }
+
 
     function buat_pembayaran()
     {

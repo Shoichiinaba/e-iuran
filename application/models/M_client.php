@@ -52,6 +52,22 @@ class M_client extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+
+    function m_transaksi($id_warga, $status){
+
+        $tagihan = $this->m_tagihan_air($id_warga, $status)[0];
+
+        $this->db->select('*');
+        $this->db->from('transaksi');
+        $this->db->where('code_tagihan', $tagihan->code_tagihan);
+        $query = $this->db->get();
+        $result = $query->result();
+        if(count($result) > 0){
+            return $result;
+        }
+        return null;
+    }
+
     function m_tagihan_warga($id_warga, $code_tagihan)
     {
 

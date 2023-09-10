@@ -51,11 +51,25 @@
             </div>
             <div class="col-md-6 grid-margin transparent">
                 <div class="row">
-                    <div class="col-md-6 mb-4 stretch-card transparent">
+                    <!-- <div class="col-md-6 mb-4 stretch-card transparent">
                         <div class="card card-tale">
                             <div class="card-body">
                                 <p class="mb-4">Menunggu Konfirmasi</p>
                                 <p class="fs-30 mb-2"><?=$menunggu; ?> Orang</p>
+
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="card card-tale">
+                            <div class="card-body">
+                                <h3 class="mb-4">Saldo</h3>
+                                <?php foreach ($get_saldo as $data) {
+                                    $formatted_saldo = 'Rp. ' . number_format($data->saldo, 0, ',', '.');
+                                    ?>
+
+                                <p class="fs-30 mb-2"><?=$formatted_saldo; ?></p>
+                                <?php } ?>
 
                             </div>
                         </div>

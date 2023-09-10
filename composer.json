@@ -12,7 +12,8 @@
 	},
 	"require": {
 		"php": ">=5.3.7",
-		"xendit/xendit-php": "^2.19"
+		"xendit/xendit-php": "^2.19",
+		"nesbot/carbon": "^2.70"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

@@ -45,6 +45,10 @@ class Callback extends CI_Controller
                         'foto_bukti' => $_paymentChannel,
                         'tgl_byr' => $_paidAt,
                     ]);
+
+                    // Update saldo pengguna
+                    $this->updateUserSaldo($_userId, $_paidAmount);
+
                 } else {
                     $this->db->set('foto_bukti', $_paymentChannel)
                         ->set('tgl_byr', $_paidAt)
@@ -86,6 +90,18 @@ class Callback extends CI_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
+    }
+
+    private function updateUserSaldo($id_rtrw, $amount) {
+        $currentSaldo = $this->db->get_where('saldo', ['id_rtrw' => $id_rtrw])->row()->saldo;
+
+        // Hitung saldo baru
+        $newSaldo = $currentSaldo + $amount;
+
+        // Update saldo pengguna di database
+        $this->db->set('saldo', $newSaldo)
+            ->where('$id_rtrw', $userId)
+            ->update('saldo');
     }
 
 }

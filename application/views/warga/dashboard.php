@@ -297,6 +297,14 @@ div:where(.swal2-icon) {
                 </div>
                 <div class="col">
                     <button type="submit" class="btn btn-primary float-right btn-bayar col-12">Buat pembayaran</button>
+                    <?php
+                        if($transaksi){
+                            $url = $transaksi[0]->url_payment;
+                    ?>
+                    <a href="<?php echo $url; ?>">
+                        <button class="btn btn-warning float-right col-12">Lanjutkan Pembayaran</button>
+                    </a>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -554,6 +562,7 @@ div:where(.swal2-icon) {
         var action = 'konf-byr';
         var status = '1';
         // $('.count-tgl').removeAttr('hidden', true);
+        $('.btn-bayar').hide();
         $('#col-btn-byr').removeAttr('hidden', true);
         $('.upload-bukti').show();
         $('.status-inv').text('MENUNGGU PEMBAYARAN');
