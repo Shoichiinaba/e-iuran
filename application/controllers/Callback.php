@@ -60,7 +60,7 @@ class Callback extends CI_Controller
                     ]);
 
                     // Update saldo pengguna
-                    $this->updateUserSaldo($id_rtrw, $_paidAmount);
+                    // $this->updateUserSaldo($id_rtrw, $_paidAmount);
 
                 } else {
                     $this->db->set('foto_bukti', $_paymentChannel)
