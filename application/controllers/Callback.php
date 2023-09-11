@@ -15,35 +15,40 @@ class Callback extends CI_Controller
         xendit_loaded();
         $this->db->trans_begin();
         try {
-            $rawRequest = file_get_contents("php://input");
-            $request = json_decode($rawRequest, true);
+            $rawRequest          = file_get_contents("php://input");
+            $request             = json_decode($rawRequest, true);
 
-            $_id = $request['id'];
-            $_externalId = $request['external_id'];
-            $_userId = $request['user_id'];
-            $_status = $request['status'];
-            $_paidAmount = $request['paid_amount'];
-            $_paidAt = $request['paid_at'];
-            $_paymentChannel = $request['payment_channel'];
+            $_id                 = $request['id'];
+            $_externalId         = $request['external_id'];
+            $_userId             = $request['user_id'];
+            $_status             = $request['status'];
+            $_paidAmount         = $request['paid_amount'];
+            $_paidAt             = $request['paid_at'];
+            $_paymentChannel     = $request['payment_channel'];
             $_paymentDestination = $request['payment_destination'];
 
             $status = '1';
             if ($_status == 'PAID') {
                 $status = '2';
 
-                $this->db->set('status', $status)
-                    ->where('code_tagihan', $_externalId)
-                    ->update('tagihan');
+                $date_convert = Carbon::parse($_paidAt);
 
-                $transfer_exists = $this->db->get_where('transaksi', [
+                $date = $date_convert->format('m-d-Y');
+                $time = $date_convert->format('H:i:s');
+
+                $this->db->set('status', $status)
+                         ->where('code_tagihan', $_externalId)
+                         ->update('tagihan');
+
+                $transfer_exists   = $this->db->get_where('transaksi', [
                     'code_tagihan' => $_externalId
                 ])->num_rows();
 
                 if ($transfer_exists === 0) {
                     $this->db->insert('transaksi', [
                         'code_tagihan' => $_externalId,
-                        'foto_bukti' => $_paymentChannel,
-                        'tgl_byr' => $_paidAt,
+                        'foto_bukti'   => $_paymentChannel,
+                        'tgl_byr'      => $date,
                     ]);
 
                     // Update saldo pengguna
@@ -51,16 +56,16 @@ class Callback extends CI_Controller
 
                 } else {
                     $this->db->set('foto_bukti', $_paymentChannel)
-                        ->set('tgl_byr', $_paidAt)
-                        ->where('code_tagihan', $_externalId)
-                        ->update('transaksi');
+                             ->set('tgl_byr', $_paidAt)
+                             ->where('code_tagihan', $_externalId)
+                             ->update('transaksi');
                     }
 
             } else if ($_status == 'EXPIRED') {
                 $status = '0';
                 $this->db->set('status', $status)
-                    ->where(['code_tagihan' => $_externalId])
-                    ->update('tagihan');
+                         ->where(['code_tagihan' => $_externalId])
+                         ->update('tagihan');
             }
 
             if ($this->db->trans_status() === FALSE) {
@@ -70,9 +75,9 @@ class Callback extends CI_Controller
             }
 
             $response = [
-                'status' => true,
+                'status'  => true,
                 'message' => 'Permintaan Diterima',
-                'detail' => $request,
+                'detail'  => $request,
             ];
 
         } catch (Exception $e) {

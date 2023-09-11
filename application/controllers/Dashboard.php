@@ -51,10 +51,11 @@ class Dashboard extends AUTH_Controller
 
     function info()
     {
-        $total = '0';
-        $id_warga = $this->session->userdata('userdata')->id_warga;
-        $data['info_tunggakan']          = $this->M_client->m_info_tunggakan($id_warga);
-        $data['info_konf_byr']          = $this->M_client->m_info_konf_byr($id_warga);
+        $total                      = '0';
+        $id_warga                   = $this->session->userdata('userdata')->id_warga;
+        $data['info_tunggakan']     = $this->M_client->m_info_tunggakan($id_warga);
+        $data['info_konf_byr']      = $this->M_client->m_info_konf_byr($id_warga);
+
         foreach ($data['info_tunggakan'] as $row) {
             echo '<script>
             $(".info-tunggakan").text("' . $row->bulan . ' Bulan");
@@ -117,16 +118,15 @@ class Dashboard extends AUTH_Controller
     function get_data_blm_bayar()
     {
 
-        $action = $this->input->post('action');
-        $status = $this->input->post('status');
-        $id_warga = $this->session->userdata('userdata')->id_warga;
-        $data['tagihan_air']          = $this->M_client->m_tagihan_air($id_warga, $status);
-        $no = 0;
-        $count_air = 0;
-        $count_iuran = 0;
-        $jumlah = 0;
-        // echo $code_tagihan;
-        // echo $action;
+        $action                = $this->input->post('action');
+        $status                = $this->input->post('status');
+        $id_warga              = $this->session->userdata('userdata')->id_warga;
+        $data['tagihan_air']   = $this->M_client->m_tagihan_air($id_warga, $status);
+        $no                    = 0;
+        $count_air             = 0;
+        $count_iuran           = 0;
+        $jumlah                = 0;
+
         foreach ($data['tagihan_air'] as $row) {
             $id_tagihan = $row->id_tagihan;
             $ipl = $row->lain_lain;
@@ -220,7 +220,7 @@ class Dashboard extends AUTH_Controller
         echo '</tr>';
     }
 
-    // xendit
+    // xendit tes saldo
     function show_saldo(){
         xendit_loaded();
         // $d = Carbon::now();
@@ -256,39 +256,39 @@ class Dashboard extends AUTH_Controller
             $id_rtrw = $userData->id_rtrw;
             // akhir session
 
-            $tgl_upload = $this->input->post('tgl-upload');
-            $tagihan = $this->input->post('tagihan');
-            $status = '1';
-            $tahun = date("y");
-            $bulan = date("m");
-            $id_tagihan = explode(',', $this->input->post('id-tagihan'));
-            $kode_max_ = str_pad($kode_, 4, "0", STR_PAD_LEFT);
-            $code_tagihan = "CT" . '-' . $id_rtrw . $bulan . $tahun . '-' . $kode_max_;
+            $tgl_upload    = $this->input->post('tgl-upload');
+            $tagihan       = $this->input->post('tagihan');
+            $status        = '1';
+            $tahun         = date("y");
+            $bulan         = date("m");
+            $id_tagihan    = explode(',', $this->input->post('id-tagihan'));
+            $kode_max_     = str_pad($kode_, 4, "0", STR_PAD_LEFT);
+            $code_tagihan  = "CT" . '-' . $id_rtrw . $bulan . $tahun . '-' . $kode_max_;
             date_default_timezone_set('Asia/Jakarta');
 
             // code xendit
             $data_faktur = [
-                "external_id" => $code_tagihan,
-                "description" => "Pembayaran Tagihan $code_tagihan $userData->nama $userData->no_rumah",
-                "amount" => preg_replace('/[Rp. ]/', '', $tagihan),
+                "external_id"      => $code_tagihan,
+                "description"      => "Pembayaran Tagihan $code_tagihan $userData->nama $userData->no_rumah",
+                "amount"           => preg_replace('/[Rp. ]/', '', $tagihan),
                 'invoice_duration' => 86400,
                 'customer' => [
-                    'given_names' => $userData->nama,
-                    'surname' => $userData->no_rumah,
-                    'mobile_number' => $userData->no_hp,
+                    'given_names'  => $userData->nama,
+                    'surname'      => $userData->no_rumah,
+                    'mobile_number'=> $userData->no_hp,
                 ],
             ];
 
-            $createInvoice = Invoice::create($data_faktur);
-            $payment_url = $createInvoice['invoice_url'];
+            $createInvoice  = Invoice::create($data_faktur);
+            $payment_url    = $createInvoice['invoice_url'];
 
             $data = [
-                'id_rtrw' => $id_rtrw,
-                'id_warga' => $id_warga,
-                'tgl_upload' => $tgl_upload . ' ' . date("H:i"),
+                'id_rtrw'      => $id_rtrw,
+                'id_warga'     => $id_warga,
+                'tgl_upload'   => $tgl_upload . ' ' . date("H:i"),
                 'code_tagihan' => $code_tagihan,
-                'jumlah' => preg_replace('/[Rp. ]/', '', $tagihan),
-                'url_payment' =>  $payment_url,
+                'jumlah'       => preg_replace('/[Rp. ]/', '', $tagihan),
+                'url_payment'  =>  $payment_url,
 
             ];
             $this->M_client->m_upload_transaksi($data);
@@ -308,12 +308,12 @@ class Dashboard extends AUTH_Controller
         } catch (\Xendit\Exceptions\ApiException $e) {
             $this->db->trans_rollback();
             $response = [
-                'status' => false,
-                'errors' => [
-                    'message' => $e->getMessage(),
-                    'type' => 'xendit',
+                'status'       => false,
+                'errors'       => [
+                    'message'  => $e->getMessage(),
+                    'type'     => 'xendit',
                 ],
-                'detail' => [],
+                'detail'       => [],
             ];
 
         }catch (Exception $e) {
