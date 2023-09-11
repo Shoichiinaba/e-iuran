@@ -83,7 +83,6 @@ class M_client extends CI_Model
     {
         $update = $this->db->set('foto_bukti', $foto_bukti)
             ->where('code_tagihan', $code_tagihan)
-            // ->where('status', '0')
             ->update('transaksi');
         return $update;
     }
@@ -105,7 +104,6 @@ class M_client extends CI_Model
     {
         $update = $this->db->set('status', $status)
             ->where('code_tagihan', $code_tagihan)
-            // ->where('status', '0')
             ->update('tagihan');
         return $update;
     }
@@ -114,7 +112,6 @@ class M_client extends CI_Model
         $update = $this->db->set('status', $status)
             ->set('code_tagihan', '')
             ->where('code_tagihan', $code_tagihan)
-            // ->where('status', '0')
             ->update('tagihan');
         return $update;
     }

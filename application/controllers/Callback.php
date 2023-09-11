@@ -26,6 +26,9 @@ class Callback extends CI_Controller
             $_paidAt             = $request['paid_at'];
             $_paymentChannel     = $request['payment_channel'];
             $_paymentDestination = $request['payment_destination'];
+            // sesion
+            $userData = $this->session->userdata('userdata');
+            $id_rtrw = $userData->id_rtrw;
 
             $status = '1';
             if ($_status == 'PAID') {
@@ -33,7 +36,7 @@ class Callback extends CI_Controller
 
                 $date_convert = Carbon::parse($_paidAt);
 
-                $date = $date_convert->format('m-d-Y');
+                $date = $date_convert->format('d-m-Y');
                 $time = $date_convert->format('H:i:s');
 
                 $this->db->set('status', $status)
@@ -52,7 +55,7 @@ class Callback extends CI_Controller
                     ]);
 
                     // Update saldo pengguna
-                    $this->updateUserSaldo($_userId, $_paidAmount);
+                    $this->updateUserSaldo($id_rtrw, $_paidAmount);
 
                 } else {
                     $this->db->set('foto_bukti', $_paymentChannel)
@@ -105,7 +108,7 @@ class Callback extends CI_Controller
 
         // Update saldo pengguna di database
         $this->db->set('saldo', $newSaldo)
-            ->where('$id_rtrw', $userId)
+            ->where('id_rtrw', $id_rtrw)
             ->update('saldo');
     }
 
