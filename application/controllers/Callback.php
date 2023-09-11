@@ -64,7 +64,7 @@ class Callback extends CI_Controller
 
                 } else {
                     $this->db->set('foto_bukti', $_paymentChannel)
-                             ->set('tgl_byr', $_paidAt)
+                             ->set('tgl_byr', $date)
                              ->where('code_tagihan', $_externalId)
                              ->update('transaksi');
                     }
