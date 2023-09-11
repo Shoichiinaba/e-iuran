@@ -26,9 +26,14 @@ class Callback extends CI_Controller
             $_paidAt             = $request['paid_at'];
             $_paymentChannel     = $request['payment_channel'];
             $_paymentDestination = $request['payment_destination'];
+
             // sesion
+            $id_rtrw = null;
             $userData = $this->session->userdata('userdata');
-            $id_rtrw = $userData->id_rtrw;
+
+            if (is_object($userData) && property_exists($userData, 'id_rtrw')) {
+                $id_rtrw = $userData->id_rtrw;
+            }
 
             $status = '1';
             if ($_status == 'PAID') {
