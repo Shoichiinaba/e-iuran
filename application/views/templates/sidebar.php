@@ -27,7 +27,7 @@
                 </ul> -->
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link"
-                            href="<?php echo site_url('Data_tagihan/data_blmbyr'); ?>">Data Transaksi</a>
+                            href="<?php echo site_url('Data_tagihan/data_transaksi'); ?>">Data Transaksi</a>
                     </li>
                 </ul>
             </div>

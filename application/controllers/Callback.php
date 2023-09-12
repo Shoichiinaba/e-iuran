@@ -107,8 +107,7 @@ class Callback extends CI_Controller
 
     private function updateUserSaldo($id_rtrw, $amount) {
         $currentSaldo = $this->db->get_where('saldo', ['id_rtrw' => $id_rtrw])->row()->saldo;
-
-        // Hitung saldo baru
+        var_dump( $currentSaldo);
         $newSaldo = $currentSaldo + $amount;
 
         // Update saldo pengguna di database

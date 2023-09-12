@@ -164,7 +164,6 @@ select:focus+label {
                     <div class="card">
                         <div class="card-body pb-2 pr-2">
                             <h4 class="card-title">Buat Tagihan</h4>
-
                             <div class="input-group pb-0">
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0">
                                     <div class="input-wrapper">
@@ -216,6 +215,15 @@ select:focus+label {
                                     </div>
                                 </div>
                                 <?php } ?>
+
+                                <?php foreach ($taxs as $data) { ?>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
+                                    <div class="input-wrapper">
+                                        <input type="text" id="taxs" class="col-lg-12" value="<?= $data->taxs; ?>">
+                                    </div>
+                                </div>
+                                <?php } ?>
+
                                 <?php foreach ($iuran as $data) { ?>
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
                                     <div class="input-wrapper">
@@ -295,38 +303,84 @@ select:focus+label {
         </form>
     </div>
 </div>
-</div>
-
 <div class="row">
     <div class="col-md-12 col-lg-12 grid-margin stretch-card">
         <div class="card">
-            <div class="card-body pt-2 pl-3">
-                <div class="d-flex align-items-center">
-                    <p class="card-title p-1">Data Tagihan</p>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="table-responsive">
-                            <table id="data-tagihan" class="display expandable-table" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>No. Invoice</th>
-                                        <th>Nama || No Rumah</th>
-                                        <th>Bulan</th>
-                                        <th>Tahun</th>
-                                        <th>Nominal</th>
-                                        <th>Tagihan Lain</th>
-                                        <th>Total</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>
+            <div class="card-body pt-1 mt-1">
+                <div class="row mb-1 pb-1">
+                    <div class="col-md-12 grid-margin mb-0 pb-0">
+                        <div class="row">
+                            <div class="col-3 col-xl-8 mb-4 mb-xl-0">
+                                <h4 class="font-weight-bold">Data Tagihan
+                                </h4>
+                            </div>
+                            <div class="input-group pb-0 col-6">
+                                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                    <label class="label-select">Bulan</label>
+                                    <select type="text" id="bln_filter" class="col-lg-12 mt-1 pt-1">
+                                        <option value="">Pilih !!</option>
+                                        <option value="Januari">Januari</option>
+                                        <option value="Februari">Februari</option>
+                                        <option value="Maret">Maret</option>
+                                        <option value="April">April</option>
+                                        <option value="Mei">Mei</option>
+                                        <option value="Juni">Juni</option>
+                                        <option value="Juli">Juli</option>
+                                        <option value="Agustus">Agustus</option>
+                                        <option value="September">September</option>
+                                        <option value="Oktober">Oktober</option>
+                                        <option value="November">November</option>
+                                        <option value="Desember">Desember</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                    <label class="label-select">Tahun</label>
+                                    <select type="text" id="thn_filter" class="col-lg-12 mt-1 pt-1">
+                                        <option value="">Pilih !!</option>
+                                        <?php
+                                            foreach ($filter as $data) :
+                                        ?>
+                                        <option value="<?= $data->thn_tagihan; ?>"> &nbsp;
+                                            <?= $data->thn_tagihan; ?></option>
+                                        <?php
+                                            endforeach;
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                    <label class="label-select">Status</label>
+                                    <select type="text" id="status_filter" class="col-lg-12 mt-1 pt-1">
+                                        <option value="">Pilih !!</option>
+                                        <option value="0">Belum Bayar</option>
+                                        <option value="2">Lunas</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table id="data-tagihan" class="display expandable-table" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>No. Invoice</th>
+                                            <th>Nama || No Rumah</th>
+                                            <th>Bulan</th>
+                                            <th>Tahun</th>
+                                            <th>Nominal</th>
+                                            <th>Tagihan Lain</th>
+                                            <th>Taxs</th>
+                                            <th>Total</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -473,64 +527,55 @@ $(document).ready(function() {
     });
 
     // datatable tagihan
-    window.crud = $('#data-tagihan').DataTable({
-        "paging": true,
-        "ordering": true,
-        "autoWidth": true,
-        "responsive": true,
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: "<?php echo base_url('Data_tagihan/get_tagihan') ?>",
-            type: "POST"
-        },
-        columns: [{
-                data: 'nomor_urut',
-                name: 'nomor_urut'
-            },
-            {
-                data: 'no_invoice',
-                name: 'no_invoice'
-            },
-            {
-                data: 'nama',
-                name: 'nama'
-            },
-            {
-                data: 'bln_tagihan',
-                name: 'bln_tagihan'
-            },
-            {
-                data: 'thn_tagihan',
-                name: 'thn_tagihan'
-            },
-            {
-                data: 'nominal',
-                name: 'nominal'
-            },
-            {
-                data: 'lain_lain',
-                name: 'lain_lain'
-            },
-            {
-                data: 'total',
-                name: 'total'
-            },
-            {
-                data: 'status',
-                name: 'status',
-                orderable: false,
-                searchable: false,
-                className: 'text-center'
-            },
-        ],
-        "columnDefs": [{
-            "targets": 0,
-            "className": "text-center",
-        }],
-    });
 
 });
+</script>
+<script>
+$(document).ready(function() {
+    var table;
+
+    table = $('#data-tagihan').DataTable({
+        "paging": true,
+        "autoWidth": true,
+        "search": true,
+        "responsive": true,
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "<?=site_url('Data_tagihan/get_trx')?>",
+            "type": "POST",
+            "data": function(d) {
+                d.bln_filter = $('#bln_filter').val();
+                d.status_filter = $('#status_filter').val();
+                d.thn_filter = $('#thn_filter').val();
+            }
+        },
+
+        "columnDefs": [{
+                "targets": [1, 3, 4, 5, 8, 9],
+                "className": 'text-right'
+            },
+            {
+                "targets": [2],
+                "className": 'text-left'
+            },
+            {
+                "targets": [0],
+                "className": 'text-center'
+            },
+            {
+                "targets": [4, 5, 6, 7, 8],
+                "orderable": false
+            },
+        ]
+    })
+    $('#bln_filter, #status_filter, #thn_filter').on('change', function() {
+        // debugging apakah nilai select muncul
+        // console.log('Nilai select: ' + $(this).val());
+        table.draw();
+    });
+
+})
 </script>
 <!-- akhirkode javascript untuk manipulasi data -->
 
@@ -540,7 +585,9 @@ $(document).ready(function() {
 <script>
 //kode javascrip mengambil bulan dan tanggal hari ini
 const selectBulan = document.getElementById('bln_tagihan');
+const selectBln = document.getElementById('bln_filter');
 const selectTahun = document.getElementById('thn_tagihan');
+const selectThn = document.getElementById('thn_filter');
 
 // Buat objek Date untuk mendapatkan bulan & tahun saat ini
 const tanggalSekarang = new Date();
@@ -548,14 +595,25 @@ const tahunSekarang = new Date().getFullYear();
 
 const indeksBulanSekarang = tanggalSekarang.getMonth();
 
+const namaBulan = [
+    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+];
+
 // Set nilai default select sesuai dengan indeks bulan saat ini
 selectBulan.selectedIndex = indeksBulanSekarang;
+selectBln.value = namaBulan[indeksBulanSekarang];
 
 // memilih tahun saat ini
 for (let i = 0; i < selectTahun.options.length; i++) {
-    // Jika nilai opsi sama dengan tahun saat ini, set opsi tersebut menjadi default (selected)
     if (parseInt(selectTahun.options[i].value) === tahunSekarang) {
         selectTahun.options[i].selected = true;
+        break;
+    }
+}
+for (let i = 0; i < selectThn.options.length; i++) {
+    if (parseInt(selectThn.options[i].value) === tahunSekarang) {
+        selectThn.options[i].selected = true;
         break;
     }
 }
