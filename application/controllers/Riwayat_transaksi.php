@@ -78,12 +78,11 @@ class Riwayat_transaksi extends AUTH_Controller
                 echo '<td>Rp' . number_format($riwayat->lain_lain += $riwayat->nominal, 0, ',', '.') . '</td>';
                 if ($riwayat->status == '0') {
                     echo '<td class="font-weight-bold"><i>Belum Bayar</i></td>';
-                    echo '<td><button type="button" class="btn btn-primary btn-bayar btn-sm" data-bs-toggle="modal" data-bs-target="#modal-bayar">Bayar</button></td>';
                 } elseif ($riwayat->status == '1') {
                     echo '<td class="font-weight-bold"><i>Menunggu konfirmasi</i></td>';
                 } elseif ($riwayat->status == '2') {
                     echo '<td class="font-weight-bold">Lunas</td>';
-                    echo '<td><button type="button" class="btn btn-primary btn-bayar btn-sm" data-bs-toggle="modal" data-bs-target="#modal-bayar">Print</button></td>';
+                    echo '<td><a href="'.base_url('Cetak_invoice').'/data/'.$riwayat->no_invoice.'" class="btn btn-primary btn-sm" target="_blank">Print</a></td>';
                 }
                 echo '</tr>';
             }

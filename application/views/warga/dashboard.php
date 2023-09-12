@@ -273,7 +273,7 @@
                 <div class="row mx-auto mt-5 mb-4">
                     <div class="col-lg-6 col-md-6 col-12 logo-e">
                         <img src="<?= base_url('assets'); ?>/images/logo_e/hicare.png" class="mr-2" alt="-iuran" style="height: auto;width: 10rem;">
-                        <i style="font-size: 36px;font-weight: bold;top: 8px;position: absolute;"></i>
+                        <!-- <i style="font-size: 36px;font-weight: bold;top: 8px;position: absolute;"></i> -->
                     </div>
                     <div class="col-lg-6 col-md-6 col-12 pt-2">
                         <h4 class="text-inv mb-0" style="font-weight: bold;font-family: sans-serif; top: 27px; position: relative;">STATUS | <i class="text-danger status-inv">BELUM DIBAYAR</i></h4>
@@ -413,6 +413,7 @@
 
             $('.btn-bayar').click(function() {
                 if ($('.btn-bayar').val() == "disabled") {
+                    alert('yaa')
                     $(function() {
                         Swal.fire({
                             icon: "error",
