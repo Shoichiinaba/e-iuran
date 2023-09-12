@@ -83,7 +83,7 @@ class Riwayat_transaksi extends AUTH_Controller
                     echo '<td class="font-weight-medium"><div class="badge badge-warning">Menunggu Pembayaran</div></td>';
                 } elseif ($riwayat->status == '2') {
                     echo '<td class="font-weight-medium"><div class="badge badge-success">Lunas</div></td>';
-                    echo '<td><button type="button" class="btn btn-primary btn-bayar btn-sm" data-bs-toggle="modal" data-bs-target="#modal-bayar">Print</button></td>';
+                   echo '<td><a href="'.base_url('Cetak_invoice').'/data/'.$riwayat->no_invoice.'" class="btn btn-primary btn-sm" target="_blank">Print</a></td>';
                 }
                 echo '</tr>';
             }
