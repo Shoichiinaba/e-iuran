@@ -23,20 +23,16 @@ class M_client extends CI_Model
         $this->db->from('tagihan');
         $this->db->where('tagihan.id_warga', $id_warga);
         $this->db->where('status', '0');
-        // $this->db->group_by('tagihan.id_warga');
-        // $this->db->order_by('tagihan.id_tagihan');
         $query = $this->db->get();
         return $query->result();
     }
     function m_info_konf_byr($id_warga)
     {
-        $this->db->select('*, COUNT(tagihan.status = 3) as bulan, SUM(lain_lain + nominal) as total');
+        $this->db->select('*, COUNT(tagihan.status = 1) as bulan, SUM(lain_lain + nominal) as total');
         $this->db->from('tagihan');
         $this->db->join('transaksi', 'transaksi.code_tagihan = tagihan.code_tagihan');
         $this->db->where('tagihan.id_warga', $id_warga);
-        $this->db->where('status', '3');
-        // $this->db->group_by('tagihan.id_warga');
-        // $this->db->order_by('tagihan.id_tagihan');
+        $this->db->where('status', '1');
         $query = $this->db->get();
         return $query->result();
     }
@@ -45,20 +41,34 @@ class M_client extends CI_Model
 
         $this->db->select('*');
         $this->db->from('tagihan');
-        // $this->db->where_in('id_iuran', '1');
         $this->db->where('status', $status);
         $this->db->where('id_warga', $id_warga);
-        // $this->db->where('code_tagihan', $code_tagihan);
         $query = $this->db->get();
         return $query->result();
     }
+
+    function m_transaksi($id_warga, $status){
+
+        $tagihan = $this->m_tagihan_air($id_warga, $status);
+        if(count($tagihan) == 0){
+            return null;
+        }
+        $this->db->select('*');
+        $this->db->from('transaksi');
+        $this->db->where('code_tagihan', $tagihan[0]->code_tagihan);
+        $query = $this->db->get();
+        $result = $query->result();
+        if(count($result) > 0){
+            return $result;
+        }
+        return null;
+    }
+
     function m_tagihan_warga($id_warga, $code_tagihan)
     {
 
         $this->db->select('*');
         $this->db->from('tagihan');
-        // $this->db->where_in('id_iuran', '1');
-        // $this->db->where('status', '0');
         $this->db->where('id_warga', $id_warga);
         $this->db->where('code_tagihan', $code_tagihan);
         $query = $this->db->get();
@@ -68,28 +78,32 @@ class M_client extends CI_Model
         $result = $this->db->insert('transaksi', $data);
         return $result;
     }
+
     function m_update_transaksi($code_tagihan, $foto_bukti)
     {
         $update = $this->db->set('foto_bukti', $foto_bukti)
             ->where('code_tagihan', $code_tagihan)
-            // ->where('status', '0')
             ->update('transaksi');
         return $update;
     }
+
     function m_update_tagihan($code_tagihan, $status, $id_tagihan)
     {
+        if (is_array($id_tagihan)) {
+            $id_tagihan = implode(",", $id_tagihan);
+        }
+
         $update = $this->db->set('code_tagihan', $code_tagihan)
             ->set('status', $status)
             ->where_in('id_tagihan', explode(",", $id_tagihan))
-            // ->where('status', '0')
             ->update('tagihan');
         return $update;
     }
+
     function m_update_tagihan_pembayaran($code_tagihan, $status)
     {
         $update = $this->db->set('status', $status)
             ->where('code_tagihan', $code_tagihan)
-            // ->where('status', '0')
             ->update('tagihan');
         return $update;
     }
@@ -98,7 +112,6 @@ class M_client extends CI_Model
         $update = $this->db->set('status', $status)
             ->set('code_tagihan', '')
             ->where('code_tagihan', $code_tagihan)
-            // ->where('status', '0')
             ->update('tagihan');
         return $update;
     }

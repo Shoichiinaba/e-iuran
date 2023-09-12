@@ -38,6 +38,16 @@ class M_dashboard extends CI_Model
         $this->db->where('id_rtrw', $id);
     	return $this->db->count_all_results();
 	}
+
+	public function saldo($id)
+	{
+		$this->db->select('*');
+		$this->db->from('saldo');
+        $this->db->where('id_rtrw', $id);
+		$query = $this->db->get();
+        return $query->result();
+	}
+
 // notif warga sudah melakukan upload bukti tf
 	public function jumlah_byr( $id_rtrw)
 	{

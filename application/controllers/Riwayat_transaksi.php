@@ -49,7 +49,7 @@ class Riwayat_transaksi extends AUTH_Controller
                         <table class=" expandable-table dataTable table" style="width: 100%;display: table;overflow: auto;" aria-describedby="data-perum_info">
                             <thead>
                                 <tr>
-                                
+
                                     <th class="text-center">No. Rumah</th>
                                     <th class="text-center">Pemilik</th>
                                     <th class="text-center">Tunggakan</th>
@@ -77,12 +77,13 @@ class Riwayat_transaksi extends AUTH_Controller
                 echo '<td>Rp' . number_format($riwayat->lain_lain, 0, ',', '.') . '</td>';
                 echo '<td>Rp' . number_format($riwayat->lain_lain += $riwayat->nominal, 0, ',', '.') . '</td>';
                 if ($riwayat->status == '0') {
-                    echo '<td class="font-weight-bold"><i>Belum Bayar</i></td>';
+                    echo '<td class="font-weight-medium"><div class="badge badge-danger">Belum Bayar</div></td>';
+                    echo '<td><button type="button" class="btn btn-primary btn-bayar btn-sm" data-bs-toggle="modal" data-bs-target="#modal-bayar">Bayar</button></td>';
                 } elseif ($riwayat->status == '1') {
-                    echo '<td class="font-weight-bold"><i>Menunggu konfirmasi</i></td>';
+                    echo '<td class="font-weight-medium"><div class="badge badge-warning">Menunggu Pembayaran</div></td>';
                 } elseif ($riwayat->status == '2') {
-                    echo '<td class="font-weight-bold">Lunas</td>';
-                    echo '<td><a href="'.base_url('Cetak_invoice').'/data/'.$riwayat->no_invoice.'" class="btn btn-primary btn-sm" target="_blank">Print</a></td>';
+                    echo '<td class="font-weight-medium"><div class="badge badge-success">Lunas</div></td>';
+                   echo '<td><a href="'.base_url('Cetak_invoice').'/data/'.$riwayat->no_invoice.'" class="btn btn-primary btn-sm" target="_blank">Print</a></td>';
                 }
                 echo '</tr>';
             }

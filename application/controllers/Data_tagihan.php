@@ -1,5 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+use Carbon\Carbon;
+use Xendit\Invoice;
 
 class Data_tagihan extends AUTH_Controller
 {
@@ -11,6 +13,13 @@ class Data_tagihan extends AUTH_Controller
         $this->load->model('M_transaksi');
         $this->load->model('M_dashboard');
 
+    }
+
+    // xendit
+    function show_saldo(){
+        xendit_loaded();
+        $getBalance = \Xendit\Balance::getBalance('CASH');
+        var_dump($getBalance);
     }
 
     public function index()
@@ -310,6 +319,8 @@ class Data_tagihan extends AUTH_Controller
             $row[] = $formatted_lain;
             $row[] = $Rp_total;
             $row[] = $status;
+            // $row[] = $foto_bukti;
+            // $row[] = $tgl_byr;
 
             $data[] = $row;
         }
