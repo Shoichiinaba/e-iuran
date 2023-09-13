@@ -26,21 +26,22 @@ class Riwayat_transaksi extends AUTH_Controller
                                 <thead>
                                     <tr>
                                         <th rowspan="2" class="text-center pb-4">Bulan</th>
-                                        <th colspan="2" class="text-center">Angka Pada Meter</th>
-                                        <th rowspan="2" class="text-center pb-4">Pemaikaian</th>
-                                        <th rowspan="2" class="text-center pb-4">Tarif</th>
-                                        <th rowspan="2" class="text-center pb-4">Abunemen</th>
                                         <th rowspan="2" class="text-center pb-4">Priode</th>
-                                        <th rowspan="2" class="text-center pb-4">Jumlah</th>
-                                        <th rowspan="2" class="text-center pb-4">Iuran</th>
+                                        <th colspan="6" class="text-center">Pemakaian Air</th>
+                                        <th rowspan="2" class="text-center pb-4">IPL</th>
+                                        <th rowspan="2" class="text-center pb-4">TAX</th>
                                         <th rowspan="2" class="text-center pb-4">Total bayar</th>
                                         <th rowspan="2" class="text-center pb-4">Status</th>
                                         <th rowspan="2" class="text-center pb-4">Aksi</th>
                                     </tr>
                                     <tr>
                                         <center>
-                                            <th class="text-center">Awal</th>
+                                            <th class="text-center" style="border-radius: 0;">Awal</th>
                                             <th class="text-center">Akhir</th>
+                                            <th class="text-center">Pemaikaian</th>
+                                            <th class="text-center">Tarif</th>
+                                            <th class="text-center" >Abunemen</th>
+                                            <th class="text-center"style="border-radius: 0;">Bayar air</th>
                                         </center>
                                     </tr>
                                 </thead>';
@@ -67,23 +68,24 @@ class Riwayat_transaksi extends AUTH_Controller
             foreach ($data['riwayat_anda'] as $riwayat) {
                 echo '<tr>';
                 echo '<td>' . $riwayat->bln_tagihan . ' / ' . $riwayat->thn_tagihan . '</td>';
+                echo '<td>1 Bulan</td>';
                 echo '<td>' . $riwayat->kubik1 . '</td>';
                 echo '<td>' . $riwayat->kubik_in . '</td>';
-                echo '<td>' . $riwayat->hasil_kubik . '</td>';
-                echo '<td>Rp' . number_format($riwayat->perkubik, 0, ',', '.') . '</td>';
-                echo '<td>Rp' . number_format($riwayat->abunament, 0, ',', '.') . '</td>';
-                echo '<td>1 Bulan</td>';
-                echo '<td>Rp' . number_format($riwayat->nominal, 0, ',', '.') . '</td>';
-                echo '<td>Rp' . number_format($riwayat->lain_lain, 0, ',', '.') . '</td>';
-                echo '<td>Rp' . number_format($riwayat->lain_lain += $riwayat->nominal, 0, ',', '.') . '</td>';
+                echo '<td class="text-center">' . $riwayat->hasil_kubik . '</td>';
+                echo '<td>Rp. ' . number_format($riwayat->perkubik, 0, ',', '.') . '</td>';
+                echo '<td>Rp. ' . number_format($riwayat->abunament, 0, ',', '.') . '</td>';
+                echo '<td>Rp. ' . number_format($riwayat->nominal, 0, ',', '.') . '</td>';
+                echo '<td>Rp. ' . number_format($riwayat->lain_lain, 0, ',', '.') . '</td>';
+                echo '<td>Rp. ' . number_format($riwayat->taxs, 0, ',', '.') . '</td>';
+                echo '<td>Rp. ' . number_format($riwayat->lain_lain += $riwayat->nominal += $riwayat->taxs, 0, ',', '.') . '</td>';
                 if ($riwayat->status == '0') {
                     echo '<td class="font-weight-medium"><div class="badge badge-danger">Belum Bayar</div></td>';
-                    echo '<td><button type="button" class="btn btn-primary btn-bayar btn-sm" data-bs-toggle="modal" data-bs-target="#modal-bayar">Bayar</button></td>';
+                    // echo '<td><button type="button" class="btn btn-primary btn-bayar btn-sm" data-bs-toggle="modal" data-bs-target="#modal-bayar">Bayar</button></td>';
                 } elseif ($riwayat->status == '1') {
                     echo '<td class="font-weight-medium"><div class="badge badge-warning">Menunggu Pembayaran</div></td>';
                 } elseif ($riwayat->status == '2') {
                     echo '<td class="font-weight-medium"><div class="badge badge-success">Lunas</div></td>';
-                   echo '<td><a href="'.base_url('Cetak_invoice').'/data/'.$riwayat->no_invoice.'" class="btn btn-primary btn-sm" target="_blank">Print</a></td>';
+                    echo '<td><a href="' . base_url('Cetak_invoice') . '/data/' . $riwayat->no_invoice . '" class="btn btn-primary btn-sm" target="_blank">Print</a></td>';
                 }
                 echo '</tr>';
             }

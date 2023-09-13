@@ -2,6 +2,21 @@
     .Belumbayar {
         background: #f2a2a7;
     }
+
+    .table.dataTable {
+        border-spacing: 1px !important;
+    }
+
+    .mx-width {
+        max-width: 15px;
+    }
+
+    @media (max-width: 767px) {
+
+        .content-wrapper {
+            padding: 0.5rem 0.5rem;
+        }
+    }
 </style>
 <div class="main-panel">
     <div class="content-wrapper">
