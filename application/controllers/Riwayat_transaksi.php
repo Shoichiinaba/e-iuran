@@ -26,11 +26,14 @@ class Riwayat_transaksi extends AUTH_Controller
                                 <thead>
                                     <tr>
                                         <th rowspan="2" class="text-center pb-4">Bulan</th>
-                                        <th rowspan="2" class="text-center pb-4">Priode</th>
+                                        <th rowspan="2" class="text-center pb-4">Code bayar</th>
+                                        <th rowspan="2" class="text-center pb-4">No invoice</th>
                                         <th colspan="6" class="text-center">Pemakaian Air</th>
                                         <th rowspan="2" class="text-center pb-4">IPL</th>
                                         <th rowspan="2" class="text-center pb-4">TAX</th>
                                         <th rowspan="2" class="text-center pb-4">Total bayar</th>
+                                        <th rowspan="2" class="text-center pb-4">Tanggal bayar</th>
+                                        <th rowspan="2" class="text-center pb-4">Bank</th>
                                         <th rowspan="2" class="text-center pb-4">Status</th>
                                         <th rowspan="2" class="text-center pb-4">Aksi</th>
                                     </tr>
@@ -68,7 +71,8 @@ class Riwayat_transaksi extends AUTH_Controller
             foreach ($data['riwayat_anda'] as $riwayat) {
                 echo '<tr>';
                 echo '<td>' . $riwayat->bln_tagihan . ' / ' . $riwayat->thn_tagihan . '</td>';
-                echo '<td>1 Bulan</td>';
+                echo '<td>'.$riwayat->code_tagihan.'</td>';
+                echo '<td>'.$riwayat->no_invoice.'</td>';
                 echo '<td>' . $riwayat->kubik1 . '</td>';
                 echo '<td>' . $riwayat->kubik_in . '</td>';
                 echo '<td class="text-center">' . $riwayat->hasil_kubik . '</td>';
@@ -78,6 +82,8 @@ class Riwayat_transaksi extends AUTH_Controller
                 echo '<td>Rp. ' . number_format($riwayat->lain_lain, 0, ',', '.') . '</td>';
                 echo '<td>Rp. ' . number_format($riwayat->taxs, 0, ',', '.') . '</td>';
                 echo '<td>Rp. ' . number_format($riwayat->lain_lain += $riwayat->nominal += $riwayat->taxs, 0, ',', '.') . '</td>';
+                echo '<td>' . $riwayat->tgl_byr . '</td>';
+                echo '<td>' . $riwayat->foto_bukti . '</td>';
                 if ($riwayat->status == '0') {
                     echo '<td class="font-weight-medium"><div class="badge badge-danger">Belum Bayar</div></td>';
                     // echo '<td><button type="button" class="btn btn-primary btn-bayar btn-sm" data-bs-toggle="modal" data-bs-target="#modal-bayar">Bayar</button></td>';
