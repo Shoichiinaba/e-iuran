@@ -11,6 +11,7 @@ class M_riwayat extends CI_Model
 
         $this->db->select('*');
         $this->db->from('tagihan');
+        $this->db->join('transaksi', 'transaksi.id_warga = tagihan.id_warga');
         $this->db->where('tagihan.id_warga', $id_warga);
         $query = $this->db->get();
         return $query->result();

@@ -78,7 +78,7 @@
                 <div class="col-xs-6 pt-2">
                     <h3 class="text-right" style="font-weight: bold;font-family: sans-serif; top: 27px; position: relative;">INVOICE | <i class="text-danger status-inv">LUNAS</i></h3>
                     <br>
-                    <p class="text-right">#<?= $data->no_invoice; ?></p>
+                    <p class="text-right" style="font-weight: bold;">#<?= $data->no_invoice; ?></p>
                 </div>
             </div>
         </div>
@@ -95,9 +95,9 @@
                 <div class="col-xs-6">
                     <h5 class="text-right mb-0">Dibayarkan ke :</h5>
                     <p class="text-right mb-0">Pengelola <?= $data->perum; ?></p>
-                    <p class="text-right mb-0">AN. Nama Pemilik REK</p>
-                    <p class="text-right mb-0">Rek. #0000xxxxxx</p>
-                    <p class="text-right mb-0">Bank BCA</p>
+                    <p class="text-right mb-0"><?= $data->code_tagihan;?></p>
+                    <p class="text-right mb-0"><?= $data->foto_bukti;?></p>
+                    <p class="text-right mb-0"><?= $data->tgl_byr;?></p>
                 </div>
             </div>
         </div>
@@ -140,9 +140,13 @@
                         <td class="">IPL</td>
                         <td class="">Rp.<?= number_format($data->lain_lain, 0, ',', '.'); ?></td>
                     </tr>
+                    <tr style="background: #ff7f50a3; font-weight: bold;">
+                        <td class="">TAX</td>
+                        <td class="">Rp.<?= number_format($data->taxs, 0, ',', '.'); ?></td>
+                    </tr>
                     <tr style="font-weight: bold;">
                         <td>Total bayar</td>
-                        <td>Rp.<?= number_format($data->lain_lain += $data->nominal, 0, ',', '.'); ?></td>
+                        <td>Rp.<?= number_format($data->lain_lain += $data->nominal += $data->taxs, 0, ',', '.'); ?></td>
                     </tr>
                 </tbody>
 
