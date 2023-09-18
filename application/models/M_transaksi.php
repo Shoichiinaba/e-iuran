@@ -107,7 +107,6 @@ class M_transaksi extends CI_Model
             $this->db->select('*');
             $this->db->from('tagihan');
             $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
-            $this->db->join('taxs', 'taxt.id_warga = tagihan.id_warga');
             $this->db->where_in('tagihan.status', array(0, 2));
 
     } else if ($role == 'RT') {
@@ -180,7 +179,7 @@ class M_transaksi extends CI_Model
             $this->db->select('*');
             $this->db->from('tagihan');
             $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
-            $this->db->where_in('tagihan.status', array(0, 2));
+            $this->db->where_in('tagihan.status', array(1, 2));
 
     } else if ($role == 'RT') {
 
@@ -189,6 +188,18 @@ class M_transaksi extends CI_Model
             $this->db->join('tagihan', 'tagihan.code_tagihan = transaksi.code_tagihan');
             $this->db->join('warga', 'warga.id_warga = transaksi.id_warga');
             $this->db->where('transaksi.id_rtrw', $id);
+            $this->db->where_in('tagihan.status', array(1, 2));
+            $this->db->group_by('transaksi.code_tagihan');
+
+            // if ($bln_tag) {
+            //     $this->db->where('tagihan.bln_tagihan', $bln_tag);
+            // }
+            // if ($status !== '') {
+            //     $this->db->where('tagihan.status', $status);
+            // }
+            // if ($thn_tag !== '') {
+            //     $this->db->where('tagihan.thn_tagihan', $thn_tag);
+            // }
 
             $i = 0;
             foreach ($this->column_search as $trx) {
@@ -230,4 +241,19 @@ class M_transaksi extends CI_Model
         return $this->db->count_all_results();
     }
     // akhir datatable serverside untuk transaksi pembayaran
+
+    function get_saldo($id) {
+        $this->db->select('*');
+        $this->db->from('transaksi');
+        $this->db->join('tagihan', 'tagihan.code_tagihan = transaksi.code_tagihan');
+        $this->db->join('warga', 'warga.id_warga = transaksi.id_warga');
+        $this->db->where('transaksi.id_rtrw', $id);
+        $this->db->where('tagihan.status', 2);
+        $this->db->where('transaksi.status_saldo', 1);
+        $this->db->group_by('transaksi.code_tagihan');
+
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 }

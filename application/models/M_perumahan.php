@@ -6,7 +6,6 @@ class M_perumahan extends CI_Model
 
     public function get_perumahan()
     {
-
             $this->db->select('*');
             $this->db->from('perumahan');
             $query = $this->db->get();

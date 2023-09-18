@@ -18,6 +18,8 @@ class Dashboard extends AUTH_Controller
         parent::__construct();
         $this->load->model('M_client');
         $this->load->model('M_dashboard');
+        $this->load->model('M_transaksi');
+        $this->load->helper('saldo_helper');
     }
 
     public function index()
@@ -44,6 +46,14 @@ class Dashboard extends AUTH_Controller
             $data['lunas']          = $this->M_dashboard->jumlah_lnas($id);
             $data['jum_warga']      = $this->M_dashboard->jumlah_warga($id);
             $data['get_saldo']      = $this->M_dashboard->saldo($id);
+
+            // code saldo
+            $saldo = $this->M_transaksi->get_saldo($id);
+            $totalDPP = calculate_saldo($saldo);
+            $Rp_saldo = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
+            $data['totalDPP'] = $Rp_saldo;
+            // akhir code saldo
+
             $data['content']        = 'page/dashboard_v';
             $this->load->view($this->template, $data);
         }
@@ -254,10 +264,12 @@ class Dashboard extends AUTH_Controller
             $userData = $this->session->userdata('userdata');
             $id_warga = $userData->id_warga;
             $id_rtrw = $userData->id_rtrw;
+            $id_perum = $userData->id_perum;
             // akhir session
 
             $tgl_upload    = $this->input->post('tgl-upload');
             $tagihan       = $this->input->post('tagihan');
+            $periode       = $this->input->post('periode');
             $status        = '1';
             $tahun         = date("y");
             $bulan         = date("m");
@@ -284,9 +296,11 @@ class Dashboard extends AUTH_Controller
 
             $data = [
                 'id_rtrw'      => $id_rtrw,
+                'id_perum'     => $id_perum,
                 'id_warga'     => $id_warga,
                 'tgl_upload'   => $tgl_upload . ' ' . date("H:i"),
                 'code_tagihan' => $code_tagihan,
+                'periode'      => $periode,
                 'jumlah'       => preg_replace('/[Rp. ]/', '', $tagihan),
                 'url_payment'  =>  $payment_url,
 

@@ -38,6 +38,7 @@ class Callback extends CI_Controller
             $status = '1';
             if ($_status == 'PAID') {
                 $status = '2';
+                $status_saldo = '1';
 
                 $date_convert = Carbon::parse($_paidAt);
 
@@ -58,9 +59,6 @@ class Callback extends CI_Controller
                         'foto_bukti'   => $_paymentChannel,
                         'tgl_byr'      => $date,
                     ]);
-
-                    // Update saldo pengguna
-                    // $this->updateUserSaldo($id_rtrw, $_paidAmount);
 
                 } else {
                     $this->db->set('foto_bukti', $_paymentChannel)
@@ -103,17 +101,6 @@ class Callback extends CI_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
-    }
-
-    private function updateUserSaldo($id_rtrw, $amount) {
-        $currentSaldo = $this->db->get_where('saldo', ['id_rtrw' => $id_rtrw])->row()->saldo;
-        var_dump( $currentSaldo);
-        $newSaldo = $currentSaldo + $amount;
-
-        // Update saldo pengguna di database
-        $this->db->set('saldo', $newSaldo)
-            ->where('id_rtrw', $id_rtrw)
-            ->update('saldo');
     }
 
 }

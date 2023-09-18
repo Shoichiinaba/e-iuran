@@ -51,41 +51,17 @@
             </div>
             <div class="col-md-6 grid-margin transparent">
                 <div class="row">
-                    <!-- <div class="col-md-6 mb-4 stretch-card transparent">
-                        <div class="card card-tale">
-                            <div class="card-body">
-                                <p class="mb-4">Menunggu Konfirmasi</p>
-                                <p class="fs-30 mb-2"><?=$menunggu; ?> Orang</p>
-
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="col-md-6 mb-4 stretch-card transparent">
                         <div class="card card-tale">
                             <div class="card-body">
                                 <h3 class="mb-4">Saldo</h3>
-                                <?php foreach ($get_saldo as $data) {
-                                    $formatted_saldo = 'Rp. ' . number_format($data->saldo, 0, ',', '.');
-                                    ?>
-
-                                <p class="fs-30 mb-2"><?=$formatted_saldo; ?></p>
-                                <?php } ?>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-4 stretch-card transparent">
-                        <div class="card card-dark-blue">
-                            <div class="card-body">
-                                <p class="mb-4">Lunas</p>
-                                <p class="fs-30 mb-2"><?=$lunas; ?> Orang</p>
-
+                                <p class="fs-30 mb-2"><?=$totalDPP; ?></p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+                    <div class="col-md-6 mb-4 stretch-card transparent">
                         <div class="card card-light-danger">
                             <div class="card-body">
                                 <p class="mb-4">Belum Bayar</p>
@@ -94,7 +70,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 stretch-card transparent">
+                    <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="card card-light bg-warning">
+                            <div class="card-body">
+                                <p class="mb-4">Menunggu Pembayaran</p>
+                                <p class="fs-30 mb-2"><?=$menunggu; ?> Orang</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="card card-light bg-success">
+                            <div class="card-body">
+                                <p class="mb-4">Lunas</p>
+                                <p class="fs-30 mb-2"><?=$lunas; ?> Orang</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4 stretch-card transparent">
                         <div class="card card-light-blue">
                             <div class="card-body">
                                 <p class="mb-4">Total Warga</p>

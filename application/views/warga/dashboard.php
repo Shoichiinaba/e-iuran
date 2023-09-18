@@ -433,6 +433,7 @@ div:where(.swal2-icon) {
                 formData.append('id-tagihan', $('#id-tagihan').val());
                 formData.append('tgl-upload', $('#tgl-upload').val());
                 formData.append('tagihan', $('#tagihan-val').val());
+                formData.append('periode', $('#bulan-val').val());
 
                 $.ajax({
                     type: 'POST',
@@ -442,11 +443,6 @@ div:where(.swal2-icon) {
                     processData: false,
                     contentType: false,
                     success: function(data) {
-                        // if (data.status) {
-                        //     window.location.href = data.detail.redirect_url;
-                        //     load_info();
-                        //     $('#modal-bayar').modal('hide');
-                        // }
 
                         if (data.status) {
                             window.open(data.detail.redirect_url);

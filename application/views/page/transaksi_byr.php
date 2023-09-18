@@ -121,47 +121,20 @@ Swal.fire({
                                         <h4 class="font-weight-bold">Data Transaksi
                                         </h4>
                                     </div>
-                                    <!-- <div class="col-md-12 col-lg-6 pt-1 mt-1">
+                                    <div class="col-md-12 col-lg-6 pt-1 mt-1">
                                         <div class="card-body pt-1 mt-1">
                                             <div class="template-demo ">
                                                 <div class="input-wrapper p-0 m-0 col-lg-3">
-                                                    <label class="label-select">Bulan</label>
-                                                    <select type="text" id="bln_tagihan" required
-                                                        class="col-lg-12 mt-1 pt-1">
+                                                    <label class="label-select">Status</label>
+                                                    <select type="text" id="status" class="col-lg-12 mt-1 pt-1">
                                                         <option value="">Pilih !!</option>
-                                                        <option value="Januari">Januari</option>
-                                                        <option value="Februari">Februari</option>
-                                                        <option value="Maret">Maret</option>
-                                                        <option value="April">April</option>
-                                                        <option value="Mei">Mei</option>
-                                                        <option value="Juni">Juni</option>
-                                                        <option value="Juli">Juli</option>
-                                                        <option value="Agustus">Agustus</option>
-                                                        <option value="September">September</option>
-                                                        <option value="Oktober">Oktober</option>
-                                                        <option value="November">November</option>
-                                                        <option value="Desember">Desember</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="input-wrapper p-0 m-0 col-lg-3">
-                                                    <label class="label-select">Tahun</label>
-                                                    <select type="text" id="thn_tagihan" required
-                                                        class="col-lg-12 mt-1 pt-1">
-                                                        <option value="">Pilih !!</option>
-                                                        <?php
-                                                        foreach ($filter as $data) :
-                                                    ?>
-                                                        <option value="<?= $data->thn_tagihan; ?>"> &nbsp;
-                                                            <?= $data->thn_tagihan; ?></option>
-                                                        <?php
-                                                        endforeach;
-                                                    ?>
+                                                        <option value="1">Menunggu Pembayaran</option>
+                                                        <option value="2">Lunas</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -174,12 +147,11 @@ Swal.fire({
                                                     <th>No. Invoice</th>
                                                     <th>No. Pembayaran</th>
                                                     <th>Nama || No Rumah</th>
-                                                    <th>Bulan</th>
-                                                    <th>Tahun</th>
                                                     <th>Bank</th>
                                                     <th>tgl. Bayar</th>
+                                                    <th>Periode</th>
                                                     <th>Status </th>
-                                                    <th>Total</th>
+                                                    <th>Total + Tax</th>
                                                 </tr>
                                             </thead>
                                             </tbody>
@@ -209,7 +181,12 @@ Swal.fire({
             "serverSide": true,
             "ajax": {
                 "url": "<?=site_url('Data_tagihan/get_datapay')?>",
-                "type": "POST"
+                "type": "POST",
+                "data": function(d) {
+                    d.bln_tag = $('#bln_tag').val();
+                    d.status = $('#status').val();
+                    d.thn_tag = $('#thn_tag').val();
+                }
             },
 
             "columnDefs": [{
@@ -227,8 +204,13 @@ Swal.fire({
                 {
                     "targets": [4, 5, 6, 7, 8],
                     "orderable": false
-                }
+                },
             ]
-        });
+        })
+        // $('#bln_tag, #status, #thn_tag').on('change', function() {
+        //     // debugging apakah nilai select muncul
+        //     // console.log('Nilai select: ' + $(this).val());
+        //     table.draw();
+        // });
     });
     </script>

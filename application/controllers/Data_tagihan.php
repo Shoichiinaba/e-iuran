@@ -30,7 +30,7 @@ class Data_tagihan extends AUTH_Controller
         $data['menunggu']       = $this->M_dashboard->jumlah_byr($id_rtrw);
         $data['iuran']          = $this->M_transaksi->get_iuran($id_rtrw);
         $data['ifas']           = $this->M_transaksi->iuran_fas($id_rtrw);
-        $data['taxs']           = $this->M_transaksi->taxs_adm();
+        $data['tax']           = $this->M_transaksi->taxs_adm();
         $data['filter']         = $this->M_transaksi->get_filter();
         $data['nomer']          = $this->M_transaksi->no_invoice();
 
@@ -77,6 +77,7 @@ class Data_tagihan extends AUTH_Controller
             'abunament' => $this->input->post('abunament'),
             'perkubik' => $this->input->post('perkubik'),
             'lain_lain' => $this->input->post('lain_lain'),
+            'taxs' => $this->input->post('taxs'),
             'nominal' => $this->input->post('nominal')
         );
 
@@ -113,6 +114,8 @@ class Data_tagihan extends AUTH_Controller
         foreach ($list as $tagih) {
             $status = ($tagih->status == 0) ? '<td class="font-weight-medium"><div class="badge badge-danger">Belum Bayar</div></td>' : ($tagih->status == 2 ? '<td class="font-weight-medium"><div class="badge badge-success">Lunas</div></td>' : '<td class="font-weight-medium"><div class="badge badge-info">Status Lain</div></td>');
             $total = $tagih->nominal + $tagih->lain_lain;
+            // $taxs = $total * $tagih->taxs / 100;
+            // $tax_nom = $total + $taxs;
 
             $formatted_nominal = 'Rp. ' . number_format($tagih->nominal, 0, ',', '.');
             $formatted_lain = 'Rp. ' . number_format($tagih->lain_lain, 0, ',', '.');
@@ -128,7 +131,7 @@ class Data_tagihan extends AUTH_Controller
             $row[] = $tagih->thn_tagihan;
             $row[] = $formatted_nominal;
             $row[] = $formatted_lain;
-            $roe[] = $tagih->taxs. "%";
+            // $row[] = $tagih->taxs. " %";
             $row[] = $Rp_total;
             $row[] = $status;
 
@@ -159,8 +162,9 @@ class Data_tagihan extends AUTH_Controller
     function get_datapay() {
         $id = $this->session->userdata('userdata')->id_rtrw;
         $role = $this->session->userdata('userdata')->role;
-        $bulan_filter = $this->input->post('bln_filter');
-        $tahun_filter = $this->input->post('thn_filter');
+        $bln_tag = $this->input->post('bln_tag');
+        $thn_tag = $this->input->post('thn_tag');
+        $status = $this->input->post('status');
 
         $list = $this->M_transaksi->get_datatablest($id, $role);
         $data = array();
@@ -176,10 +180,9 @@ class Data_tagihan extends AUTH_Controller
             $row[] = $trx->no_invoice;
             $row[] = $trx->code_tagihan;
             $row[] = $trx->nama . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge badge-info">' . $trx->no_rumah . '</div></td>';
-            $row[] = $trx->bln_tagihan;
-            $row[] = $trx->thn_tagihan;
             $row[] = $trx->foto_bukti;
             $row[] = $trx->tgl_byr;
+            $row[] = $trx->periode . " Bulan";
             $row[] = $status;
             $row[] = $Rp_total;
 

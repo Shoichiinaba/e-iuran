@@ -215,11 +215,11 @@ select:focus+label {
                                     </div>
                                 </div>
                                 <?php } ?>
-
-                                <?php foreach ($taxs as $data) { ?>
-                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
+                                <?php foreach ($tax as $data) { ?>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
                                     <div class="input-wrapper">
-                                        <input type="text" id="taxs" class="col-lg-12" value="<?= $data->taxs; ?>">
+                                        <input type="text" id="taxs" class="col-lg-12"
+                                            value="<?= $data->tax_amaunt; ?>">
                                     </div>
                                 </div>
                                 <?php } ?>
@@ -371,7 +371,7 @@ select:focus+label {
                                             <th>Tahun</th>
                                             <th>Nominal</th>
                                             <th>Tagihan Lain</th>
-                                            <th>Taxs</th>
+                                            <!-- <th>Taxs</th> -->
                                             <th>Total</th>
                                             <th>Status</th>
                                         </tr>
@@ -463,6 +463,7 @@ $(document).ready(function() {
         var abunament = $('#abo1').val();
         var perkubik = $('#perkubik').val();
         var lain_lain = $('#lain-lain').val();
+        var taxs = $('#taxs').val();
         var nominal = $('#nominal').val();
 
         $.ajax({
@@ -481,6 +482,7 @@ $(document).ready(function() {
                 abunament: abunament,
                 perkubik: perkubik,
                 lain_lain: lain_lain,
+                taxs: taxs,
                 nominal: nominal,
 
             },
@@ -552,7 +554,7 @@ $(document).ready(function() {
         },
 
         "columnDefs": [{
-                "targets": [1, 3, 4, 5, 8, 9],
+                "targets": [1, 3, 4, 5, 8],
                 "className": 'text-right'
             },
             {
@@ -652,6 +654,7 @@ const abunamenInput = document.getElementById('abunamen');
 const ab1Input = document.getElementById('abo1');
 const nominalInput = document.getElementById('nominal');
 const perkubikInput = document.getElementById('perkubik');
+const taxInput = document.getElementById('taxs');
 
 // Fungsi untuk menghitung dan menampilkan hasilnya di kubik-2 dan nominal
 function hitungSelisih() {

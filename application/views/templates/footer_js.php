@@ -29,6 +29,11 @@
 <script>
 document.getElementById('currentYear').textContent = new Date().getFullYear();
 </script>
+<script>
+$(function() {
+    $('#datepicker-popup').datepicker();
+});
+</script>
 
 </body>
 

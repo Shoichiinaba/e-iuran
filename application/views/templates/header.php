@@ -25,6 +25,7 @@
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/select2/select2.min.css">
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
@@ -44,6 +45,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.2/datatables.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/v/bs5/dt-1.11.2/datatables.min.js"></script>
+
+    <script src="<?= base_url('assets'); ?>/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
 
 </head>
 
