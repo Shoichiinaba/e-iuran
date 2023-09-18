@@ -183,9 +183,7 @@ Swal.fire({
                 "url": "<?=site_url('Data_tagihan/get_datapay')?>",
                 "type": "POST",
                 "data": function(d) {
-                    d.bln_tag = $('#bln_tag').val();
                     d.status = $('#status').val();
-                    d.thn_tag = $('#thn_tag').val();
                 }
             },
 
@@ -207,10 +205,10 @@ Swal.fire({
                 },
             ]
         })
-        // $('#bln_tag, #status, #thn_tag').on('change', function() {
-        //     // debugging apakah nilai select muncul
-        //     // console.log('Nilai select: ' + $(this).val());
-        //     table.draw();
-        // });
+        $('#status').on('change', function() {
+            // debugging apakah nilai select muncul
+            // console.log('Nilai select: ' + $(this).val());
+            table.draw();
+        });
     });
     </script>

@@ -234,6 +234,7 @@ $(document).ready(function() {
         var id_perum = $('#id-perum').val();
         var no_tarik = $('#no_tarik').val();
         var tanggal = $('#tanggal').val();
+        var nominal = $('#nominal').val();
         var fee = $('#fee').val();
         var totdpp = $('#totdpp').val();
 
@@ -245,6 +246,7 @@ $(document).ready(function() {
                 id_perum: id_perum,
                 no_tarik: no_tarik,
                 tanggal: tanggal,
+                nominal: nominal,
                 fee: fee,
                 totdpp: totdpp,
 

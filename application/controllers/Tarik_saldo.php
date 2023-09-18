@@ -63,13 +63,11 @@ class Tarik_saldo extends AUTH_Controller
     $list = $this->M_saldo->get_datatablest();
     $data = array();
     $no = @$_POST['start'];
-    foreach ($list as $tf) {
+    foreach ($list as $tf)
+    {
 
-        $fee            = ($tf->saldo * $tf->fee) / 100;
-        $saldo_akhir    = $tf->saldo - $fee;
-        $Rp_akhir     = 'Rp. ' . number_format($saldo_akhir, 0, ',', '.');
-        $nominal        = $tf->saldo;
-        $Rp_nominal     = 'Rp. ' . number_format($nominal, 0, ',', '.');
+        $Rp_dpp     = 'Rp. ' . number_format($tf->dpp, 0, ',', '.');
+        $Rp_akhir     = 'Rp. ' . number_format($tf->saldo, 0, ',', '.');
 
         $no++;
         $row = array();
@@ -77,7 +75,7 @@ class Tarik_saldo extends AUTH_Controller
         $row[] = $tf->code_tranfer;
         $row[] = $tf->nama;
         $row[] = $tf->tanggal;
-        $row[] = $Rp_nominal;
+        $row[] = $Rp_dpp;
         $row[] = $tf->fee. ' %';
         $row[] = $Rp_akhir;
 
@@ -102,6 +100,7 @@ class Tarik_saldo extends AUTH_Controller
             'code_tranfer '  => $this->input->post('no_tarik'),
             'tanggal'   => $this->input->post('tanggal'),
             'fee'       => $this->input->post('fee'),
+            'dpp'       => $this->input->post('nominal'),
             'saldo'    => $this->input->post('totdpp'),
         );
 

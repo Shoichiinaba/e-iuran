@@ -162,11 +162,9 @@ class Data_tagihan extends AUTH_Controller
     function get_datapay() {
         $id = $this->session->userdata('userdata')->id_rtrw;
         $role = $this->session->userdata('userdata')->role;
-        $bln_tag = $this->input->post('bln_tag');
-        $thn_tag = $this->input->post('thn_tag');
-        $status = $this->input->post('status');
+        $status_trans = $this->input->post('status');
 
-        $list = $this->M_transaksi->get_datatablest($id, $role);
+        $list = $this->M_transaksi->get_datatablest($id, $role, $status_trans);
         $data = array();
         $no = @$_POST['start'];
         foreach ($list as $trx) {
@@ -191,7 +189,7 @@ class Data_tagihan extends AUTH_Controller
         $output = array(
                     "draw" => @$_POST['draw'],
                     "recordsTotal" => $this->M_transaksi->count_all_trx(),
-                    "recordsFiltered" => $this->M_transaksi->count_filtereds($id, $role),
+                    "recordsFiltered" => $this->M_transaksi->count_filtereds($id, $role, $status_trans),
                     "data" => $data,
                 );
         // output to json format
