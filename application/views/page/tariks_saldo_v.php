@@ -192,35 +192,6 @@ input:focus+label {
                                 <h4 class="font-weight-bold">Data Tarik Saldo
                                 </h4>
                             </div>
-                            <!-- <div class="input-group pb-0 col-6">
-                                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
-                                    <label class="label-select">Bulan</label>
-                                    <select type="text" id="bln_filter" class="col-lg-12 mt-1 pt-1">
-                                        <option value="">Pilih !!</option>
-                                        <option value="Januari">Januari</option>
-                                        <option value="Februari">Februari</option>
-                                        <option value="Maret">Maret</option>
-                                        <option value="April">April</option>
-                                        <option value="Mei">Mei</option>
-                                        <option value="Juni">Juni</option>
-                                        <option value="Juli">Juli</option>
-                                        <option value="Agustus">Agustus</option>
-                                        <option value="September">September</option>
-                                        <option value="Oktober">Oktober</option>
-                                        <option value="November">November</option>
-                                        <option value="Desember">Desember</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
-                                    <label class="label-select">Status</label>
-                                    <select type="text" id="status_filter" class="col-lg-12 mt-1 pt-1">
-                                        <option value="">Pilih !!</option>
-                                        <option value="0">Belum Bayar</option>
-                                        <option value="2">Lunas</option>
-                                    </select>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                     <div class="row">

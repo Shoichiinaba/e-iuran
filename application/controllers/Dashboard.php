@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+
 use Carbon\Carbon;
 use Xendit\Invoice;
 
@@ -11,6 +12,7 @@ class Dashboard extends AUTH_Controller
     public $M_dashboard;
     public $session;
     public $input;
+    public $output;
     public $upload;
     public $db;
     public function __construct()
@@ -141,7 +143,6 @@ class Dashboard extends AUTH_Controller
             $id_tagihan = $row->id_tagihan;
             $ipl = $row->lain_lain;
             $no++;
-
             $count_air += $row->nominal;
             $count_iuran += $row->lain_lain;
             $jumlah = $row->lain_lain += $row->nominal;
@@ -150,7 +151,7 @@ class Dashboard extends AUTH_Controller
             echo '    <td class="">Bulan</td>';
             echo '    <td class="">' . $row->bln_tagihan . ' / ' . $row->thn_tagihan . '</td>';
             echo '</tr>';
-            echo '<tr>';
+            echo '<tr class="tr-bg-' . $row->id_tagihan . '">';
             echo '    <td class="">IPL</td>';
             echo '    <td class="">Rp.' . number_format($ipl, 0, ',', '.') . '</td>';
             echo '</tr>';
@@ -177,9 +178,13 @@ class Dashboard extends AUTH_Controller
             echo '    <td class="">Abunamen</td>';
             echo '    <td class="">Rp.' . number_format($row->abunament, 0, ',', '.') . '</td>';
             echo '</tr>';
-            echo '<tr>';
+            echo '<tr class="tr-bg-' . $row->id_tagihan . '">';
             echo '    <td class="">Bayar air</td>';
             echo '    <td class="">Rp.' . number_format($row->nominal, 0, ',', '.') . ' | <a href="javascript:void(0)" type="button" class="lihat-rinc" data-id-tagihan="' . $row->id_tagihan . '">Lihat Rincian</a></td>';
+            echo '</tr>';
+            echo '<tr class="tr-bg-' . $row->id_tagihan . '">';
+            echo '    <td class="">Tax</td>';
+            echo '    <td class="">Rp.' . number_format($row->taxs, 0, ',', '.') . '</td>';
             echo '</tr>';
             if ($action == 'tunggakan') {
                 echo '<tr>';
@@ -188,7 +193,7 @@ class Dashboard extends AUTH_Controller
                 echo '        <div class=" form-check form-check-success m-0">';
                 echo '            <label class="form-check-label">';
                 echo '                <input type="checkbox" class="form-check-input cheklis-bayar" data-jumlah="' . $jumlah . '" value="' . $row->id_tagihan . '">';
-                echo '                Rp.' . number_format($jumlah, 0, ',', '.') . ' |';
+                echo '                Rp.' . number_format($jumlah += $row->taxs, 0, ',', '.') . ' |';
                 echo '                <i class=" input-helper" style="color: #0090ff;cursor: pointer;"> Cheklis untuk bayar</i>';
                 echo '            </label>';
                 echo '        </div>';
@@ -231,7 +236,8 @@ class Dashboard extends AUTH_Controller
     }
 
     // xendit tes saldo
-    function show_saldo(){
+    function show_saldo()
+    {
         xendit_loaded();
         // $d = Carbon::now();
         // echo $d;
@@ -287,7 +293,7 @@ class Dashboard extends AUTH_Controller
                 'customer' => [
                     'given_names'  => $userData->nama,
                     'surname'      => $userData->no_rumah,
-                    'mobile_number'=> $userData->no_hp,
+                    'mobile_number' => $userData->no_hp,
                 ],
             ];
 
@@ -318,7 +324,6 @@ class Dashboard extends AUTH_Controller
                     // 'redirect_url' => site_url('Dashboard'),
                 ],
             ];
-
         } catch (\Xendit\Exceptions\ApiException $e) {
             $this->db->trans_rollback();
             $response = [
@@ -329,8 +334,7 @@ class Dashboard extends AUTH_Controller
                 ],
                 'detail'       => [],
             ];
-
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             $this->db->trans_rollback();
             $response = [
                 'status' => false,
@@ -342,8 +346,8 @@ class Dashboard extends AUTH_Controller
             ];
         }
         return $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($response));
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
     }
 
 
