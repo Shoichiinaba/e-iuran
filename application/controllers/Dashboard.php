@@ -146,6 +146,7 @@ class Dashboard extends AUTH_Controller
             $count_air += $row->nominal;
             $count_iuran += $row->lain_lain;
             $jumlah = $row->lain_lain += $row->nominal;
+            $data_jumlah = $jumlah += $row->taxs;
             // $total_tagihan = ;
             echo '<tr style="background: #4b49ac;color: white;">';
             echo '    <td class="">Bulan</td>';
@@ -187,13 +188,14 @@ class Dashboard extends AUTH_Controller
             echo '    <td class="">Rp.' . number_format($row->taxs, 0, ',', '.') . '</td>';
             echo '</tr>';
             if ($action == 'tunggakan') {
+
                 echo '<tr>';
-                echo '    <td class="">Jumlah</td>';
+                echo '    <td class="">Jumlah </td>';
                 echo '    <td class="">';
                 echo '        <div class=" form-check form-check-success m-0">';
                 echo '            <label class="form-check-label">';
-                echo '                <input type="checkbox" class="form-check-input cheklis-bayar" data-jumlah="' . $jumlah . '" value="' . $row->id_tagihan . '">';
-                echo '                Rp.' . number_format($jumlah += $row->taxs, 0, ',', '.') . ' |';
+                echo '                <input type="checkbox" class="form-check-input cheklis-bayar" data-jumlah="'.$data_jumlah.'" value="' . $row->id_tagihan . '">';
+                echo '                Rp.' . number_format($data_jumlah, 0, ',', '.') . ' |';
                 echo '                <i class=" input-helper" style="color: #0090ff;cursor: pointer;"> Cheklis untuk bayar</i>';
                 echo '            </label>';
                 echo '        </div>';
@@ -205,8 +207,8 @@ class Dashboard extends AUTH_Controller
                 echo '    <td class="">';
                 echo '        <div class=" form-check form-check-success m-0">';
                 echo '            <label class="form-check-label">';
-                echo '                <input type="checkbox" class="form-check-input cheklis-bayar" data-jumlah="' . $jumlah . '" value="' . $row->id_tagihan . '">';
-                echo '                Rp.' . number_format($jumlah, 0, ',', '.') . '';
+                echo '                <input type="checkbox" class="form-check-input cheklis-bayar" data-jumlah="' . $data_jumlah . '" value="' . $row->id_tagihan . '">';
+                echo '                Rp.' . number_format($data_jumlah, 0, ',', '.') . '';
                 echo '                <i class=" input-helper" style="color: #0090ff;cursor: pointer;"></i>';
                 echo '            </label>';
                 echo '        </div>';
@@ -219,7 +221,7 @@ class Dashboard extends AUTH_Controller
             $total_tagihan = '0';
         } elseif ($action == 'konf-byr') {
             $total_bulan = $no;
-            $total_tagihan = number_format($count_iuran += $count_air, 0, ',', '.');
+            $total_tagihan = number_format($count_iuran += $count_air += $row->taxs, 0, ',', '.');
             echo '<script>';
             echo '$("#code-tagihan").val("' . $row->code_tagihan . '");';
             echo '$(".cheklis-bayar").prop("checked", true).attr("disabled", true).text("aaa");';
