@@ -284,7 +284,7 @@
                             </div>
 
                             <input type="text" id="id-tagihan" value="" hidden>
-                            <input type="text" id="subtotal" value="0" hidden>
+                            <input type="text" id="subtotal" value="0">
                         </div>
                     </div>
                 </div>
