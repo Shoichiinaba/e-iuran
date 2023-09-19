@@ -265,7 +265,6 @@ $(document).ready(function() {
                     // Bersihkan nilai input secara manual
                     $('#id_perum').val('');
                     $('#fee').val('');
-                    // $('#nominal').val('');
                     $('#totdpp').val('');
                     // Bersihkan input lainnya sesuai kebutuhan
 
@@ -296,43 +295,38 @@ $(document).ready(function() {
     // datatable tagihan
 
 });
-</script>
 
-<script>
-$(document).ready(function() {
-    var table;
+var table;
 
-    table = $('#data-trxsal').DataTable({
-        "paging": true,
-        "autoWidth": true,
-        "search": true,
-        "responsive": true,
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "<?=site_url('Tarik_saldo/get_data_tf')?>",
-            "type": "POST",
+table = $('#data-trxsal').DataTable({
+    "paging": true,
+    "autoWidth": true,
+    "search": true,
+    "responsive": true,
+    "processing": true,
+    "serverSide": true,
+    "ajax": {
+        "url": "<?=site_url('Tarik_saldo/get_data_tf/')?><?= $this->uri->segment(3);?>",
+        "type": "POST",
+    },
+
+    "columnDefs": [{
+            "targets": [6],
+            "className": 'text-right'
         },
-
-        "columnDefs": [{
-                "targets": [6],
-                "className": 'text-right'
-            },
-            {
-                "targets": [1, 2, 3, 4],
-                "className": 'text-left'
-            },
-            {
-                "targets": [0],
-                "className": 'text-center'
-            },
-            {
-                "targets": [1, 3, 4, 6],
-                "orderable": false
-            },
-        ]
-    })
-
+        {
+            "targets": [1, 2, 3, 4],
+            "className": 'text-left'
+        },
+        {
+            "targets": [0],
+            "className": 'text-center'
+        },
+        {
+            "targets": [1, 3, 4, 6],
+            "orderable": false
+        },
+    ]
 })
 
 // kode untuk menghitung hasil saldo + fee

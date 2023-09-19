@@ -60,11 +60,12 @@ class M_saldo extends CI_Model
     var $column_search = array('code_tranfer', 'tanggal','saldo');
     var $ordertrx = array('transaksi.id_transaksi' => 'asc'); // default order
 
-    private function _get_datatables_tf()
+    private function _get_datatables_tf($id_perum)
     {
             $this->db->select('*');
             $this->db->from('saldo');
             $this->db->join('perumahan', 'saldo.id_perum = perumahan.id_perumahan');
+            $this->db->where('saldo.id_perum', $id_perum);
 
             $i = 0;
             foreach ($this->column_search as $trx) {
@@ -88,15 +89,15 @@ class M_saldo extends CI_Model
                 $this->db->order_by(key($order), $order[key($order)]);
             }
         }
-    function get_datatablest() {
-        $this->_get_datatables_tf();
+    function get_datatablest($id_perum) {
+        $this->_get_datatables_tf($id_perum);
         if(@$_POST['length'] != -1)
         $this->db->limit(@$_POST['length'], @$_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
-    function count_filtereds() {
-        $this->_get_datatables_tf();
+    function count_filtereds($id_perum) {
+        $this->_get_datatables_tf($id_perum);
         $query = $this->db->get();
         return $query->num_rows();
     }

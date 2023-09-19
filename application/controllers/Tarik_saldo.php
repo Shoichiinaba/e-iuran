@@ -60,7 +60,10 @@ class Tarik_saldo extends AUTH_Controller
 
    function get_data_tf() {
 
-    $list = $this->M_saldo->get_datatablest();
+    $id_perum = $this->uri->segment(3);
+    //  $id_perum = 1;
+
+    $list = $this->M_saldo->get_datatablest($id_perum);
     $data = array();
     $no = @$_POST['start'];
     foreach ($list as $tf)
@@ -83,8 +86,8 @@ class Tarik_saldo extends AUTH_Controller
     }
     $output = array(
                 "draw" => @$_POST['draw'],
-                "recordsTotal" => $this->M_saldo->count_all_tf(),
-                "recordsFiltered" => $this->M_saldo->count_filtereds(),
+                "recordsTotal" => $this->M_saldo->count_all_tf($id_perum),
+                "recordsFiltered" => $this->M_saldo->count_filtereds($id_perum),
                 "data" => $data,
             );
     // output to json format

@@ -49,6 +49,48 @@
                     </div>
                 </div>
             </div>
+            <?php if ($userdata->role == 'Admin') : ?>
+            <div class="col-md-6 grid-margin transparent">
+                <div class="row">
+                    <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="card card-light-danger">
+                            <div class="card-body">
+                                <p class="mb-4">Belum Bayar</p>
+                                <p class="fs-30 mb-2"><?=$b_bayar; ?> Orang</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="card card-light bg-warning">
+                            <div class="card-body">
+                                <p class="mb-4">Menunggu Pembayaran</p>
+                                <p class="fs-30 mb-2"><?=$menunggu; ?> Orang</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="card card-light bg-success">
+                            <div class="card-body">
+                                <p class="mb-4">Lunas</p>
+                                <p class="fs-30 mb-2"><?=$lunas; ?> Orang</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="card card-light-blue">
+                            <div class="card-body">
+                                <p class="mb-4">Total Warga</p>
+                                <p class="fs-30 mb-2"><?=$jum_warga; ?> Orang</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+            <?php if ($userdata->role == 'RT') : ?>
             <div class="col-md-6 grid-margin transparent">
                 <div class="row">
                     <div class="col-md-6 mb-4 stretch-card transparent">
@@ -98,5 +140,6 @@
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
     </div>
