@@ -120,7 +120,7 @@
         <?php endif; ?>
 
         <?php if ($userdata->role == 'Warga') : ?>
-        <div class="d-md-block d-none">
+        <div class="d-lg-block d-none">
             <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                 data-toggle="offcanvas">
                 <span class="icon-menu"></span>

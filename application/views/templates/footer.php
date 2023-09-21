@@ -17,7 +17,7 @@
 <!-- akhir Footer untuk desktop -->
 
 <?php if ($userdata->role == 'Warga') : ?>
-<div div class="d-md-none">
+<div div class="d-lg-none">
     <center>
         <div class="list-container">
             <button class="more-button" aria-label="Menu Button">
