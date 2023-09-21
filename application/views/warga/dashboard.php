@@ -43,7 +43,7 @@
     }
 
     .content-wrapper {
-        padding: 52px 11px !important;
+        padding: 48px 11px !important;
     }
 
     .remove-p-l,
@@ -321,16 +321,15 @@ div:where(.swal2-icon) {
                     <h5 class="modal-title" id="exampleModalLabel">Bayar tagihan</h5>
                 </div>
                 <div class="modal-body pt-1 pl-2 pr-2 pb-1">
-                    <div class="row">
-                        <!-- <div class="col-lg-7 col-md-7 col-12">
+                    <div class="row" hidden>
+                        <div class="col-lg-7 col-md-7 col-12">
                             <div class="input-wrapper">
                                 <div class="input-group">
                                     <span class="input-group-text text-body"><i class="ti-calendar"></i></span>
-                                    <input type="text" class="form-control" id="tgl-upload"
-                                        placeholder=" Pilih Range Tanggal" disabled>
+                                    <input type="text" class="form-control" id="tgl-upload" disabled>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-6">
@@ -435,7 +434,7 @@ div:where(.swal2-icon) {
             if ($(this).val() == 'buat') {
                 let formData = new FormData();
                 formData.append('id-tagihan', $('#id-tagihan').val());
-                formData.append('tgl-upload', $('#tgl-upload').val());
+                // formData.append('tgl-upload', $('#tgl-upload').val());
                 formData.append('tagihan', $('#tagihan-val').val());
                 formData.append('periode', $('#bulan-val').val());
 
@@ -665,16 +664,4 @@ div:where(.swal2-icon) {
             }
         });
     }
-    $(function() {
-        $('#tgl-upload').daterangepicker({
-            "setDate": new Date(),
-            singleDatePicker: true,
-            showDropdowns: true,
-            minYear: 1901,
-            locale: {
-                format: 'DD-MM-YYYY'
-            }
-
-        });
-    });
     </script>

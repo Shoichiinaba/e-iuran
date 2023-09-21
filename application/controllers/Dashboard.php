@@ -302,11 +302,14 @@ class Dashboard extends AUTH_Controller
             $createInvoice  = Invoice::create($data_faktur);
             $payment_url    = $createInvoice['invoice_url'];
 
+            $date_convert = Carbon::parse($tgl_upload);
+            $date = $date_convert->format('d-m-Y');
+
             $data = [
                 'id_rtrw'      => $id_rtrw,
                 'id_perum'     => $id_perum,
                 'id_warga'     => $id_warga,
-                'tgl_upload'   => $tgl_upload . ' ' . date("H:i"),
+                'tgl_upload'   => $date,
                 'code_tagihan' => $code_tagihan,
                 'periode'      => $periode,
                 'jumlah'       => preg_replace('/[Rp. ]/', '', $tagihan),
