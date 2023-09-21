@@ -105,33 +105,27 @@
                 </div>
             </li>
         </ul>
+        <?php if ($userdata->role == 'Admin') : ?>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
             data-toggle="offcanvas">
             <span class="icon-menu"></span>
         </button>
+        <?php endif; ?>
+
+        <?php if ($userdata->role == 'RT') : ?>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+            data-toggle="offcanvas">
+            <span class="icon-menu"></span>
+        </button>
+        <?php endif; ?>
+
+        <?php if ($userdata->role == 'Warga') : ?>
+        <div class="d-md-block d-none">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                data-toggle="offcanvas">
+                <span class="icon-menu"></span>
+            </button>
+        </div>
+        <?php endif; ?>
     </div>
 </nav>
-<!-- settings-panel -->
-<div class="container-fluid page-body-wrapper">
-    <div class="theme-setting-wrapper">
-        <div id="settings-trigger"><i class="ti-settings"></i></div>
-        <div id="theme-settings" class="settings-panel">
-            <i class="settings-close ti-close"></i>
-            <p class="settings-heading">SIDEBAR SKINS</p>
-            <div class="sidebar-bg-options selected" id="sidebar-light-theme">
-                <div class="img-ss rounded-circle bg-light border mr-3"></div>Light
-            </div>
-            <div class="sidebar-bg-options" id="sidebar-dark-theme">
-                <div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark
-            </div>
-            <p class="settings-heading mt-2">HEADER SKINS</p>
-            <div class="color-tiles mx-0 px-4">
-                <div class="tiles success"></div>
-                <div class="tiles warning"></div>
-                <div class="tiles danger"></div>
-                <div class="tiles info"></div>
-                <div class="tiles dark"></div>
-                <div class="tiles default"></div>
-            </div>
-        </div>
-    </div>

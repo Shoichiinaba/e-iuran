@@ -43,7 +43,7 @@
     }
 
     .content-wrapper {
-        padding: 15px 11px !important;
+        padding: 52px 11px !important;
     }
 
     .remove-p-l,
@@ -322,7 +322,7 @@ div:where(.swal2-icon) {
                 </div>
                 <div class="modal-body pt-1 pl-2 pr-2 pb-1">
                     <div class="row">
-                        <div class="col-lg-7 col-md-7 col-12">
+                        <!-- <div class="col-lg-7 col-md-7 col-12">
                             <div class="input-wrapper">
                                 <div class="input-group">
                                     <span class="input-group-text text-body"><i class="ti-calendar"></i></span>
@@ -330,7 +330,7 @@ div:where(.swal2-icon) {
                                         placeholder=" Pilih Range Tanggal" disabled>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="row mt-3">
                         <div class="col-6">

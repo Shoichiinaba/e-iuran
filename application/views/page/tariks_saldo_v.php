@@ -107,7 +107,7 @@ input:focus+label {
             <div class="row">
                 <div class="col-lg-3 grid-margin stretch-card mb-2 pt-2">
                     <div class="card">
-                        <div class="card card-light bg-success">
+                        <div class="card card-light bg-gradient-success">
                             <div class="card-body">
                                 <h2 class="mb-4">Saldo</h2>
                                 <h1 class="fs-80 mb-3 text-center" style="color:white"><?=$totalDPP; ?></h1>

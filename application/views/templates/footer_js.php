@@ -24,16 +24,18 @@
 <script src="<?= base_url('assets'); ?>/js/dashboard.js"></script>
 <script src="<?= base_url('assets'); ?>/js/Chart.roundedBarCharts.js"></script>
 <script src="<?= base_url('assets'); ?>/js/file-upload.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.3/gsap.min.js'></script>
+<script src="<?= base_url('assets'); ?>/js/script.js"></script>
 <!-- End custom js for this page-->
 
 <script>
 document.getElementById('currentYear').textContent = new Date().getFullYear();
 </script>
-<script>
+<!-- <script>
 $(function() {
     $('#datepicker-popup').datepicker();
 });
-</script>
+</script> -->
 
 </body>
 

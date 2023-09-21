@@ -6,21 +6,21 @@
                     <?php
                             foreach ($perum as $data) {
                         ?>
-                    <div class="col-12 col-sm-6 col-md-6 col-xl-3 grid-margin stretch-card">
-                        <div class="card">
+                    <div class="col-12 col-sm-6 col-md-6 col-xl-3 grid-margin stretch-card grid-margin">
+                        <div class="card rounded-3">
                             <a href="<?= base_url('Tarik_saldo/form_tarik/'.$data->id_perumahan) ?>" type="button">
                                 <div class="card-body bg-gradient-primary">
                                     <h4 class="card-title text-white"><?= $data->nama; ?></h4>
                                     <input type="text" id="id_perum" class="col-lg-12"
                                         value="<?= $data->id_perumahan; ?>" hidden>
-                                    <!-- <div class="d-flex justify-content-between">
-                                        <p class="text-muted">Saldo</p>
-                                        <p class="text-muted"><?=$totalDPP; ?></p>
+                                    <div class="d-flex justify-content-between">
+                                        <p class="text-white">Saldo</p>
+                                        <p class="text-white"><?=$totalDPP; ?></p>
                                     </div>
                                     <div class="progress progress-md">
                                         <div class="progress-bar bg-info w-25" role="progressbar" aria-valuenow="25"
                                             aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </a>
                         </div>
@@ -45,27 +45,3 @@
             </div>
         </div>
     </div>
-</div>
-
-</div>
-
-<script>
-$(document).ready(function() {
-    $("#id_perum").on("input", function() {
-        var id_perum = $(this).val();
-
-        $.ajax({
-            url: '<?php echo base_url('Tarik_saldo') ?>',
-            type: 'GET',
-            data: {
-                id_perum: id_perum
-            },
-
-            success: function(response) {
-                console.log(response);
-            },
-
-        });
-    });
-});
-</script>

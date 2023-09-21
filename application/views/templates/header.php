@@ -27,6 +27,10 @@
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
     <!-- End plugin css for this page -->
+    <!-- nav bawah -->
+    <!-- <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css'> -->
+    <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/navs/style.css">
+    <!-- end nav bawah -->
 
     <!-- inject:css -->
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/vertical-layout-light/style.css">
