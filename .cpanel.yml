@@ -15,7 +15,7 @@
 
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/hicr4985/public_html/hi-care.id
+    - export DEPLOYPATH=/home/hicr4985/public_html/
     - /bin/cp -R application $DEPLOYPATH
     - /bin/cp -R assets $DEPLOYPATH
     - /bin/cp -R system $DEPLOYPATH
