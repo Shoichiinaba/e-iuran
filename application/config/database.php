@@ -81,8 +81,12 @@ $db['default'] = array(
 	// 'password' => '',
 
 	// Online Production
-	'username' => 'kina3126_e-iuran',
-	'password' => 'kanpa2020',
+	// 'username' => 'kina3126_e-iuran',
+	// 'password' => 'kanpa2020',
+
+	// online hi-care
+	'username' => 'hicr4985_hi-care',
+	'password' => 'hicare2020',
 
 	'database' => 'kina3126_e-iuran',
 	'dbdriver' => 'mysqli',
