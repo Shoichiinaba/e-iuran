@@ -103,6 +103,7 @@ input:focus+label {
 
 <div class="main-panel">
     <div class="content-wrapper">
+        <?php if ($userdata->role == 'Admin') : ?>
         <form id="tarik-saldo">
             <div class="row">
                 <div class="col-lg-3 grid-margin stretch-card mb-2 pt-2">
@@ -180,6 +181,7 @@ input:focus+label {
         </form>
     </div>
 </div>
+<?php endif; ?>
 
 <div class="row pt-2">
     <div class="col-md-12 col-lg-12 grid-margin stretch-card">
@@ -269,7 +271,7 @@ $(document).ready(function() {
                     // Bersihkan input lainnya sesuai kebutuhan
 
                     window.location.href =
-                        "<?php echo base_url('Tarik_saldo/form_tarik'); ?>";
+                        "<?=site_url('Tarik_saldo/form_tarik//')?><?= $this->uri->segment(3);?>";
                 } else {
                     console.error('Terjadi kesalahan saat validasi data di server.');
 

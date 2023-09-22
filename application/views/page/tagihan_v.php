@@ -149,7 +149,7 @@ select:focus+label {
                     <div class="card">
                         <div class="form-group mt-3 col-lg-12 col-md-12 col-sm-12 col-xs-12 mr-0">
                             <label class="label-select2">Pilih Warga</label>
-                            <select class="js-example-basic-single w-100" id="id_warga" name="id_warga">
+                            <select class="js-example-basic-single w-100" id="id_warga" name="id_warga" required>
                                 <option value="">....</option>
                                 <?php foreach ($warga as $data) { ?>
                                 <option value="<?= $data['id']; ?>" data-badge="<?= $data['badge']; ?>">

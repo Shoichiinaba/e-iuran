@@ -58,10 +58,10 @@ class Tarik_saldo extends AUTH_Controller
        $this->load->view($this->template, $data);
    }
 
-   function get_data_tf() {
+   function get_data_tf()
+   {
 
     $id_perum = $this->uri->segment(3);
-    //  $id_perum = 1;
 
     $list = $this->M_saldo->get_datatablest($id_perum);
     $data = array();
@@ -92,7 +92,8 @@ class Tarik_saldo extends AUTH_Controller
             );
     // output to json format
     echo json_encode($output);
-}
+
+    }
 
     public function buat_tarik() {
         $status        = '2';

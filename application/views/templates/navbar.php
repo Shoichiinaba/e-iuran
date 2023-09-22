@@ -69,6 +69,7 @@
                     </a>
                 </div>
             </li>
+            <?php if ($userdata->role == 'Admin' || $userdata->role == 'RT') : ?>
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                     <img src="<?php echo base_url(); ?>assets/images/user/<?php echo $userdata->foto; ?> "
@@ -76,35 +77,34 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                    <?php if ($userdata->role == 'Admin') : ?>
                     <a class="dropdown-item" href="<?php echo site_url('Profile_adm'); ?> ">
                         <i class="ti-settings text-primary"></i>
                         Settings
                     </a>
-                    <a class="dropdown-item" href="<?php echo site_url('Auth/logout'); ?> ">
+                    <a class="dropdown-item" href="<?php echo site_url('Auth/logadm'); ?> ">
                         <i class="ti-power-off text-primary"></i>
                         Logout
                     </a>
-                    <?php endif; ?>
-                    <?php if ($userdata->role == 'RT') : ?>
-                    <a class="dropdown-item" href="<?php echo site_url('Profile_adm'); ?> ">
-                        <i class="ti-settings text-primary"></i>
-                        Settings
-                    </a>
-                    <a class="dropdown-item" href="<?php echo site_url('Auth/logout'); ?> ">
-                        <i class="ti-power-off text-primary"></i>
-                        Logout
-                    </a>
-                    <?php endif; ?>
-                    <?php if ($userdata->role == 'Warga') : ?>
-                    <a class="dropdown-item" href="<?php echo site_url('Auth/logout'); ?> ">
-                        <i class="ti-power-off text-primary"></i>
-                        Logout
-                    </a>
-                    <?php endif; ?>
                 </div>
             </li>
+            <?php endif; ?>
+            <?php if ($userdata->role == 'Warga') : ?>
+            <li class="nav-item nav-profile dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                    <img src="<?php echo base_url(); ?>assets/images/user/<?php echo $userdata->foto; ?> "
+                        alt="profile" />
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                    <a class="dropdown-item" href="<?php echo site_url('Auth/logout'); ?> ">
+                        <i class="ti-power-off text-primary"></i>
+                        Logout
+                    </a>
+                </div>
+
+            </li>
+            <?php endif; ?>
         </ul>
+
         <?php if ($userdata->role == 'Admin') : ?>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
             data-toggle="offcanvas">

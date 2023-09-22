@@ -38,5 +38,23 @@ class Cetak_invoice extends AUTH_Controller
         // run dompdf
         $this->pdfgenerator->generate($html, $file_pdf, $paper, $orientation);
     }
+
+    public function bikti_tf()
+    {
+        $id = $this->session->userdata('id_rtrw');
+        $id_perum = $this->session->userdata('id_perum');
+
+        $this->load->library('pdfgenerator');
+
+        $data['_tittle'] = 'Bukti Tranfer Saldo Hi-care';
+        $file_pdf = 'Bukti_Tarik_saldo';
+        $paper = 'A4';
+        $orientation = "potrait";
+
+        $data['data_tarik'] = $this->M_cetak_pdf->m_bukti_tarik($id_perum);
+        $html = $this->load->view('page/cetak/bukti_pdf', $data, true);
+
+        $this->pdfgenerator->generate($html, $file_pdf, $paper, $orientation);
+    }
 }
 // http://localhost/site_map/Laporan_pdf/data/6/Subsidi/A1-A10-A12/

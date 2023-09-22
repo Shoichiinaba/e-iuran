@@ -40,6 +40,7 @@ class Data_tagihan extends AUTH_Controller
             $warga_data[] = array(
                 'id' => $warga->id_warga,
                 'text' => $warga->nama,
+                // 'text_perum' => $warga->nama_perum,
                 'badge' => $warga->no_rumah
             );
         }

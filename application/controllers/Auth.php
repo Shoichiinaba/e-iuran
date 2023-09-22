@@ -68,6 +68,13 @@ class Auth extends CI_Controller
 		redirect('Auth');
 	}
 
+	function logadm()
+	{
+		$this->session->sess_destroy();
+		$this->session->set_flashdata('sukses', 'Anda Telah Keluar dari Aplikasi');
+		redirect('Auth/admin');
+	}
+
 	// function login Admin
 	public function admin()
 	{

@@ -59,6 +59,20 @@
                 </ul>
             </div>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#saldo" aria-expanded="false" aria-controls="charts">
+                <i class="ti-money menu-icon"></i>
+                <span class="menu-title">Saldo Keluar</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="saldo">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="<?php echo site_url('Histori_tarik'); ?> ">History
+                            Saldo </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
         <?php endif; ?>
         <!-- MENU ADMIN -->
         <?php if ($userdata->role == 'Admin') : ?>
