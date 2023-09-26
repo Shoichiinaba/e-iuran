@@ -79,6 +79,7 @@ $db['default'] = array(
 	// Offline development
 	// 'username' => 'root',
 	// 'password' => '',
+	// 'database' => 'kina3126_e-iuran',
 
 	// Online Production
 	// 'username' => 'kina3126_e-iuran',
@@ -87,8 +88,8 @@ $db['default'] = array(
 	// online hi-care
 	'username' => 'hicr4985_hi-care',
 	'password' => 'hicare2020',
+	'database' => 'hicr4985_hi-care',
 
-	'database' => 'kina3126_e-iuran',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

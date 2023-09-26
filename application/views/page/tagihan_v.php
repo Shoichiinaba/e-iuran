@@ -152,11 +152,13 @@ select:focus+label {
                             <select class="js-example-basic-single w-100" id="id_warga" name="id_warga" required>
                                 <option value="">....</option>
                                 <?php foreach ($warga as $data) { ?>
-                                <option value="<?= $data['id']; ?>" data-badge="<?= $data['badge']; ?>">
+                                <option value="<?= $data['id']; ?>" data-badge="<?= $data['badge']; ?>"
+                                    data-no-rumah="<?= $data['no_rumah']; ?>">
                                     <?= $data['text']; ?>
                                 </option>
                                 <?php } ?>
                             </select>
+
                         </div>
                     </div>
                 </div>
@@ -393,17 +395,39 @@ select:focus+label {
 <!-- kode javascript untuk manipulasi data -->
 <script>
 $(document).ready(function() {
+
     $('.js-example-basic-single').select2({
+        matcher: function(params, data) {
+            var term = $.trim(params.term);
+            if (term === '') {
+                return data;
+            }
+
+            var badge = data.element.dataset.badge;
+
+            // Pastikan data.text dan badge tidak null atau undefined sebelum mengaksesnya
+            if (data.text && badge) {
+                // Cek apakah term cocok dengan nama atau nomor rumah
+                if (data.text.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
+                    badge.toLowerCase().indexOf(term.toLowerCase()) > -1) {
+                    return data;
+                }
+            }
+            return null;
+        },
         templateResult: function(data) {
             if (!data.id) {
                 return data.text;
             }
 
             var badge = data.element.dataset.badge;
-            var $result = $('<span><div class="badge badge-info">' + badge + '</div> ' +
-                data
-                .text + '</span>');
-            return $result;
+            if (badge) {
+                var $result = $('<span><div class="badge badge-info">' + badge + '</div> ' +
+                    data.text + '</span>');
+                return $result;
+            }
+
+            return data.text;
         },
         templateSelection: function(data) {
             if (!data.id) {
@@ -411,12 +435,42 @@ $(document).ready(function() {
             }
 
             var badge = data.element.dataset.badge;
-            var $result = $('<span><div class="badge badge-info">' + badge + '</div> ' +
-                data
-                .text + '</span>');
-            return $result;
+            if (badge) {
+                var $result = $('<span><div class="badge badge-info">' + badge + '</div> ' +
+                    data.text + '</span>');
+                return $result;
+            }
+
+            return data.text;
         }
     });
+
+
+
+    // $('.js-example-basic-single').select2({
+    //     templateResult: function(data) {
+    //         if (!data.id) {
+    //             return data.text;
+    //         }
+
+    //         var badge = data.element.dataset.badge;
+    //         var $result = $('<span><div class="badge badge-info">' + badge + '</div> ' +
+    //             data
+    //             .text + '</span>');
+    //         return $result;
+    //     },
+    //     templateSelection: function(data) {
+    //         if (!data.id) {
+    //             return data.text;
+    //         }
+
+    //         var badge = data.element.dataset.badge;
+    //         var $result = $('<span><div class="badge badge-info">' + badge + '</div> ' +
+    //             data
+    //             .text + '</span>');
+    //         return $result;
+    //     }
+    // });
 
     // Fungsi untuk mengambil data kubik dari server
     function getKubikData(id_warga) {
