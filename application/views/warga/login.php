@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control form-control-lg" name="password"
-                                        id="password" placeholder="Password">
+                                        id="password" placeholder="Password" autocomplete="current-password">
                                 </div>
                                 <div class="mt-3">
                                     <button type="submit"

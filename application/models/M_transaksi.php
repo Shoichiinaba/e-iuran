@@ -6,10 +6,19 @@ class M_transaksi extends CI_Model
 
     public function get_warga($id)
     {
+        // untuk data per rt
+        // $this->db->select('warga.id_warga, warga.nama, warga.id_rtrw, warga.no_rumah, perumahan.id_perumahan, perumahan.nama as nama_perum');
+        // $this->db->from('warga');
+        // $this->db->join('perumahan', 'warga.id_perum = perumahan.id_perumahan');
+        // $this->db->where('id_rtrw', $id);
+        // $query = $this->db->get();
+        // return $query->result();
+
+        // untuk data warga per perumahan
         $this->db->select('warga.id_warga, warga.nama, warga.id_rtrw, warga.no_rumah, perumahan.id_perumahan, perumahan.nama as nama_perum');
         $this->db->from('warga');
         $this->db->join('perumahan', 'warga.id_perum = perumahan.id_perumahan');
-        $this->db->where('id_rtrw', $id);
+        $this->db->where('id_perum', $id);
         $query = $this->db->get();
         return $query->result();
     }

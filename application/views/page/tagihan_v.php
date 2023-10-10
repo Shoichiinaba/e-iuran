@@ -373,7 +373,6 @@ select:focus+label {
                                             <th>Tahun</th>
                                             <th>Nominal</th>
                                             <th>Tagihan Lain</th>
-                                            <!-- <th>Taxs</th> -->
                                             <th>Total</th>
                                             <th>Status</th>
                                         </tr>
@@ -444,33 +443,6 @@ $(document).ready(function() {
             return data.text;
         }
     });
-
-
-
-    // $('.js-example-basic-single').select2({
-    //     templateResult: function(data) {
-    //         if (!data.id) {
-    //             return data.text;
-    //         }
-
-    //         var badge = data.element.dataset.badge;
-    //         var $result = $('<span><div class="badge badge-info">' + badge + '</div> ' +
-    //             data
-    //             .text + '</span>');
-    //         return $result;
-    //     },
-    //     templateSelection: function(data) {
-    //         if (!data.id) {
-    //             return data.text;
-    //         }
-
-    //         var badge = data.element.dataset.badge;
-    //         var $result = $('<span><div class="badge badge-info">' + badge + '</div> ' +
-    //             data
-    //             .text + '</span>');
-    //         return $result;
-    //     }
-    // });
 
     // Fungsi untuk mengambil data kubik dari server
     function getKubikData(id_warga) {

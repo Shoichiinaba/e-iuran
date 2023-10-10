@@ -18,15 +18,12 @@
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/css/vendor.bundle.base.css">
     <!-- endinject -->
 
-    <!-- custom css -->
-    <!-- <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/custom/custom.css"> -->
-    <!-- akhir custom css -->
-
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/select2/select2.min.css">
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
     <!-- End plugin css for this page -->
+
     <!-- nav bawah -->
     <!-- <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css'> -->
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/navs/style.css">
