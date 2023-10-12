@@ -16,7 +16,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/vertical-layout-light/style.css">
     <!-- endinject -->
-    <link rel="shortcut icon" href="<?= base_url('assets'); ?>/images/logo_e/.png" />
+    <link rel="shortcut icon" href="<?= base_url('assets'); ?>/images/logo_e/hi.png" />
 </head>
 <style>
 .log {

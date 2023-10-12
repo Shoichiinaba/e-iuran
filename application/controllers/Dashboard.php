@@ -30,7 +30,7 @@ class Dashboard extends AUTH_Controller
 
         if ($role == 'Warga') {
             // LOAD PAGE DASHBOARD WARGA
-            $status = '0';
+            $status = 0;
             $id_warga = $this->session->userdata('userdata')->id_warga;
             $data['tagihan_air']      = $this->M_client->m_tagihan_air($id_warga, $status);
             $data['transaksi']        = $this->M_client->m_transaksi($id_warga, 1);
@@ -75,7 +75,6 @@ class Dashboard extends AUTH_Controller
             </script>';
         }
 
-        // if ($data['info_konf_byr']->num_rows() > 0) {
         foreach ($data['info_konf_byr'] as $row) {
             $date = $row->tgl_upload;
             // pendefinisian tanggal awal
@@ -124,7 +123,6 @@ class Dashboard extends AUTH_Controller
 
             </script>';
         }
-        // }
     }
 
     function get_data_blm_bayar()

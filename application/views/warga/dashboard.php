@@ -252,7 +252,7 @@ div:where(.swal2-icon) {
                 <div class="col-lg-6 col-md-6 col-12 pt-2">
                     <h4 class="text-inv mb-0"
                         style="font-weight: bold;font-family: sans-serif; top: 27px; position: relative;">STATUS | <i
-                            class="text-danger status-inv">BELUM DIBAYAR</i></h4>
+                            class="text-danger status-inv"></i></h4>
                     <p class="text-inv"></p>
                 </div>
             </div>
@@ -555,13 +555,18 @@ div:where(.swal2-icon) {
 
         var action = 'tunggakan'
         var status = '0';
-        // $('.count-tgl').attr('hidden', true);
+        if ($('.info-total-tagihan').text() === 'Rp. 0') {
+            $(".status-inv").text("Tidak Ada Tagihan");
+        } else {
+
+            $('.status-inv').text('BELUM BAYAR');
+        }
         $('#col-btn-byr').attr('hidden', true);
         $('.upload-bukti').hide();
-        $('.status-inv').text('BELUM BAYAR');
         $('.btn-bayar').text('Buat pembayaran').removeClass('btn-warning').addClass('btn-primary');
         $('#btn-kirim').val('buat')
         load_data(action, status);
+
     };
 
     function konf_byr() {

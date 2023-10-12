@@ -17,7 +17,7 @@ class AUTH_Controller extends CI_Controller {
 
 	public function updateProfil() {
 		if ($this->userdata != '') {
-			$data = $this->M_admin->select($this->userdata->id);
+			$data = $this->M_admin->select($this->userdata->id_warga);
 
 			$this->session->set_userdata('userdata', $data);
 			$this->userdata = $this->session->userdata('userdata');
