@@ -557,13 +557,14 @@ div:where(.swal2-icon) {
         var status = '0';
         if ($('.info-total-tagihan').text() === 'Rp. 0') {
             $(".status-inv").text("Tidak Ada Tagihan");
+            $('.btn-bayar').text('Buat pembayaran').removeClass('btn-warning').addClass('btn-primary').hide();
         } else {
 
             $('.status-inv').text('BELUM BAYAR');
+            $('.btn-bayar').text('Buat pembayaran').removeClass('btn-warning').addClass('btn-primary');
         }
         $('#col-btn-byr').attr('hidden', true);
         $('.upload-bukti').hide();
-        $('.btn-bayar').text('Buat pembayaran').removeClass('btn-warning').addClass('btn-primary');
         $('#btn-kirim').val('buat')
         load_data(action, status);
 
