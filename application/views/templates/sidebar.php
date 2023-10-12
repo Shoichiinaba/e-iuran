@@ -161,13 +161,13 @@
 
         <li class="nav-item">
             <a class="nav-link" href="<?php echo site_url('Profile'); ?> ">
-                <i class="icon-grid menu-icon"></i>
+                <i class="ti-user menu-icon"></i>
                 <span class="menu-title">Profil saya</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="<?php echo site_url('Riwayat_transaksi'); ?> ">
-                <i class="icon-grid menu-icon"></i>
+                <i class="ti-receipt menu-icon"></i>
                 <span class="menu-title">Riwayat transaksi</span>
             </a>
         </li>
