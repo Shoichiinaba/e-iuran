@@ -111,13 +111,46 @@ class M_transaksi extends CI_Model
     var $column_search = array('no_invoice','nama', 'bln_tagihan', 'thn_tagihan', 'status');
     var $order = array('tagihan.id_tagihan' => 'asc'); // default order
 
-    private function _get_datatables_query($id, $role, $bulan_filter, $status_filter, $tahun_filter) {
+    private function _get_datatables_query($id, $role, $bulan_filter, $status_filter, $tahun_filter)
+    {
         if ($role == 'Admin') {
 
             $this->db->select('*');
             $this->db->from('tagihan');
             $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
             $this->db->where_in('tagihan.status', array(0, 2));
+
+            if ($bulan_filter) {
+                $this->db->where('tagihan.bln_tagihan', $bulan_filter);
+            }
+            if ($status_filter !== '') {
+                $this->db->where('tagihan.status', $status_filter);
+            }
+            if ($tahun_filter !== '') {
+                $this->db->where('tagihan.thn_tagihan', $tahun_filter);
+            }
+
+            $i = 0;
+            foreach ($this->column_search as $item) {
+                if(@$_POST['search']['value']) {
+                    if($i===0) {
+                        $this->db->group_start();
+                        $this->db->like($item, $_POST['search']['value']);
+                    } else {
+                        $this->db->or_like($item, $_POST['search']['value']);
+                    }
+                    if(count($this->column_search) - 1 == $i)
+                        $this->db->group_end();
+                }
+                $i++;
+            }
+
+            if(isset($_POST['order'])) {
+                $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+            }  else if(isset($this->order)) {
+                $order = $this->order;
+                $this->db->order_by(key($order), $order[key($order)]);
+            }
 
     } else if ($role == 'RT') {
 
@@ -187,9 +220,37 @@ class M_transaksi extends CI_Model
         if ($role == 'Admin') {
 
             $this->db->select('*');
-            $this->db->from('tagihan');
-            $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
+            $this->db->from('transaksi');
+            $this->db->join('tagihan', 'tagihan.code_tagihan = transaksi.code_tagihan');
+            $this->db->join('warga', 'warga.id_warga = transaksi.id_warga');
             $this->db->where_in('tagihan.status', array(1, 2));
+            $this->db->group_by('transaksi.code_tagihan');
+
+            if ($status_trans !== '') {
+                $this->db->where('tagihan.status', $status_trans);
+            }
+
+            $i = 0;
+            foreach ($this->column_search as $trx) {
+                if(@$_POST['search']['value']) {
+                    if($i===0) {
+                        $this->db->group_start();
+                        $this->db->like($trx, $_POST['search']['value']);
+                    } else {
+                        $this->db->or_like($trx, $_POST['search']['value']);
+                    }
+                    if(count($this->column_search) - 1 == $i)
+                        $this->db->group_end();
+                }
+                $i++;
+            }
+
+            if(isset($_POST['order'])) {
+                $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+            }  else if(isset($this->order)) {
+                $order = $this->order;
+                $this->db->order_by(key($order), $order[key($order)]);
+            }
 
     } else if ($role == 'RT') {
 

@@ -140,7 +140,7 @@ select:focus+label {
     transform: translateY(-20px);
 }
 </style>
-
+<?php if ($userdata->role == 'RT') : ?>
 <div class="main-panel">
     <div class="content-wrapper">
         <form id="buat-tagihan">
@@ -381,6 +381,97 @@ select:focus+label {
                                     <tfoot>
                                     </tfoot>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<?php endif; ?>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body pt-1 mt-1">
+                        <div class="row mb-1 pb-1">
+                            <div class="col-md-12 grid-margin mb-0 pb-0">
+                                <div class="row">
+                                    <div class="col-3 col-xl-8 mb-4 mb-xl-0">
+                                        <h4 class="font-weight-bold">Data Tagihan
+                                        </h4>
+                                    </div>
+                                    <div class="input-group pb-0 col-6">
+                                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                            <label class="label-select">Bulan</label>
+                                            <select type="text" id="bln_filter" class="col-lg-12 mt-1 pt-1">
+                                                <option value="">Pilih !!</option>
+                                                <option value="Januari">Januari</option>
+                                                <option value="Februari">Februari</option>
+                                                <option value="Maret">Maret</option>
+                                                <option value="April">April</option>
+                                                <option value="Mei">Mei</option>
+                                                <option value="Juni">Juni</option>
+                                                <option value="Juli">Juli</option>
+                                                <option value="Agustus">Agustus</option>
+                                                <option value="September">September</option>
+                                                <option value="Oktober">Oktober</option>
+                                                <option value="November">November</option>
+                                                <option value="Desember">Desember</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                            <label class="label-select">Tahun</label>
+                                            <select type="text" id="thn_filter" class="col-lg-12 mt-1 pt-1">
+                                                <option value="">Pilih !!</option>
+                                                <?php
+                                            foreach ($filter as $data) :
+                                        ?>
+                                                <option value="<?= $data->thn_tagihan; ?>"> &nbsp;
+                                                    <?= $data->thn_tagihan; ?></option>
+                                                <?php
+                                            endforeach;
+                                        ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                            <label class="label-select">Status</label>
+                                            <select type="text" id="status_filter" class="col-lg-12 mt-1 pt-1">
+                                                <option value="">Pilih !!</option>
+                                                <option value="0">Belum Bayar</option>
+                                                <option value="2">Lunas</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="table-responsive">
+                                        <table id="data-tagihan" class="display expandable-table" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>No. Invoice</th>
+                                                    <th>Nama || No Rumah</th>
+                                                    <th>Bulan</th>
+                                                    <th>Tahun</th>
+                                                    <th>Nominal</th>
+                                                    <th>Tagihan Lain</th>
+                                                    <th>Total</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            </tbody>
+                                            <tfoot>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -4,39 +4,101 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class M_dashboard extends CI_Model
 {
 
-    public function jumlah_blm( $id)
+    public function jumlah_blm( $id, $role)
 	{
-		$this->db->select('tagihan.status, COUNT(*) as jumlah_record');
-		$this->db->from('tagihan');
-		$this->db->where('tagihan.status', 0);
-        $this->db->where('id_rtrw', $id);
-    	return $this->db->count_all_results();
+		if ($role == 'Admin') {
+			$this->db->select('tagihan.status, COUNT(*) as jumlah_record');
+			$this->db->from('tagihan');
+			$this->db->where('tagihan.status', 0);
+			return $this->db->count_all_results();
+
+		} else if ($role == 'RT') {
+
+			$this->db->select('tagihan.status, COUNT(*) as jumlah_record');
+			$this->db->from('tagihan');
+			$this->db->where('tagihan.status', 0);
+			$this->db->where('id_rtrw', $id);
+			return $this->db->count_all_results();
+		}
+
 	}
 
-    public function jumlah_app( $id)
+    public function jumlah_app( $id, $role)
 	{
-		$this->db->select('tagihan.status, COUNT(*) as jumlah_record');
-		$this->db->from('tagihan');
-		$this->db->where('tagihan.status', 1);
-        $this->db->where('id_rtrw', $id);
-    	return $this->db->count_all_results();
+		if ($role == 'Admin') {
+
+			$this->db->select('tagihan.status, COUNT(*) as jumlah_record');
+			$this->db->from('tagihan');
+			$this->db->where('tagihan.status', 1);
+			return $this->db->count_all_results();
+
+		} else if ($role == 'RT') {
+
+			$this->db->select('tagihan.status, COUNT(*) as jumlah_record');
+			$this->db->from('tagihan');
+			$this->db->where('tagihan.status', 1);
+			$this->db->where('id_rtrw', $id);
+			return $this->db->count_all_results();
+		}
+
 	}
 
-    public function jumlah_lnas( $id)
+    public function jumlah_lnas( $id, $role)
 	{
-		$this->db->select('tagihan.status, COUNT(*) as jumlah_record');
-		$this->db->from('tagihan');
-		$this->db->where('tagihan.status', 2);
-        $this->db->where('id_rtrw', $id);
-    	return $this->db->count_all_results();
+		if ($role == 'Admin') {
+
+			$this->db->select('tagihan.status, COUNT(*) as jumlah_record');
+			$this->db->from('tagihan');
+			$this->db->where('tagihan.status', 2);
+			return $this->db->count_all_results();
+
+		} else if ($role == 'RT') {
+
+			$this->db->select('tagihan.status, COUNT(*) as jumlah_record');
+			$this->db->from('tagihan');
+			$this->db->where('tagihan.status', 2);
+			$this->db->where('id_rtrw', $id);
+			return $this->db->count_all_results();
+
+		}
+
 	}
 
-    public function jumlah_warga( $id)
+	public function jumlah_tag( $id, $role)
 	{
-		$this->db->select('warga.id_warga, COUNT(*) as jumlah_record');
-		$this->db->from('warga');
-        $this->db->where('id_rtrw', $id);
-    	return $this->db->count_all_results();
+		if ($role == 'Admin') {
+
+			$this->db->select('tagihan.id_tagihan, COUNT(*) as jumlah_record');
+			$this->db->from('tagihan');
+			return $this->db->count_all_results();
+
+		} else if ($role == 'RT') {
+
+			$this->db->select('tagihan.id_tagihan, COUNT(*) as jumlah_record');
+			$this->db->from('tagihan');
+			$this->db->where('id_rtrw', $id);
+			return $this->db->count_all_results();
+
+		}
+
+	}
+
+    public function jumlah_warga( $id, $role)
+	{
+		if ($role == 'Admin') {
+
+			$this->db->select('warga.id_warga, COUNT(*) as jumlah_record');
+			$this->db->from('warga');
+			return $this->db->count_all_results();
+
+		} else if ($role == 'RT') {
+
+			$this->db->select('warga.id_warga, COUNT(*) as jumlah_record');
+			$this->db->from('warga');
+			$this->db->where('id_rtrw', $id);
+			return $this->db->count_all_results();
+		}
+
 	}
 
 	public function saldo($id)

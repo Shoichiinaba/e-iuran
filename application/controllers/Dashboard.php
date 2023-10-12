@@ -41,12 +41,14 @@ class Dashboard extends AUTH_Controller
             $this->load->view($this->template, $data);
         } else {
             // LOAD PAGE DASHBOARD ADMIN, RT
+            $role = $this->session->userdata('userdata')->role;
             $id = $this->session->userdata('userdata')->id_rtrw;
             $data['userdata']       = $this->userdata;
-            $data['b_bayar']        = $this->M_dashboard->jumlah_blm($id);
-            $data['menunggu']       = $this->M_dashboard->jumlah_app($id);
-            $data['lunas']          = $this->M_dashboard->jumlah_lnas($id);
-            $data['jum_warga']      = $this->M_dashboard->jumlah_warga($id);
+            $data['b_bayar']        = $this->M_dashboard->jumlah_blm($id, $role);
+            $data['menunggu']       = $this->M_dashboard->jumlah_app($id, $role);
+            $data['lunas']          = $this->M_dashboard->jumlah_lnas($id, $role);
+            $data['jum_warga']      = $this->M_dashboard->jumlah_warga($id, $role);
+            $data['tag_buat']      = $this->M_dashboard->jumlah_tag($id, $role);
             $data['get_saldo']      = $this->M_dashboard->saldo($id);
 
             // code saldo

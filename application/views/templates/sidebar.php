@@ -74,8 +74,28 @@
             </div>
         </li>
         <?php endif; ?>
+
         <!-- MENU ADMIN -->
         <?php if ($userdata->role == 'Admin') : ?>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#tagihan" aria-expanded="false" aria-controls="ui-basic">
+                <i class="ti-write menu-icon"></i>
+                <span class="menu-title">Kelola Tagihan</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="tagihan">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="<?php echo site_url('Data_tagihan'); ?> ">Data
+                            Tagihan</a>
+                    </li>
+                </ul>
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link"
+                            href="<?php echo site_url('Data_tagihan/data_transaksi'); ?>">Data Transaksi</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#iuran" aria-expanded="false" aria-controls="charts">
                 <i class="ti-agenda menu-icon"></i>
