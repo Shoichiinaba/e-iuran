@@ -86,7 +86,6 @@ class Riwayat_transaksi extends AUTH_Controller
                 echo '<td>' . $riwayat->foto_bukti . '</td>';
                 if ($riwayat->status == '0') {
                     echo '<td class="font-weight-medium"><div class="badge badge-danger">Belum Bayar</div></td>';
-                    // echo '<td><button type="button" class="btn btn-primary btn-bayar btn-sm" data-bs-toggle="modal" data-bs-target="#modal-bayar">Bayar</button></td>';
                 } elseif ($riwayat->status == '1') {
                     echo '<td class="font-weight-medium"><div class="badge badge-warning">Menunggu Pembayaran</div></td>';
                 } elseif ($riwayat->status == '2') {
@@ -111,7 +110,7 @@ class Riwayat_transaksi extends AUTH_Controller
                 foreach ($data['unpaid'] as $row) {
                     echo '<td class="text-center">' . $row->total . ' Bulan</td>';
                     if ($row->total <= '0') {
-                        echo '<td class="text-center"><i>Lunas</i></td>';
+                        echo '<td class="text-center"><i class="badge badge-success">Lunas</i></td>';
                     } else {
                         echo '<td class="text-center"><i>Belum bayar</i></td>';
                         echo '<script>';
