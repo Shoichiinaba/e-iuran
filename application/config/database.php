@@ -85,7 +85,7 @@ $db['default'] = array(
 	// 'username' => 'kina3126_e-iuran',
 	// 'password' => 'kanpa2020',
 
-	// online hi-care
+	// online hi-care Production
 	'username' => 'hicr4985_hi-care',
 	'password' => 'hicare2020',
 	'database' => 'hicr4985_hi-care',

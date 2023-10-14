@@ -391,7 +391,7 @@ select:focus+label {
 </div>
 </div>
 <?php endif; ?>
-
+<?php if ($userdata->role == 'Admin') : ?>
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
@@ -481,6 +481,7 @@ select:focus+label {
     </div>
 </div>
 </div>
+<?php endif; ?>
 
 <!-- kode javascript untuk manipulasi data -->
 <script>
