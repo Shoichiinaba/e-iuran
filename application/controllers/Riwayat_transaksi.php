@@ -100,7 +100,8 @@ class Riwayat_transaksi extends AUTH_Controller
             echo $table_warga;
             echo '<tbody>';
             $id_warga = $this->session->userdata('userdata')->id_warga;
-            $data['riwayat_warga']          = $this->M_riwayat->m_riwayat_warga($id_warga);
+            $rt = $this->session->userdata('userdata')->id_rtrw;
+            $data['riwayat_warga']          = $this->M_riwayat->m_riwayat_warga($id_warga, $rt);
             foreach ($data['riwayat_warga'] as $riwayat) {
                 echo '<tr id="tr-' . $riwayat->id_warga . '" class="">';
                 echo '<td>' . $riwayat->no_rumah . '</td>';

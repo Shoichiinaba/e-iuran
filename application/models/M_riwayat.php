@@ -16,14 +16,14 @@ class M_riwayat extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-    function m_riwayat_warga($id_warga)
+    function m_riwayat_warga($id_warga,$rt)
     {
 
         $this->db->select('*');
         $this->db->from('warga');
+        $this->db->join('rt-rw', 'rt-rw.id_rtrw = warga.id_rtrw');
         $this->db->join('tagihan', 'warga.id_warga = tagihan.id_warga');
-        // $this->db->where_not_in('tagihan.id_warga', $id_warga);
-        // $this->db->where('status', '0');
+        $this->db->where('rt-rw.id_rtrw', $rt);
         // $this->db->order_by('tagihan.status', 'desc');
         $this->db->group_by('warga.id_warga');
         // $this->db->group_by('tagihan.status');
