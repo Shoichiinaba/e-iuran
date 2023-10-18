@@ -117,7 +117,7 @@
                         <div class="card card-tale">
                             <div class="card-body">
                                 <h3 class="mb-4">Tagihan Dibuat</h3>
-                                <p class="fs-30 mb-2"> <?= $tag_buat?> Orang</p>
+                                <p class="fs-30 mb-2"> <?= $tag_buat?> Orang</p> Di Bulan INI
                             </div>
                         </div>
                     </div>
