@@ -108,6 +108,8 @@ Swal.fire({
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" placeholder="Username"
                                                     name="no_rumah" value="<?php echo $userdata->no_rumah; ?>" disabled>
+                                                <input type="text" class="form-control" placeholder="Username"
+                                                    name="no_rumah" value="<?php echo $userdata->no_rumah; ?>" hidden>
                                             </div>
                                         </div>
 
