@@ -132,7 +132,7 @@ input:focus+label {
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1">
                                     <div id="datepicker-popup" class="input-group date datepicker">
                                         <label class="label-date">Tanggal</label>
-                                        <input type="text" id="tanggal" class="form-control">
+                                        <input type="text" id="tanggal" class="form-control" readonly>
                                         <span class="input-group-addon input-group-append border-left">
                                             <span class="ti-calendar input-group-text"></span>
                                         </span>

@@ -43,6 +43,7 @@ class Dashboard extends AUTH_Controller
             // LOAD PAGE DASHBOARD ADMIN, RT
             $role = $this->session->userdata('userdata')->role;
             $id = $this->session->userdata('userdata')->id_rtrw;
+            $id_perum = $this->session->userdata('userdata')->id_perum;
             $data['userdata']       = $this->userdata;
             $data['b_bayar']        = $this->M_dashboard->jumlah_blm($id, $role);
             $data['menunggu']       = $this->M_dashboard->jumlah_app($id, $role);
@@ -52,12 +53,12 @@ class Dashboard extends AUTH_Controller
             $data['get_saldo']      = $this->M_dashboard->saldo($id);
 
             // code saldo
-            $saldo = $this->M_transaksi->get_saldo($id);
+            $saldo = $this->M_transaksi->get_saldo($id_perum);
             $totalDPP = calculate_saldo($saldo);
+
             $Rp_saldo = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
             $data['totalDPP'] = $Rp_saldo;
             // akhir code saldo
-
             $data['content']        = 'page/dashboard_v';
             $this->load->view($this->template, $data);
         }

@@ -307,12 +307,12 @@ class M_transaksi extends CI_Model
     }
     // akhir datatable serverside untuk transaksi pembayaran
 
-    function get_saldo($id) {
+    function get_saldo($id_perum) {
         $this->db->select('*');
         $this->db->from('transaksi');
         $this->db->join('tagihan', 'tagihan.code_tagihan = transaksi.code_tagihan');
         $this->db->join('warga', 'warga.id_warga = transaksi.id_warga');
-        $this->db->where('transaksi.id_rtrw', $id);
+        $this->db->where('transaksi.id_perum', $id_perum);
         $this->db->where('tagihan.status', 2);
         $this->db->where('transaksi.status_saldo', 1);
         $this->db->group_by('transaksi.code_tagihan');
