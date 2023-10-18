@@ -69,6 +69,25 @@ class M_dashboard extends CI_Model
 
 			$this->db->select('tagihan.id_tagihan, COUNT(*) as jumlah_record');
 			$this->db->from('tagihan');
+			$englishMonth = date('F', strtotime('now'));
+
+			$monthTranslations = array(
+				'January' => 'Januari',
+				'February' => 'Februari',
+				'March' => 'Maret',
+				'April' => 'April',
+				'May' => 'Mei',
+				'June' => 'Juni',
+				'July' => 'Juli',
+				'August' => 'Agustus',
+				'September' => 'September',
+				'October' => 'Oktober',
+				'November' => 'November',
+				'December' => 'Desember'
+			);
+
+			$bulanSekarang = $monthTranslations[$englishMonth];
+			$this->db->where('bln_tagihan', $bulanSekarang);
 			return $this->db->count_all_results();
 
 		} else if ($role == 'RT') {
