@@ -21,7 +21,8 @@ class Profile extends AUTH_Controller {
 		$id = $this->userdata->id_warga;
 		$data = array(
 			'no_rumah' => $this->input->post('no_rumah'),
-			'nama' => $this->input->post('nama')
+			'nama' => $this->input->post('nama'),
+			'no_hp' => $this->input->post('no_hp')
 		);
 		if ($this->form_validation->run() == TRUE) {
 			$config['upload_path'] = './assets/images/user/';

@@ -124,6 +124,16 @@ Swal.fire({
                                         </div>
 
                                         <div class="form-group row pb-0 mb-0">
+                                            <label for="exampleInputUsername1" class="col-sm-3 col-form-label">No
+                                                Telephone</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="exampleInputUsername1"
+                                                    placeholder="Username" name="no_hp"
+                                                    value="<?php echo $userdata->no_hp; ?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row pb-0 mb-0">
                                             <label for="exampleInputUsername3" class="col-lg-3 col-form-label">File
                                                 upload</label>
                                             <input type="file" name="foto" class="file-upload-default">
