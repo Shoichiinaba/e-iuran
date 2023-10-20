@@ -109,7 +109,7 @@ class M_transaksi extends CI_Model
     // start datatables
     var $column_order = array(null, 'no_invoice', 'bln_tagihan', 'thn_tagihan');
     var $column_search = array('no_invoice','nama', 'bln_tagihan', 'thn_tagihan', 'status');
-    var $order = array('tagihan.id_tagihan' => 'asc'); // default order
+    var $order = array('tagihan.no_invoice' => 'desc'); // default order
 
     private function _get_datatables_query($id, $role, $bulan_filter, $status_filter, $tahun_filter)
     {
@@ -144,7 +144,6 @@ class M_transaksi extends CI_Model
                 }
                 $i++;
             }
-
             if(isset($_POST['order'])) {
                 $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
             }  else if(isset($this->order)) {
@@ -159,6 +158,7 @@ class M_transaksi extends CI_Model
             $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
             $this->db->where('tagihan.id_rtrw', $id);
             $this->db->where_in('tagihan.status', array(0, 2));
+            $this->db->order_by('tagihan.no_invoice', 'desc');
 
             if ($bulan_filter) {
                 $this->db->where('tagihan.bln_tagihan', $bulan_filter);
