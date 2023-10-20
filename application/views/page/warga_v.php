@@ -99,7 +99,8 @@ Swal.fire({
                             </div>
                             <?php endif ;?>
                             <?php if ($userdata->role=='Admin' ):?>
-                            <div class="form-group col-lg-2 pr-2">
+                            <div class="form-group col-lg-6">
+                                <label for="exampleSelectGender">Perumahan</label>
                                 <select class="form-control" id="exampleSelectGender" name="id_perum[]">
                                     <option selected>Pilih Perumahan</option>
                                     <?php foreach ($perum as $data) { ?>
@@ -108,23 +109,26 @@ Swal.fire({
                                 </select>
                             </div>
                             <?php endif ;?>
-                            <div class="form-group col-lg-2">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="nama[]" placeholder="Nama"
-                                        aria-label="Nama">
-                                </div>
+
+                            <div class="form-group mr-3 ml-3">
+                                <label for="nama">Nama</label>
+                                <input type="text" name="nama[]" id="nama" class="form-control"
+                                    placeholder="Masukan Nama">
                             </div>
-                            <div class="form-group col-lg-2">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="no_rumah[]" placeholder="No. Rumah"
-                                        aria-label="no. Rumah">
-                                </div>
+                            <div class="form-group mr-3 ml-3">
+                                <label for="no_rumah">No. Rumah</label>
+                                <input type="text" id="no_rumah" name="no_rumah[]" class="form-control"
+                                    placeholder="Masukkan No. Rumah">
                             </div>
-                            <div class="form-group col-lg-2">
-                                <div class="input-group">
-                                    <input type="text" name="no_hp[]" class="form-control" placeholder="No. HP"
-                                        aria-label="no. HP">
-                                </div>
+                            <div class="form-group mr-3 ml-3">
+                                <label for="hp">No. HP</label>
+                                <input type="text" id="hp" name="no_hp[]" class="form-control"
+                                    placeholder="Masukksn No. HP">
+                            </div>
+                            <div class="form-group mr-3 ml-3">
+                                <label for="ket">Keterangan</label>
+                                <input type="text" id="ket" class="form-control" name="keterangan[]"
+                                    placeholder="Masukkan Keterangan">
                             </div>
                             <?php if ($userdata->role=='RT' ):?>
                             <div class="form-group">
@@ -135,19 +139,18 @@ Swal.fire({
                             </div>
                             <?php endif ;?>
                             <?php if ($userdata->role=='Admin' ):?>
-                            <div class="form-group col-lg-2 pr-2">
-                                <select class="form-control" id="exampleSelectGender" name="id_rtrw[]">
+                            <div class="form-group col-lg-6">
+                                <label for="exampleSelectGenderrt">RT RW</label>
+                                <select class="form-control" id="exampleSelectGenderrt" name="id_rtrw[]">
                                     <option selected>Pilih RT / RW</option>
                                     <?php foreach ($rtrw as $data) { ?>
-                                    <option value="<?= $data->id_rtrw; ?>">RT: <?= $data->rt; ?> | RW: <?= $data->rw; ?>
+                                    <option value="<?= $data->id_rtrw; ?>">RT: <?= $data->rt; ?> | RW:
+                                        <?= $data->rw; ?>
                                     </option>
                                     <?php } ?>
                                 </select>
                             </div>
                             <?php endif ;?>
-                            <div class="form-group col-lg-3 pr-2 mb-1">
-                                <input class="form-control" name="keterangan[]" placeholder="Keterangan"></input>
-                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
@@ -179,8 +182,8 @@ Swal.fire({
                             </div>
                             <?php if ($userdata->role=='RT' ):?>
                             <div class="form-group mr-3 ml-1 col-lg-5 col-sm-4" hidden>
-                                <label for="exampleInputUsername1">Perumahan</label>
-                                <select class="form-control" name="id_perum">
+                                <label for="perum">Perumahan</label>
+                                <select class="form-control" id="perum" name="id_perum">
                                     <option value="<?= $wargas->id_perum; ?>"> <?= $wargas->perum; ?> </option>
                                     <?php foreach ($perum as $data) { ?>
                                     <option value="<?= $data->id_perumahan; ?>"> <?= $data->nama; ?></option>
@@ -188,8 +191,8 @@ Swal.fire({
                                 </select>
                             </div>
                             <div class="form-group mr-3 ml-3 col-lg-5 col-sm-4" hidden>
-                                <label for="exampleInputUsername1">RT / RW</label>
-                                <select class="form-control" name="id_rtrw">
+                                <label for="rtrw">RT / RW</label>
+                                <select class="form-control" id="rtrw" name="id_rtrw">
                                     <option value="<?= $wargas->id_rtrw; ?>"> RT: <?= $wargas->rt; ?> | RW:
                                         <?= $wargas->rw; ?></option>
                                     <?php foreach ($rtrw as $data) { ?>
@@ -202,8 +205,8 @@ Swal.fire({
                             <?php endif ;?>
                             <?php if ($userdata->role=='Admin' ):?>
                             <div class="form-group mr-3 ml-1 col-lg-5 col-sm-4">
-                                <label for="exampleInputUsername1">Perumahan</label>
-                                <select class="form-control" id="exampleSelectGender" name="id_perum">
+                                <label for="perumedit">Perumahan</label>
+                                <select class="form-control" id="perumedit" name="id_perum">
                                     <option value="<?= $wargas->id_perum; ?>"> <?= $wargas->perum; ?> </option>
                                     <?php foreach ($perum as $data) { ?>
                                     <option value="<?= $data->id_perumahan; ?>"> <?= $data->nama; ?></option>
@@ -211,8 +214,8 @@ Swal.fire({
                                 </select>
                             </div>
                             <div class="form-group mr-3 ml-3 col-lg-5 col-sm-4">
-                                <label for="exampleInputUsername1">RT / RW</label>
-                                <select class="form-control" id="exampleSelectGender" name="id_rtrw">
+                                <label for="rtedit">RT / RW</label>
+                                <select class="form-control" id="rtedit" name="id_rtrw">
                                     <option value="<?= $wargas->id_rtrw; ?>"> RT: <?= $wargas->rt; ?> | RW:
                                         <?= $wargas->rw; ?></option>
                                     <?php foreach ($rtrw as $data) { ?>
@@ -224,23 +227,23 @@ Swal.fire({
                             </div>
                             <?php endif ;?>
                             <div class="form-group mr-3 ml-3">
-                                <label for="exampleInputUsername1">Nama</label>
-                                <input type="text" name="nama" class="form-control" value="<?=$wargas->nama;?>"
-                                    placeholder="Masukan Nama">
+                                <label for="namaedit">Nama</label>
+                                <input type="text" name="nama" id="namaedit" class="form-control"
+                                    value="<?=$wargas->nama;?>" placeholder="Masukan Nama">
                             </div>
                             <div class="form-group mr-3 ml-3">
-                                <label for="exampleInputEmail1">No. Rumah</label>
-                                <input type="text" name="no_rumah" class="form-control" value="<?=$wargas->no_rumah;?>"
-                                    placeholder="Masukkan No. Rumah">
+                                <label for="rumah">No. Rumah</label>
+                                <input type="text" name="no_rumah" id="rumah" class="form-control"
+                                    value="<?=$wargas->no_rumah;?>" placeholder="Masukkan No. Rumah">
                             </div>
                             <div class="form-group mr-3 ml-3">
-                                <label for="exampleInputUsername1">No. HP</label>
-                                <input type="text" name="no_hp" class="form-control" value="<?=$wargas->no_hp;?>"
-                                    placeholder="Masukksn No. HP">
+                                <label for="nope">No. HP</label>
+                                <input type="text" name="no_hp" id="nope" class="form-control"
+                                    value="<?=$wargas->no_hp;?>" placeholder="Masukksn No. HP">
                             </div>
                             <div class="form-group mr-3 ml-3">
-                                <label for="exampleInputEmail1">Keterangan</label>
-                                <input type="text" class="form-control" name="keterangan"
+                                <label for="ketedit">Keterangan</label>
+                                <input type="text" id="ketedit" class="form-control" name="keterangan"
                                     value="<?=$wargas->keterangan;?>" placeholder="Masukkan Keterangan">
                             </div>
                             <div class="modal-footer">

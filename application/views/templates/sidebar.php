@@ -136,6 +136,19 @@
             </div>
         </li>
         <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#warga" aria-expanded="false" aria-controls="warga">
+                <i class="ti-comments-smiley menu-icon"></i>
+                <span class="menu-title">Kelola Warga</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="warga">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link" href="<?php echo site_url('Warga'); ?> ">Data Warga</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#saldo" aria-expanded="false" aria-controls="charts">
                 <i class="ti-money menu-icon"></i>
                 <span class="menu-title">Saldo Keluar</span>
