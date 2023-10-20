@@ -54,6 +54,14 @@ class Tarik_saldo extends AUTH_Controller
        $data['DPP'] = $totalDPP;
        // akhir code saldo
 
+        // saldo Xendit
+        xendit_loaded();
+        $getBalance = \Xendit\Balance::getBalance('CASH');
+        $balance = $getBalance['balance'];
+        $Rp_saldo_xendit = 'Rp. ' . number_format($balance, 0, ',', '.');
+        $data['xendit'] = $Rp_saldo_xendit;
+        // akhir saldo Xendit
+
        $data['content'] = 'page/tariks_saldo_v';
        $this->load->view($this->template, $data);
    }

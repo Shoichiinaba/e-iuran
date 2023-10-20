@@ -110,9 +110,12 @@ input:focus+label {
                     <div class="card">
                         <div class="card card-light bg-gradient-success">
                             <div class="card-body">
-                                <h2 class="mb-4">Saldo</h2>
-                                <h1 class="fs-80 mb-3 text-center" style="color:white"><?=$totalDPP; ?></h1>
-                                <p class="fs-30 mb-2"></p>
+                                <h2 class="mb-2 mt-0 pt-0">Saldo</h2>
+                                <h2 class="fs-80 pb-2 mb-2 mt-1 pt-1 text-center" style="color:white"><?=$totalDPP; ?>
+                                </h2>
+                                <hr style="color: white; border: 1px solid;">
+                                <h5 class="fs-10 pb-0 mb-0 text-center" style="color:blue"> Saldo
+                                    Xendit : <b style="color:red"> <?=$xendit; ?> </b></h5>
                             </div>
                         </div>
                     </div>

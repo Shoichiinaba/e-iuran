@@ -81,10 +81,13 @@ class Warga extends AUTH_Controller
         $no_rumah = $this->input->post('no_rumah');
         $no_hp = $this->input->post('no_hp');
         $keterangan = $this->input->post('keterangan');
+        $role = 'Warga';
+        $foto = 'default.png';
 
         $data = array();
         foreach ($id_perum as $key => $id_perum) {
             if (!empty($id_perum)) {
+                $password = md5('BP123');
                 $data[] = array(
                     'id_perum' => $id_perum,
                     'id_rtrw' => $id_rtrw[$key],
@@ -92,6 +95,9 @@ class Warga extends AUTH_Controller
                     'no_rumah' => $no_rumah[$key],
                     'no_hp' => $no_hp[$key],
                     'keterangan' => $keterangan[$key],
+                    'password' => $password,
+                    'role' => $role,
+                    'foto' => $foto,
                 );
             }
         }

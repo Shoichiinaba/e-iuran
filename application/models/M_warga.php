@@ -92,6 +92,9 @@ class M_warga extends CI_Model
                 'no_rumah' => $row['no_rumah'],
                 'no_hp' => $row['no_hp'],
                 'keterangan' => $row['keterangan'],
+                'password' => $row['password'],
+                'role' => $row['role'],
+                'foto' => $row['foto'],
             );
 
             $this->db->insert($tabel_warga, $insert_data);
