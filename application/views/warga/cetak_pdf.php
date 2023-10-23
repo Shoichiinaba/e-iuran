@@ -4,7 +4,7 @@
 <head>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta charset="utf-8">
-    <title>Create PDF from View in CodeIgniter Example</title>
+    <title><?= $_tittle; ?></title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
     <style>
         .float-right {
@@ -95,9 +95,9 @@
                 <div class="col-xs-6">
                     <h5 class="text-right mb-0">Dibayarkan ke :</h5>
                     <p class="text-right mb-0">Pengelola <?= $data->perum; ?></p>
-                    <p class="text-right mb-0"><?= $data->code_tagihan;?></p>
-                    <p class="text-right mb-0"><?= $data->foto_bukti;?></p>
-                    <p class="text-right mb-0"><?= $data->tgl_byr;?></p>
+                    <p class="text-right mb-0"><?= $data->code_tagihan; ?></p>
+                    <p class="text-right mb-0"><?= $data->foto_bukti; ?></p>
+                    <p class="text-right mb-0"><?= $data->tgl_byr; ?></p>
                 </div>
             </div>
         </div>
@@ -141,7 +141,7 @@
                         <td class="">Rp.<?= number_format($data->lain_lain, 0, ',', '.'); ?></td>
                     </tr>
                     <tr style="background: #ff7f50a3; font-weight: bold;">
-                        <td class="">TAX</td>
+                        <td class="">Biaya VA</td>
                         <td class="">Rp.<?= number_format($data->taxs, 0, ',', '.'); ?></td>
                     </tr>
                     <tr style="font-weight: bold;">
