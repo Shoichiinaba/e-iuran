@@ -185,7 +185,7 @@ class Dashboard extends AUTH_Controller
             echo '    <td class="">Rp.' . number_format($row->nominal, 0, ',', '.') . ' | <a href="javascript:void(0)" type="button" class="lihat-rinc" data-id-tagihan="' . $row->id_tagihan . '">Lihat Rincian</a></td>';
             echo '</tr>';
             echo '<tr class="tr-bg-' . $row->id_tagihan . '">';
-            echo '    <td class="">Tax</td>';
+            echo '    <td class="">Biaya VA</td>';
             echo '    <td class="">Rp.' . number_format($row->taxs, 0, ',', '.') . '</td>';
             echo '</tr>';
             if ($action == 'tunggakan') {

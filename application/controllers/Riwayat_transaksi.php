@@ -30,7 +30,7 @@ class Riwayat_transaksi extends AUTH_Controller
                                         <th rowspan="2" class="text-center pb-4">No invoice</th>
                                         <th colspan="6" class="text-center">Pemakaian Air</th>
                                         <th rowspan="2" class="text-center pb-4">IPL</th>
-                                        <th rowspan="2" class="text-center pb-4">TAX</th>
+                                        <th rowspan="2" class="text-center pb-4">Biaya VA</th>
                                         <th rowspan="2" class="text-center pb-4">Total bayar</th>
                                         <th rowspan="2" class="text-center pb-4">Tanggal bayar</th>
                                         <th rowspan="2" class="text-center pb-4">Bank</th>
