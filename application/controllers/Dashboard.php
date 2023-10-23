@@ -242,9 +242,6 @@ class Dashboard extends AUTH_Controller
     function show_saldo()
     {
         xendit_loaded();
-        // $d = Carbon::now();
-        // echo $d;
-        // die('');
         $getBalance = \Xendit\Balance::getBalance('CASH');
         var_dump($getBalance);
     }
@@ -292,7 +289,8 @@ class Dashboard extends AUTH_Controller
                 "external_id"      => $code_tagihan,
                 "description"      => "Pembayaran Tagihan $code_tagihan $userData->nama $userData->no_rumah",
                 "amount"           => preg_replace('/[Rp. ]/', '', $tagihan),
-                'invoice_duration' => 86400,
+                // 'invoice_duration' => 86400,
+                'invoice_duration' => 120,
                 'customer' => [
                     'given_names'  => $userData->nama,
                     'surname'      => $userData->no_rumah,
@@ -327,7 +325,6 @@ class Dashboard extends AUTH_Controller
                 'errors' => [],
                 'detail' => [
                     'redirect_url' => $payment_url,
-                    // 'redirect_url' => site_url('Dashboard'),
                 ],
             ];
         } catch (\Xendit\Exceptions\ApiException $e) {

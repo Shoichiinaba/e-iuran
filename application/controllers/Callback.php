@@ -71,6 +71,7 @@ class Callback extends CI_Controller
 
             } else if ($_status == 'EXPIRED') {
                 $status = '0';
+                $this->db->where('code_tagihan', $_externalId)->delete('transaksi');
                 $this->db->set('status', $status)
                          ->where(['code_tagihan' => $_externalId])
                          ->update('tagihan');

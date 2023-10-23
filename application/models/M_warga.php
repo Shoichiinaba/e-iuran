@@ -64,8 +64,8 @@ class M_warga extends CI_Model
         return $query->num_rows();
     }
 
-    function count_all() {
-        $this->db->from('warga');
+    function count_all($id,$role) {
+        $this->_get_datatables_query($id, $role);
         return $this->db->count_all_results();
     }
     // end datatables

@@ -306,7 +306,7 @@ Swal.fire({
                 dataType: 'json',
                 success: function(response) {
                     if (response.status === 'success') {
-                        alert(response.message);
+                        // alert(response.message);
                         window.crud.ajax.reload();
                     } else {
                         alert('Terjadi kesalahan saat menghapus data.');

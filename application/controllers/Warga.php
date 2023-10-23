@@ -57,7 +57,7 @@ class Warga extends AUTH_Controller
         }
         $output = array(
                     "draw" => @$_POST['draw'],
-                    "recordsTotal" => $this->M_warga->count_all(),
+                    "recordsTotal" => $this->M_warga->count_all($id, $role),
                     "recordsFiltered" => $this->M_warga->count_filtered($id, $role),
                     "data" => $data,
                 );

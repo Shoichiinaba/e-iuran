@@ -393,7 +393,6 @@ div:where(.swal2-icon) {
                         icon: "error",
                         title: "Oops...",
                         text: "Selesaikan pembayaran terlebih dahulu atau batalkan pembayaran jika ingin membuat tagihan baru..",
-                        // footer: "<a href="#">Why do I have this issue?</a>"
                     }).then(function() {
                         window.location = "<?= base_url('Dashboard'); ?>";
                     });
@@ -434,7 +433,6 @@ div:where(.swal2-icon) {
             if ($(this).val() == 'buat') {
                 let formData = new FormData();
                 formData.append('id-tagihan', $('#id-tagihan').val());
-                // formData.append('tgl-upload', $('#tgl-upload').val());
                 formData.append('tagihan', $('#tagihan-val').val());
                 formData.append('periode', $('#bulan-val').val());
 
@@ -446,11 +444,6 @@ div:where(.swal2-icon) {
                     processData: false,
                     contentType: false,
                     success: function(data) {
-                        // if (data.status) {
-                        //     window.location.href = data.detail.redirect_url;
-                        //     load_info();
-                        //     $('#modal-bayar').modal('hide');
-                        // }
 
                         if (data.status) {
                             $('.btn-bayar').show();
