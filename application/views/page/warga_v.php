@@ -122,7 +122,7 @@ Swal.fire({
                                 <?php foreach ($code as $codes) { ?>
                                 <div class="input-group col-lg-0 col-md-0 col-sm-0">
                                     <input type="text" class="form-control" name="code[]" value="<?=$codes->code; ?>"
-                                        hiden>
+                                        hidden>
                                 </div>
                                 <?php } ?>
                             </div>
