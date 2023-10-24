@@ -31,11 +31,13 @@ class Perumahan extends AUTH_Controller
     public function simpan_data()
     {
         $data_perumahan = $this->input->post('nama');
+        $code = $this->input->post('code');
         $data = array();
-        foreach ($data_perumahan as $nama) {
+        foreach ($data_perumahan as $key =>  $nama) {
             if (!empty($nama)) {
                 $data[] = array(
-                    'nama' => $nama
+                    'nama' => $nama,
+                    'code' => $code[$key],
                 );
             }
         }
@@ -60,10 +62,12 @@ class Perumahan extends AUTH_Controller
 		}else{
 			$id_perumahan 			= $this->input->post('id_perumahan');
 			$nama                   = $this->input->post('nama');
+            $code                   = $this->input->post('code');
 
         $troop_ = array(
          'id_perumahan' 		    =>  $id_perumahan,
          'nama'          			=>  $nama,
+         'code'          			=>  $code,
 
       );
         $this->M_perumahan->edit($id_perumahan, $troop_);

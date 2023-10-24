@@ -289,8 +289,8 @@ class Dashboard extends AUTH_Controller
                 "external_id"      => $code_tagihan,
                 "description"      => "Pembayaran Tagihan $code_tagihan $userData->nama $userData->no_rumah",
                 "amount"           => preg_replace('/[Rp. ]/', '', $tagihan),
-                // 'invoice_duration' => 86400,
-                'invoice_duration' => 120,
+                'invoice_duration' => 86400,
+                // 'invoice_duration' => 120,
                 'customer' => [
                     'given_names'  => $userData->nama,
                     'surname'      => $userData->no_rumah,

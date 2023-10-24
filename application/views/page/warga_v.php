@@ -119,6 +119,11 @@ Swal.fire({
                                 <label for="no_rumah">No. Rumah</label>
                                 <input type="text" id="no_rumah" name="no_rumah[]" class="form-control"
                                     placeholder="Masukkan No. Rumah">
+                                <?php foreach ($code as $codes) { ?>
+                                <div class="input-group col-lg-0 col-md-0 col-sm-0">
+                                    <input type="text" class="form-control" name="code[]" value="<?=$codes->code; ?>">
+                                </div>
+                                <?php } ?>
                             </div>
                             <div class="form-group mr-3 ml-3">
                                 <label for="hp">No. HP</label>

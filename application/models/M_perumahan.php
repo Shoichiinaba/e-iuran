@@ -21,6 +21,15 @@ class M_perumahan extends CI_Model
             return $query->result();
     }
 
+    public function get_code($id)
+    {
+            $this->db->select('*');
+            $this->db->from('perumahan');
+            $this->db->where('id_perumahan', $id);
+            $query = $this->db->get();
+            return $query->result();
+    }
+
     function hapus_perum($params ='')
     {
         $sql = "DELETE  FROM perumahan WHERE id_perumahan = ? ";

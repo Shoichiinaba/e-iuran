@@ -20,6 +20,7 @@ class Warga extends AUTH_Controller
         $id_rtrw = $this->session->userdata('userdata')->id_rtrw;
         $data['userdata'] 		= $this->userdata;
         $data['perum']          = $this->M_perumahan->get_perum();
+        $data['code']          = $this->M_perumahan->get_code($id);
         $data['menunggu']       = $this->M_dashboard->jumlah_byr($id_rtrw);
         $data['rtrw']          = $this->M_perumahan->get_rtrw();
         $data['warga']          = $this->M_warga->get_warga();
@@ -81,6 +82,7 @@ class Warga extends AUTH_Controller
         $no_rumah = $this->input->post('no_rumah');
         $no_hp = $this->input->post('no_hp');
         $keterangan = $this->input->post('keterangan');
+        $code = $this->input->post('code');
         $role = 'Warga';
         $foto = 'default.png';
 
@@ -88,6 +90,7 @@ class Warga extends AUTH_Controller
         foreach ($id_perum as $key => $id_perum) {
             if (!empty($id_perum)) {
                 $password = md5('BP123');
+                $username = $code[$key] . $no_rumah[$key];
                 $data[] = array(
                     'id_perum' => $id_perum,
                     'id_rtrw' => $id_rtrw[$key],
@@ -95,6 +98,7 @@ class Warga extends AUTH_Controller
                     'no_rumah' => $no_rumah[$key],
                     'no_hp' => $no_hp[$key],
                     'keterangan' => $keterangan[$key],
+                    'username' =>  $username,
                     'password' => $password,
                     'role' => $role,
                     'foto' => $foto,

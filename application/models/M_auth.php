@@ -8,7 +8,7 @@ class M_auth extends CI_Model
 	{
 		$this->db->select('*');
 		$this->db->from('warga');
-		$this->db->where('no_rumah', $username);
+		$this->db->where('username', $username);
 		$this->db->where(
 			'password',
 			md5($password)

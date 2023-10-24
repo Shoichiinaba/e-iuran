@@ -56,6 +56,7 @@ Swal.fire({
                                             <tr>
                                                 <th>No <?php echo $userdata->id_perum; ?></th>
                                                 <th>Nama Perumahan</th>
+                                                <th>Kode</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -64,6 +65,7 @@ Swal.fire({
                                             <tr>
                                                 <td><?php echo $no; ?></td>
                                                 <td><?php echo $data->nama; ?></td>
+                                                <td><?php echo $data->code; ?></td>
                                                 <td>
                                                     <a type="button" data-toggle="modal"
                                                         data-target="#modal-edit<?=$data->id_perumahan;?>"
@@ -101,8 +103,15 @@ Swal.fire({
                     <form method="post" action="<?php echo base_url('perumahan/simpan_data'); ?>">
                         <div id="repeaterContainer">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="nama[]" required placeholder="Perumahan"
-                                    aria-label="Masukan Nama Perumahan" aria-describedby="button-addon2">
+                                <div class="col-lg-5 pl-2 pr-2">
+                                    <input type="text" class="form-control" name="nama[]" required
+                                        placeholder="Perumahan" aria-label="Masukan Nama Perumahan"
+                                        aria-describedby="button-addon2">
+                                </div>
+                                <div class="col-lg-5 pr-0 pl-2">
+                                    <input type="text" class="form-control" name="code[]" required placeholder="Kode"
+                                        aria-describedby="button-addon2">
+                                </div>
                                 <button class="btn btn-outline-success" type="button" id="addButton"><i
                                         class="ti-support"></i></button>
                             </div>
@@ -137,9 +146,15 @@ Swal.fire({
                         <div class="input-group mb-3">
                             <button class="btn btn-warning" type="button" id="button-addon1"><b
                                     class="ti-home"></b></button>
-                            <input type="text" class="form-control" name="nama" value="<?=$g->nama;?>" required
-                                placeholder="Perumahan" aria-label="Masukan Nama Perumahan"
-                                aria-describedby="button-addon2">
+                            <div class="col-lg-5 pl-0 pr-2">
+                                <input type="text" class="form-control" name="nama" value="<?=$g->nama;?>" required
+                                    placeholder="Perumahan" aria-label="Masukan Nama Perumahan"
+                                    aria-describedby="button-addon2">
+                            </div>
+                            <div class="col-lg-5 pl-2 pr-2">
+                                <input type="text" class="form-control" name="code" value="<?=$g->code;?>" required
+                                    placeholder="Perumahan" aria-describedby="button-addon2">
+                            </div>
                         </div>
                         <div class="modal-footer pr-0">
                             <button type="submit" class="btn btn-primary">Simpan</button>
@@ -208,13 +223,19 @@ Swal.fire({
         var container = document.getElementById("repeaterContainer");
         var newField = document.createElement("div");
         newField.innerHTML = `
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" name="nama[]" required
-                    placeholder="Perumahan" aria-label="Masukan Nama Perumahan"
-                    aria-describedby="button-addon2">
-                <button class="btn btn-outline-danger" type="button" onclick="hapusField(this)"><i
-                        class="ti-eraser"></i></button>
-            </div>
+                    <div class="input-group mb-3">
+                        <div class="col-lg-5 pl-2 pr-2">
+                            <input type="text" class="form-control" name="nama[]" required
+                                        placeholder="Perumahan" aria-label="Masukan Nama Perumahan"
+                                        aria-describedby="button-addon2">
+                        </div>
+                        <div class="col-lg-5 pr-0 pl-2">
+                            <input type="text" class="form-control" name="code[]" required placeholder="Kode"
+                                        aria-describedby="button-addon2">
+                        </div>
+                            <button class="btn btn-outline-danger" type="button" onclick="hapusField(this)"><i
+                                        class="ti-eraser"></i></button>
+                    </div>
         `;
         container.appendChild(newField);
     }
