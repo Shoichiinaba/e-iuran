@@ -22,9 +22,9 @@ class Cetak_invoice extends AUTH_Controller
         $this->load->library('pdfgenerator');
 
         // title dari pdf
-        $data['_tittle'] = 'Laporan Penjualan Toko Kita';
+        $data['_tittle'] = 'INVOICE #' . $no_invoice;
         // filename dari pdf ketika didownload
-        $file_pdf = 'laporan_penjualan_toko_kita';
+        $file_pdf = 'INVOICE #' . $no_invoice;
         // setting paper
         $paper = 'A4';
         //orientasi paper potrait / landscape
