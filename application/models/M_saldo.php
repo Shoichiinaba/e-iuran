@@ -4,13 +4,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class M_saldo extends CI_Model
 {
 
-    function get_saldo($perum)
+    function get_saldo($id_perumahan)
     {
         $this->db->select('*');
         $this->db->from('transaksi');
         $this->db->join('tagihan', 'tagihan.code_tagihan = transaksi.code_tagihan');
         $this->db->join('warga', 'warga.id_warga = transaksi.id_warga');
-        $this->db->where('transaksi.id_perum', $perum);
+        $this->db->where('transaksi.id_perum', $id_perumahan);
         $this->db->where('tagihan.status', 2);
         $this->db->where('transaksi.status_saldo', 1);
         $this->db->group_by('transaksi.code_tagihan');

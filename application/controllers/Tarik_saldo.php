@@ -17,18 +17,29 @@ class Tarik_saldo extends AUTH_Controller
      public function index()
      {
         $id = $this->session->userdata('userdata')->id_rtrw;
-        $id_perum = $this->input->get('id_perum');
         $data['menunggu']       = $this->M_dashboard->jumlah_byr($id);
         $data['userdata']       = $this->userdata;
         $data['nomer']          = $this->M_saldo->no_tf();
         $data['perum']          = $this->M_perumahan->get_perumahan();
 
         // code saldo
-        $saldo = $this->M_saldo->get_saldo($id_perum);
+        $perum = $this->M_perumahan->get_perumahan();
+            $data['perum_balances'] = array();
 
-        $totalDPP = calculate_saldo($saldo);
-        $Rp_saldo = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
-        $data['totalDPP'] = $Rp_saldo;
+            foreach ($perum as $perum_data) {
+                $id_perumahan = $perum_data->id_perumahan;
+
+                $saldo_data = $this->M_saldo->get_saldo($id_perumahan);
+
+                $totalDPP = 0;
+                foreach ($saldo_data as $s) {
+                    $tax = $s->periode * $s->taxs;
+                    $DPP = $s->jumlah - $tax;
+                    $totalDPP += $DPP;
+                }
+
+                $data['perum_balances'][$id_perumahan] = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
+            }
         // akhir code saldo
 
         $data['content'] = 'page/tariks_v';
