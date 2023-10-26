@@ -77,18 +77,18 @@ $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	// Offline development
-	'username' => 'root',
-	'password' => '',
-	'database' => 'kina3126_e-iuran',
+	// 'username' => 'root',
+	// 'password' => '',
+	// 'database' => 'kina3126_e-iuran',
 
 	// Online Production
 	// 'username' => 'kina3126_e-iuran',
 	// 'password' => 'kanpa2020',
 
 	// online hi-care Production
-	// 'username' => 'hicr4985_hi-care',
-	// 'password' => 'hicare2020',
-	// 'database' => 'hicr4985_hi-care',
+	'username' => 'hicr4985_hi-care',
+	'password' => 'hicare2020',
+	'database' => 'hicr4985_hi-care',
 
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
