@@ -53,7 +53,7 @@ class Dashboard extends AUTH_Controller
             $data['get_saldo']      = $this->M_dashboard->saldo($id);
 
             // code saldo
-            $saldo = $this->M_transaksi->get_saldo($id_perum);
+            $saldo = $this->M_transaksi->get_saldo($id_perum, $id);
             $totalDPP = calculate_saldo($saldo);
 
             $Rp_saldo = 'Rp. ' . number_format($totalDPP, 0, ',', '.');

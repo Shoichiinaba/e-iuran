@@ -107,7 +107,7 @@ class M_warga extends CI_Model
 
     public function get_warga()
     {
-        $this->db->select('warga.id_warga, warga.id_perum, warga.nama, warga.no_rumah, warga.no_hp, warga.keterangan, rt-rw.rt, rt-rw.rw, rt-rw.id_rtrw, perumahan.nama as perum');
+            $this->db->select('warga.id_warga, warga.id_perum, warga.nama, warga.no_rumah, warga.no_hp, warga.keterangan, rt-rw.rt, rt-rw.rw, rt-rw.id_rtrw, perumahan.nama as perum');
             $this->db->from('warga');
             $this->db->join('rt-rw', 'rt-rw.id_rtrw = warga.id_rtrw');
             $this->db->join('perumahan', 'perumahan.id_perumahan = warga.id_perum');

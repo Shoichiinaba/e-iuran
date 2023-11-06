@@ -165,7 +165,7 @@ class Data_tagihan extends AUTH_Controller
         $role = $this->session->userdata('userdata')->role;
         $status_trans = $this->input->post('status');
 
-        $list = $this->M_transaksi->get_datatablest($role, $status_trans);
+        $list = $this->M_transaksi->get_datatablest($id, $role, $status_trans);
         $data = array();
         $no = @$_POST['start'];
         foreach ($list as $trx) {
@@ -190,7 +190,7 @@ class Data_tagihan extends AUTH_Controller
         $output = array(
                     "draw" => @$_POST['draw'],
                     "recordsTotal" => $this->M_transaksi->count_all_trx(),
-                    "recordsFiltered" => $this->M_transaksi->count_filtereds($role, $status_trans),
+                    "recordsFiltered" => $this->M_transaksi->count_filtereds($id, $role, $status_trans),
                     "data" => $data,
                 );
         // output to json format

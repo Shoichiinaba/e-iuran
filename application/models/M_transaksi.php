@@ -216,7 +216,7 @@ class M_transaksi extends CI_Model
     var $column_searchtrx = array('code_tagihan', 'no_invoice','nama', 'bln_tagihan', 'thn_tagihan', 'tgl_upload', 'tgl_byr','foto_bukti');
     var $ordertrx = array('transaksi.id_transaksi' => 'asc'); // default order
 
-    private function _get_datatables_trx($role,  $status_trans) {
+    private function _get_datatables_trx($id, $role,  $status_trans) {
         if ($role == 'Admin') {
 
             $this->db->select('*');
@@ -258,7 +258,8 @@ class M_transaksi extends CI_Model
             $this->db->from('transaksi');
             $this->db->join('tagihan', 'tagihan.code_tagihan = transaksi.code_tagihan');
             $this->db->join('warga', 'warga.id_warga = transaksi.id_warga');
-            $this->db->where_in('transaksi.id_rtrw', array(1, 2));
+            // $this->db->where_in('transaksi.id_rtrw', array(2));
+            $this->db->where('transaksi.id_rtrw', $id);
             $this->db->where_in('tagihan.status', array(1, 2));
             $this->db->group_by('transaksi.code_tagihan');
 
@@ -289,15 +290,15 @@ class M_transaksi extends CI_Model
             }
         }
     }
-    function get_datatablest($role, $status_trans) {
-        $this->_get_datatables_trx($role,  $status_trans);
+    function get_datatablest($id, $role, $status_trans) {
+        $this->_get_datatables_trx($id, $role, $status_trans);
         if(@$_POST['length'] != -1)
         $this->db->limit(@$_POST['length'], @$_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
-    function count_filtereds($role,  $status_trans) {
-        $this->_get_datatables_trx($role,  $status_trans);
+    function count_filtereds($id, $role, $status_trans) {
+        $this->_get_datatables_trx($id, $role,  $status_trans);
         $query = $this->db->get();
         return $query->num_rows();
     }
@@ -307,12 +308,13 @@ class M_transaksi extends CI_Model
     }
     // akhir datatable serverside untuk transaksi pembayaran
 
-    function get_saldo($id_perum) {
+    function get_saldo($id_perum, $id) {
         $this->db->select('*');
         $this->db->from('transaksi');
         $this->db->join('tagihan', 'tagihan.code_tagihan = transaksi.code_tagihan');
         $this->db->join('warga', 'warga.id_warga = transaksi.id_warga');
         $this->db->where('transaksi.id_perum', $id_perum);
+        $this->db->where('transaksi.id_rtrw', $id);
         $this->db->where('tagihan.status', 2);
         $this->db->where('transaksi.status_saldo', 1);
         $this->db->group_by('transaksi.code_tagihan');
