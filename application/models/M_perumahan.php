@@ -78,4 +78,15 @@ class M_perumahan extends CI_Model
         return $this->db->query($sql, $params);
     }
 
+    public function get_rttarik($perum)
+    {
+        $this->db->select('rt-rw.*, perumahan.nama as nama_perumahan');
+        $this->db->from('rt-rw');
+        $this->db->where('id_perum', $perum);
+        $this->db->join('perumahan', 'perumahan.id_perumahan = rt-rw.id_perum');
+        $this->db->order_by('id_perum');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 }

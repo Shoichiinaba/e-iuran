@@ -53,6 +53,7 @@
     foreach ($data_tarik as $bukti) :
         $Rp_dpp     = 'Rp. ' . number_format($bukti->dpp, 0, ',', '.');
         $Rp_akhir     = 'Rp. ' . number_format($bukti->saldo, 0, ',', '.');
+        $tanggal_formatted = date('d/m/Y', strtotime($bukti->tanggal));
     ?>
     <div style="margin-right: 6rem;">
         <div class="row">
@@ -74,7 +75,7 @@
             <div class="col-xs-6 mt-3">
                 <h5 class="mb-2">Penarikan :</h5>
                 <p class="mb-0">No. Bukti. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: <?= $bukti->code_tranfer; ?></p>
-                <p class="mb-0">Tanggal &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : <?= $bukti->tanggal; ?></p>
+                <p class="mb-0">Tanggal &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : <?= $tanggal_formatted; ?></p>
                 <p class="mb-0"> Tarik Saldo Ke &nbsp; : <?= $bukti->nama; ?></p>
             </div>
         </div>

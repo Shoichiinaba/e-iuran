@@ -108,7 +108,7 @@ class Dashboard extends AUTH_Controller
                     if (distance < 0) {
                         clearInterval(timer);
                         document.getElementById("countdown").innerHTML = "EXPIRED!";
-                        delete_tagihan();
+                        // delete_tagihan();
                         return;
                     }
                     var days = Math.floor(distance / _day);
@@ -271,6 +271,7 @@ class Dashboard extends AUTH_Controller
             $id_warga = $userData->id_warga;
             $id_rtrw = $userData->id_rtrw;
             $id_perum = $userData->id_perum;
+            $no_rumah = $userData->no_rumah;
             // akhir session
 
             $tgl_upload    = $this->input->post('tgl-upload');
@@ -281,7 +282,7 @@ class Dashboard extends AUTH_Controller
             $bulan         = date("m");
             $id_tagihan    = explode(',', $this->input->post('id-tagihan'));
             $kode_max_     = str_pad($kode_, 4, "0", STR_PAD_LEFT);
-            $code_tagihan  = "CT" . '-' . $id_rtrw . $bulan . $tahun . '-' . $kode_max_;
+            $code_tagihan  = "CT" . '-'. $no_rumah .'-' . $id_rtrw . $bulan . $tahun . '-' . $kode_max_;
             date_default_timezone_set('Asia/Jakarta');
 
             // code xendit

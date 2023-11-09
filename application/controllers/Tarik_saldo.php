@@ -46,24 +46,40 @@ class Tarik_saldo extends AUTH_Controller
         $this->load->view($this->template, $data);
     }
 
-    public function form_tarik()
+   public function form_tarik()
     {
-       $id = $this->session->userdata('userdata')->id_rtrw;
-       $id_perum = $this->input->get('id_perumahan');
-       $perum = $this->uri->segment(3);
+        // $id = $this->session->userdata('userdata')->id_rtrw;
+        $id_perum = $this->input->get('id_perumahan');
+        // $perum = $this->uri->segment(3);
+        $perum ='1';
 
-       $data['menunggu']       = $this->M_dashboard->jumlah_byr($id);
-       $data['userdata']       = $this->userdata;
-       $data['nomer']          = $this->M_saldo->no_tf();
-       $data['perum']          = $this->M_perumahan->get_perumahan();
+        // $data['menunggu'] = $this->M_dashboard->jumlah_byr($id);
+        $data['userdata'] = $this->userdata;
+        $data['nomer'] = $this->M_saldo->no_tf();
+        $data['perum'] = $this->M_perumahan->get_perumahan();
+        $data['rtrw'] = $this->M_perumahan->get_rttarik($perum);
 
-       // code saldo
-       $saldo = $this->M_saldo->get_saldo($perum);
-       $totalDPP = calculate_saldo($saldo);
-       $Rp_saldo = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
-       $data['totalDPP'] = $Rp_saldo;
-       $data['DPP'] = $totalDPP;
-       // akhir code saldo
+        // Ambil id_rtrw dari permintaan POST
+        $id_rtrw = $this->input->post('id_rtrw');
+        // $id_rtrw = '1';
+
+        // debugin
+        echo "id_rtrw di controller: " . $id_rtrw;
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
+        echo "<pre>";
+        var_dump($_POST);
+        echo "</pre>";
+        // akhir debugging
+
+        // Ambil saldo berdasarkan perumahan dan id_rtrw
+        $saldo = $this->M_saldo->get_filter_saldo($perum, $id_rtrw);
+        $totalDPP = calculate_saldo($saldo);
+        $Rp_saldo = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
+        $data['totalDPP'] = $Rp_saldo;
+        $data['DPP'] = $totalDPP;
 
         // saldo Xendit
         xendit_loaded();
@@ -73,16 +89,16 @@ class Tarik_saldo extends AUTH_Controller
         $data['xendit'] = $Rp_saldo_xendit;
         // akhir saldo Xendit
 
-       $data['content'] = 'page/tariks_saldo_v';
-       $this->load->view($this->template, $data);
-   }
+        $data['content'] = 'page/tariks_saldo_v';
+        $this->load->view($this->template, $data);
+    }
+
 
    function get_data_tf()
    {
 
     $id_perum = $this->uri->segment(3);
-
-    $list = $this->M_saldo->get_datatablest($id_perum);
+    $list = $this->M_saldo->get_datatables($id_perum);
     $data = array();
     $no = @$_POST['start'];
     foreach ($list as $tf)
@@ -90,13 +106,15 @@ class Tarik_saldo extends AUTH_Controller
 
         $Rp_dpp     = 'Rp. ' . number_format($tf->dpp, 0, ',', '.');
         $Rp_akhir     = 'Rp. ' . number_format($tf->saldo, 0, ',', '.');
+        $tanggal_formatted = date('d/m/Y', strtotime($tf->tanggal));
 
         $no++;
         $row = array();
         $row[] = $no.".";
         $row[] = $tf->code_tranfer;
         $row[] = $tf->nama;
-        $row[] = $tf->tanggal;
+        $row[] = '<td class="font-weight-medium"><div class="badge badge-danger">' . $tf->rt . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge badge-primary">' . $tf->rw . '</div></td>';
+        $row[] = $tanggal_formatted;
         $row[] = $Rp_dpp;
         $row[] = $tf->fee. ' %';
         $row[] = $Rp_akhir;
@@ -106,7 +124,7 @@ class Tarik_saldo extends AUTH_Controller
     $output = array(
                 "draw" => @$_POST['draw'],
                 "recordsTotal" => $this->M_saldo->count_all_tf($id_perum),
-                "recordsFiltered" => $this->M_saldo->count_filtereds($id_perum),
+                "recordsFiltered" => $this->M_saldo->count_filtered($id_perum),
                 "data" => $data,
             );
     // output to json format
@@ -117,18 +135,20 @@ class Tarik_saldo extends AUTH_Controller
     public function buat_tarik() {
         $status        = '2';
         $id_perum      = $this->input->post('id_perum');
+        $id_rtrw       = $this->input->post('id_rtrw');
 
         $data = array(
-            'id_perum'  => $this->input->post('id_perum'),
+            'id_perum'       => $this->input->post('id_perum'),
+            'id_rtrw'        => $this->input->post('id_rtrw'),
             'code_tranfer '  => $this->input->post('no_tarik'),
-            'tanggal'   => $this->input->post('tanggal'),
-            'fee'       => $this->input->post('fee'),
-            'dpp'       => $this->input->post('nominal'),
-            'saldo'    => $this->input->post('totdpp'),
+            'tanggal'        => $this->input->post('tanggal'),
+            'fee'            => $this->input->post('fee'),
+            'dpp'            => $this->input->post('nominal'),
+            'saldo'          => $this->input->post('totdpp'),
         );
 
         $result = $this->M_saldo->save_data($data);
-        $result = $this->M_saldo->update_saldo($status, $id_perum);
+        $result = $this->M_saldo->update_saldo($status, $id_perum, $id_rtrw);
 
         if ($result) {
             $response = array('status' => 'success', 'message' => 'Data berhasil disimpan.');

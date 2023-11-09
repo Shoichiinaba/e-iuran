@@ -38,7 +38,7 @@ class Histori_tarik extends AUTH_Controller
 
         $id = $this->session->userdata('userdata')->id_rtrw;
         $id_perum = $this->session->userdata('userdata')->id_perum;
-        $list = $this->M_saldo->get_datatablest($id_perum);
+        $list = $this->M_saldo->get_datatablest($id_perum, $id);
         $data = array();
         $no = @$_POST['start'];
         foreach ($list as $tf)
@@ -46,13 +46,14 @@ class Histori_tarik extends AUTH_Controller
 
             $Rp_dpp     = 'Rp. ' . number_format($tf->dpp, 0, ',', '.');
             $Rp_akhir     = 'Rp. ' . number_format($tf->saldo, 0, ',', '.');
+            $tanggal_formatted = date('d/m/Y', strtotime($tf->tanggal));
 
             $no++;
             $row = array();
             $row[] = $no.".";
             $row[] = $tf->code_tranfer;
             $row[] = $tf->nama;
-            $row[] = $tf->tanggal;
+            $row[] =  $tanggal_formatted;
             $row[] = $Rp_dpp;
             $row[] = $tf->fee. ' %';
             $row[] = $Rp_akhir;
@@ -62,8 +63,8 @@ class Histori_tarik extends AUTH_Controller
         }
         $output = array(
                     "draw" => @$_POST['draw'],
-                    "recordsTotal" => $this->M_saldo->count_all_tf($id_perum),
-                    "recordsFiltered" => $this->M_saldo->count_filtereds($id_perum),
+                    "recordsTotal" => $this->M_saldo->count_all_tf($id_perum, $id),
+                    "recordsFiltered" => $this->M_saldo->count_filtereds($id_perum, $id),
                     "data" => $data,
                 );
         // output to json format

@@ -22,6 +22,29 @@
     display: grid;
 }
 
+.label-select {
+    color: #bbb;
+    font-size: 11px;
+    text-transform: uppercase;
+    position: absolute;
+    z-index: 2;
+    left: 20px;
+    top: 14px;
+    padding: 0 2px;
+    pointer-events: none;
+    background: #fff;
+    -webkit-transition: -webkit-transform 100ms ease;
+    -moz-transition: -moz-transform 100ms ease;
+    -o-transition: -o-transform 100ms ease;
+    -ms-transition: -ms-transform 100ms ease;
+    transition: transform 100ms ease;
+    -webkit-transform: translateY(-20px);
+    -moz-transform: translateY(-20px);
+    -o-transform: translateY(-20px);
+    -ms-transform: translateY(-20px);
+    transform: translateY(-20px);
+}
+
 .label-in {
     color: #bbb;
     font-size: 11px;
@@ -68,7 +91,8 @@
     transform: translateY(-20px);
 }
 
-input {
+input,
+select {
     font-size: 13px;
     color: #555;
     outline: none;
@@ -78,7 +102,8 @@ input {
     position: relative;
 }
 
-input:invalid+label {
+input:invalid+label,
+select:invalid+label {
     -webkit-transform: translateY(0);
     -moz-transform: translateY(0);
     -o-transform: translateY(0);
@@ -91,7 +116,8 @@ select:focus {
     border-color: #2b96f1;
 }
 
-input:focus+label {
+input:focus+label,
+select:focus+label {
     color: #2b96f1;
     -webkit-transform: translateY(-20px);
     -moz-transform: translateY(-20px);
@@ -111,7 +137,9 @@ input:focus+label {
                         <div class="card card-light bg-gradient-success">
                             <div class="card-body">
                                 <h2 class="mb-2 mt-0 pt-0">Saldo</h2>
-                                <h2 class="fs-80 pb-2 mb-2 mt-1 pt-1 text-center" style="color:white"><?=$totalDPP; ?>
+                                <h2 id="saldo" class="fs-80 pb-2 mb-2 mt-1 pt-1 text-center" style="color:white"
+                                    data-saldo="<?= $DPP; ?>">
+                                    <?= $totalDPP; ?><br>
                                 </h2>
                                 <hr style="color: white; border: 1px solid;">
                                 <h5 class="fs-10 pb-0 mb-0 text-center" style="color:blue"> Saldo
@@ -125,17 +153,29 @@ input:focus+label {
                         <div class="card-body pb-2 pr-2">
                             <h4 class="card-title">Form Tarik Saldo</h4>
                             <div class="input-group pb-0">
-                                <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1">
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0">
+                                    <div class="input-wrapper">
+                                        <label class="label-select">RT / RW</label>
+                                        <select type="text" id="id-rtrw" name="id_rtrw" required>
+                                            <option value="">Pilih RT</option>
+                                            <?php foreach ($rtrw as $rt) { ?>
+                                            <option value="<?= $rt->id_rtrw; ?>"><?= $rt->rt; ?> <?= $rt->rw; ?>
+                                            </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0">
                                     <div class="input-wrapper">
                                         <label class="label-in">No. penarikan</label>
                                         <input type="text" id="no_tarik" value="<?= $nomer; ?>" class="col-lg-12"
                                             readonly>
                                     </div>
                                 </div>
-                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1">
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0">
                                     <div id="datepicker-popup" class="input-group date datepicker">
                                         <label class="label-date">Tanggal</label>
-                                        <input type="text" id="tanggal" class="form-control" readonly>
+                                        <input type="text" id="tanggal" class="form-control" readonly required>
                                         <span class="input-group-addon input-group-append border-left">
                                             <span class="ti-calendar input-group-text"></span>
                                         </span>
@@ -148,13 +188,13 @@ input:focus+label {
                                             value="<?php echo  $this->uri->segment(3); ?>">
                                     </div>
                                 </div>
-                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1">
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0">
                                     <div class="input-wrapper">
                                         <label class="label-in">Nominal</label>
                                         <input type="text" id="nominal" value="<?= $DPP; ?>" class="col-lg-12" disabled>
                                     </div>
                                 </div>
-                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 pr-2">
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 pr-2 pl-0">
                                     <div class="input-wrapper">
                                         <input type="number" id="fee" class="col-lg-12">
                                         <label class="label-in">Fee %</label>
@@ -165,7 +205,7 @@ input:focus+label {
                                         <input type="number" id="Rp_fee" class="col-lg-12">
                                     </div>
                                 </div>
-                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 pr-2">
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 pr-2 pl-0">
                                     <div class="input-wrapper">
                                         <label class="label-in">Total</label>
                                         <input type="number" id="totdpp" class="col-lg-12" disabled>
@@ -208,6 +248,7 @@ input:focus+label {
                                             <th>No</th>
                                             <th>No. Penarikan</th>
                                             <th>Nama perumahan</th>
+                                            <th>RT RW</th>
                                             <th>Tanggal</th>
                                             <th>Nominal</th>
                                             <th>Fee</th>
@@ -229,14 +270,63 @@ input:focus+label {
 </div>
 
 <!-- kode javascript untuk manipulasi data -->
+
+<script>
+function updateSaldo() {
+    var selectBox = document.getElementById("id-rtrw");
+    var selectedValue = selectBox.value;
+
+    $.ajax({
+        url: 'Tarik_saldo/form_tarik',
+        type: 'POST',
+        data: {
+            id_rtrw: selectedValue
+        },
+        success: function(response) {
+            var saldoElement = document.getElementById("saldo");
+            saldoElement.innerText = response;
+            saldoElement.setAttribute("data-saldo", response);
+        }
+    });
+}
+
+$(document).ready(function() {
+    $('#id-rtrw').on('change', updateSaldo);
+});
+</script>
+
 <script>
 $(document).ready(function() {
+    // filter saldo
+    // $("#id-rtrw").change(function() {
+    //     var id_rtrw = $(this).val();
+    //     var segment3 = '<?= $this->uri->segment(3); ?>';
 
-    // kode ajax untuk membuat tagihan
+    //     $.ajax({
+    //         type: "POST",
+    //         // url: "<?= site_url('Tarik_saldo/form_tarik/') ?>" + segment3,
+    //         url: "Tarik_saldo/form_tarik",
+    //         data: {
+    //             id_rtrw: id_rtrw,
+    //         },
+    //         success: function(response) {
+    //             $("#saldo").text(response);
+    //             console.log("id_rtrw: " + id_rtrw);
+    //         },
+    //         error: function(jqXHR, textStatus, errorThrown) {
+    //             console.log("Error: " + errorThrown);
+    //             $("#saldo").text("Terjadi kesalahan. Silakan coba lagi.");
+    //         },
+    //     });
+    // });
+
+    // akhir filter saldo
+
     $('#tarik-saldo').submit(function(event) {
         event.preventDefault();
 
         var id_perum = $('#id-perum').val();
+        var id_rtrw = $('#id-rtrw').val();
         var no_tarik = $('#no_tarik').val();
         var tanggal = $('#tanggal').val();
         var nominal = $('#nominal').val();
@@ -249,6 +339,7 @@ $(document).ready(function() {
             data: {
 
                 id_perum: id_perum,
+                id_rtrw: id_rtrw,
                 no_tarik: no_tarik,
                 tanggal: tanggal,
                 nominal: nominal,
@@ -274,7 +365,7 @@ $(document).ready(function() {
                     // Bersihkan input lainnya sesuai kebutuhan
 
                     window.location.href =
-                        "<?=site_url('Tarik_saldo/form_tarik//')?><?= $this->uri->segment(3);?>";
+                        "<?=site_url('Tarik_saldo/form_tarik/')?><?= $this->uri->segment(3);?>";
                 } else {
                     console.error('Terjadi kesalahan saat validasi data di server.');
 

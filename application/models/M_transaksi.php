@@ -212,8 +212,8 @@ class M_transaksi extends CI_Model
     // end datatables
 
     // datatable serverside untuk transaksi pembayaran
-    var $column_ordertrx = array(null, 'code_tagihan', 'no_invoice', 'bln_tagihan', 'thn_tagihan');
-    var $column_searchtrx = array('code_tagihan', 'no_invoice','nama', 'bln_tagihan', 'thn_tagihan', 'tgl_upload', 'tgl_byr','foto_bukti');
+    var $column_ordertrx = array(null, 'transaksi.code_tagihan', 'transaksi.no_invoice', 'bln_tagihan', 'thn_tagihan');
+    var $column_searchtrx = array('transaksi.code_tagihan', 'no_invoice','nama', 'bln_tagihan', 'thn_tagihan', 'transaksi.tgl_upload', 'transaksi.tgl_byr','transaksi.foto_bukti');
     var $ordertrx = array('transaksi.id_transaksi' => 'asc'); // default order
 
     private function _get_datatables_trx($id, $role,  $status_trans) {
@@ -231,7 +231,7 @@ class M_transaksi extends CI_Model
             }
 
             $i = 0;
-            foreach ($this->column_search as $trx) {
+            foreach ($this->column_searchtrx as $trx) {
                 if(@$_POST['search']['value']) {
                     if($i===0) {
                         $this->db->group_start();
@@ -239,14 +239,14 @@ class M_transaksi extends CI_Model
                     } else {
                         $this->db->or_like($trx, $_POST['search']['value']);
                     }
-                    if(count($this->column_search) - 1 == $i)
+                    if(count($this->column_searchtrx) - 1 == $i)
                         $this->db->group_end();
                 }
                 $i++;
             }
 
             if(isset($_POST['order'])) {
-                $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+                $this->db->order_by($this->column_ordertrx[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
             }  else if(isset($this->order)) {
                 $order = $this->order;
                 $this->db->order_by(key($order), $order[key($order)]);
@@ -268,7 +268,7 @@ class M_transaksi extends CI_Model
             }
 
             $i = 0;
-            foreach ($this->column_search as $trx) {
+            foreach ($this->column_searchtrx as $trx) {
                 if(@$_POST['search']['value']) {
                     if($i===0) {
                         $this->db->group_start();
@@ -276,14 +276,14 @@ class M_transaksi extends CI_Model
                     } else {
                         $this->db->or_like($trx, $_POST['search']['value']);
                     }
-                    if(count($this->column_search) - 1 == $i)
+                    if(count($this->column_searchtrx) - 1 == $i)
                         $this->db->group_end();
                 }
                 $i++;
             }
 
             if(isset($_POST['order'])) {
-                $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+                $this->db->order_by($this->column_ordertrx[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
             }  else if(isset($this->order)) {
                 $order = $this->order;
                 $this->db->order_by(key($order), $order[key($order)]);
@@ -297,7 +297,7 @@ class M_transaksi extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-    function count_filtereds($id, $role, $status_trans) {
+    function count_filtereds($id,$role, $status_trans) {
         $this->_get_datatables_trx($id, $role,  $status_trans);
         $query = $this->db->get();
         return $query->num_rows();
