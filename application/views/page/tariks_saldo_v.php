@@ -138,8 +138,8 @@ select:focus+label {
                             <div class="card-body">
                                 <h2 class="mb-2 mt-0 pt-0">Saldo</h2>
                                 <h2 id="saldo" class="fs-80 pb-2 mb-2 mt-1 pt-1 text-center" style="color:white"
-                                    data-saldo="<?= $DPP; ?>">
-                                    <?= $totalDPP; ?><br>
+                                    data-saldo=" ">Rp. 0
+
                                 </h2>
                                 <hr style="color: white; border: 1px solid;">
                                 <h5 class="fs-10 pb-0 mb-0 text-center" style="color:blue"> Saldo
@@ -154,6 +154,7 @@ select:focus+label {
                             <h4 class="card-title">Form Tarik Saldo</h4>
                             <div class="input-group pb-0">
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0">
+                                    <!-- select -->
                                     <div class="input-wrapper">
                                         <label class="label-select">RT / RW</label>
                                         <select type="text" id="id-rtrw" name="id_rtrw" required>
@@ -164,6 +165,7 @@ select:focus+label {
                                             <?php } ?>
                                         </select>
                                     </div>
+                                    <!-- select -->
                                 </div>
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0">
                                     <div class="input-wrapper">
@@ -191,7 +193,7 @@ select:focus+label {
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0">
                                     <div class="input-wrapper">
                                         <label class="label-in">Nominal</label>
-                                        <input type="text" id="nominal" value="<?= $DPP; ?>" class="col-lg-12" disabled>
+                                        <input type="text" id="nominal" value="" class="col-lg-12" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 pr-2 pl-0">
@@ -271,54 +273,33 @@ select:focus+label {
 
 <!-- kode javascript untuk manipulasi data -->
 
-<script>
-function updateSaldo() {
-    var selectBox = document.getElementById("id-rtrw");
-    var selectedValue = selectBox.value;
-
-    $.ajax({
-        url: 'Tarik_saldo/form_tarik',
-        type: 'POST',
-        data: {
-            id_rtrw: selectedValue
-        },
-        success: function(response) {
-            var saldoElement = document.getElementById("saldo");
-            saldoElement.innerText = response;
-            saldoElement.setAttribute("data-saldo", response);
-        }
-    });
-}
-
-$(document).ready(function() {
-    $('#id-rtrw').on('change', updateSaldo);
-});
-</script>
 
 <script>
 $(document).ready(function() {
     // filter saldo
-    // $("#id-rtrw").change(function() {
-    //     var id_rtrw = $(this).val();
-    //     var segment3 = '<?= $this->uri->segment(3); ?>';
+    $("#id-rtrw").change(function() {
+        var id_rtrw = $(this).val();
+        var segment3 = '<?= $this->uri->segment(3); ?>';
 
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "<?= site_url('Tarik_saldo/form_tarik/') ?>" + segment3,
-    //         url: "Tarik_saldo/form_tarik",
-    //         data: {
-    //             id_rtrw: id_rtrw,
-    //         },
-    //         success: function(response) {
-    //             $("#saldo").text(response);
-    //             console.log("id_rtrw: " + id_rtrw);
-    //         },
-    //         error: function(jqXHR, textStatus, errorThrown) {
-    //             console.log("Error: " + errorThrown);
-    //             $("#saldo").text("Terjadi kesalahan. Silakan coba lagi.");
-    //         },
-    //     });
-    // });
+        $.ajax({
+            type: "POST",
+            url: "<?= site_url('Tarik_saldo/form_tarik_ajax/') ?>" + segment3,
+            // url: "Tarik_saldo/form_tarik",
+            data: {
+                id_rtrw: id_rtrw,
+            },
+            success: function(response) {
+                const json = JSON.parse(response);
+                $('#tarik-saldo #saldo').html(json.totalDPP);
+                $('#tarik-saldo #nominal').val(json.DPP);
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("Error: " + errorThrown);
+                $("#saldo").text("Terjadi kesalahan. Silakan coba lagi.");
+            },
+        });
+    });
 
     // akhir filter saldo
 

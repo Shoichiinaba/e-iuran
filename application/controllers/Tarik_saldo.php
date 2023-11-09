@@ -48,31 +48,21 @@ class Tarik_saldo extends AUTH_Controller
 
    public function form_tarik()
     {
-        // $id = $this->session->userdata('userdata')->id_rtrw;
-        $id_perum = $this->input->get('id_perumahan');
-        // $perum = $this->uri->segment(3);
-        $perum ='1';
+        $id = $this->session->userdata('userdata')->id_rtrw;
 
-        // $data['menunggu'] = $this->M_dashboard->jumlah_byr($id);
+        $id_rtrw = $this->input->post('id_rtrw');
+
+        //$id_perum = $this->input->get('id_perumahan');
+        $perum = $this->uri->segment(3);
+
+        $data['menunggu'] = $this->M_dashboard->jumlah_byr($id);
         $data['userdata'] = $this->userdata;
         $data['nomer'] = $this->M_saldo->no_tf();
         $data['perum'] = $this->M_perumahan->get_perumahan();
         $data['rtrw'] = $this->M_perumahan->get_rttarik($perum);
 
         // Ambil id_rtrw dari permintaan POST
-        $id_rtrw = $this->input->post('id_rtrw');
-        // $id_rtrw = '1';
-
-        // debugin
-        echo "id_rtrw di controller: " . $id_rtrw;
-        echo "<br>";
-        echo "<br>";
-        echo "<br>";
-        echo "<br>";
-        echo "<pre>";
-        var_dump($_POST);
-        echo "</pre>";
-        //  akhir debugging
+        // $id_rtrw = '2';
 
         // Ambil saldo berdasarkan perumahan dan id_rtrw
         $saldo = $this->M_saldo->get_filter_saldo($perum, $id_rtrw);
@@ -91,6 +81,23 @@ class Tarik_saldo extends AUTH_Controller
 
         $data['content'] = 'page/tariks_saldo_v';
         $this->load->view($this->template, $data);
+    }
+
+    public function form_tarik_ajax()
+    {
+        $id_rtrw = $this->input->post('id_rtrw');
+        $perum = $this->uri->segment(3);
+        $data['perum'] = $this->M_perumahan->get_perumahan();
+        $data['rtrw'] = $this->M_perumahan->get_rttarik($perum);
+
+
+        // Ambil saldo berdasarkan perumahan dan id_rtrw
+        $saldo = $this->M_saldo->get_filter_saldo($perum, $id_rtrw);
+        $totalDPP = calculate_saldo($saldo);
+        $Rp_saldo = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
+        $data['totalDPP'] = $Rp_saldo;
+        $data['DPP'] = $totalDPP;
+        echo json_encode($data);
     }
 
 
@@ -112,8 +119,8 @@ class Tarik_saldo extends AUTH_Controller
         $row = array();
         $row[] = $no.".";
         $row[] = $tf->code_tranfer;
-        $row[] = $tf->nama;
-        $row[] = '<td class="font-weight-medium"><div class="badge badge-danger">' . $tf->rt . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge badge-primary">' . $tf->rw . '</div></td>';
+        $row[] = '<td class="font-weight-medium"><div class="badge bg-gradient-info">' . $tf->nama . '</div> </td>';
+        $row[] = '<td class="font-weight-medium"><div class="badge badge-danger">' . $tf->rt . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge bg-gradient-primary">' . $tf->rw . '</div></td>';
         $row[] = $tanggal_formatted;
         $row[] = $Rp_dpp;
         $row[] = $tf->fee. ' %';
