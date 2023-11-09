@@ -72,7 +72,7 @@ class Tarik_saldo extends AUTH_Controller
         echo "<pre>";
         var_dump($_POST);
         echo "</pre>";
-        // akhir debugging
+        //  akhir debugging
 
         // Ambil saldo berdasarkan perumahan dan id_rtrw
         $saldo = $this->M_saldo->get_filter_saldo($perum, $id_rtrw);

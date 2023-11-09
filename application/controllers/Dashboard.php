@@ -282,7 +282,7 @@ class Dashboard extends AUTH_Controller
             $bulan         = date("m");
             $id_tagihan    = explode(',', $this->input->post('id-tagihan'));
             $kode_max_     = str_pad($kode_, 4, "0", STR_PAD_LEFT);
-            $code_tagihan  = "CT" . '-'. $no_rumah .'-' . $id_rtrw . $bulan . $tahun . '-' . $kode_max_;
+            $code_tagihan  = "CT" . '-'.$id_perum . '/'. $id_rtrw .'-'. $no_rumah .'-' . $bulan . $tahun . '-' . $kode_max_;
             date_default_timezone_set('Asia/Jakarta');
 
             // code xendit

@@ -304,7 +304,7 @@ $(document).ready(function() {
 
     //     $.ajax({
     //         type: "POST",
-    //         // url: "<?= site_url('Tarik_saldo/form_tarik/') ?>" + segment3,
+    //         url: "<?= site_url('Tarik_saldo/form_tarik/') ?>" + segment3,
     //         url: "Tarik_saldo/form_tarik",
     //         data: {
     //             id_rtrw: id_rtrw,
