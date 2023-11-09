@@ -148,7 +148,8 @@ Swal.fire({
                                                     <th>No. Pembayaran</th>
                                                     <th>Nama || No Rumah</th>
                                                     <th>Bank</th>
-                                                    <th>tgl. Bayar</th>
+                                                    <th>Tgl. Buat Pembayaran</th>
+                                                    <th>Tgl. Bayar</th>
                                                     <th>Periode</th>
                                                     <th>Status </th>
                                                     <th>Total + Tax</th>

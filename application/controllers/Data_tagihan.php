@@ -180,6 +180,7 @@ class Data_tagihan extends AUTH_Controller
             $row[] = $trx->code_tagihan;
             $row[] = $trx->nama . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge badge-info">' . $trx->no_rumah . '</div></td>';
             $row[] = $trx->foto_bukti;
+            $row[] = $trx->tgl_upload;
             $row[] = $trx->tgl_byr;
             $row[] = $trx->periode . " Bulan";
             $row[] = $status;
