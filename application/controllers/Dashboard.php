@@ -254,16 +254,17 @@ class Dashboard extends AUTH_Controller
 
         try {
 
-            $this->db->select("RIGHT(transaksi.code_tagihan, 4) as kode", FALSE);
+            $this->db->select("MAX(CAST(RIGHT(transaksi.code_tagihan, 4) AS UNSIGNED)) as max_kode", FALSE);
             $this->db->order_by('code_tagihan', 'DESC');
             $this->db->limit(1);
 
             $query_ = $this->db->get('transaksi');
-            if ($query_->num_rows() <> 0) {
+
+            if ($query_->num_rows() > 0) {
                 $data_ = $query_->row();
-                $kode_ = intval($data_->kode) + 1;
+                $max_kode = intval($data_->max_kode) + 1;
             } else {
-                $kode_ = 1;
+                $max_kode = 1;
             }
 
             // session
@@ -281,8 +282,9 @@ class Dashboard extends AUTH_Controller
             $tahun         = date("y");
             $bulan         = date("m");
             $id_tagihan    = explode(',', $this->input->post('id-tagihan'));
-            $kode_max_     = str_pad($kode_, 4, "0", STR_PAD_LEFT);
-            $code_tagihan  = "CT" . '-'.$id_perum . '/'. $id_rtrw .'-'. $no_rumah .'-' . $bulan . $tahun . '-' . $kode_max_;
+
+            $kode_max_ = str_pad($max_kode, 4, "0", STR_PAD_LEFT);
+            $code_tagihan = sprintf("CT-%s/%s-%s-%s%s-%s", $id_perum, $id_rtrw, $no_rumah, $bulan, $tahun, $kode_max_);
             date_default_timezone_set('Asia/Jakarta');
 
             // code xendit
