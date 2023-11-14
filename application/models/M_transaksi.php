@@ -108,7 +108,7 @@ class M_transaksi extends CI_Model
 
     // start datatables
     var $column_order = array(null, 'no_invoice', 'bln_tagihan', 'thn_tagihan');
-    var $column_search = array('no_invoice','nama', 'bln_tagihan', 'thn_tagihan', 'status');
+    var $column_search = array('no_invoice','nama', 'no_rumah', 'bln_tagihan', 'thn_tagihan', 'status');
     var $order = array('tagihan.no_invoice' => 'desc'); // default order
 
     private function _get_datatables_query($id, $role, $bulan_filter, $status_filter, $tahun_filter)
@@ -213,7 +213,7 @@ class M_transaksi extends CI_Model
 
     // datatable serverside untuk transaksi pembayaran
     var $column_ordertrx = array(null, 'transaksi.code_tagihan', 'transaksi.no_invoice', 'bln_tagihan', 'thn_tagihan');
-    var $column_searchtrx = array('transaksi.code_tagihan', 'no_invoice','nama', 'bln_tagihan', 'thn_tagihan', 'transaksi.tgl_upload', 'transaksi.tgl_byr','transaksi.foto_bukti');
+    var $column_searchtrx = array('transaksi.code_tagihan', 'no_invoice','nama', 'no_rumah', 'bln_tagihan', 'thn_tagihan', 'transaksi.tgl_upload', 'transaksi.tgl_byr','transaksi.foto_bukti');
     var $ordertrx = array('transaksi.id_transaksi' => 'asc'); // default order
 
     private function _get_datatables_trx($id, $role,  $status_trans) {
