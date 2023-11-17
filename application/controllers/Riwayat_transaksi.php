@@ -44,7 +44,7 @@ class Riwayat_transaksi extends AUTH_Controller
                                             <th class="text-center">Pemaikaian</th>
                                             <th class="text-center">Tarif</th>
                                             <th class="text-center" >Abunemen</th>
-                                            <th class="text-center"style="border-radius: 0;">Bayar air</th>
+                                            <th class="text-center"style="border-radius: 0;">Total Bayar air</th>
                                         </center>
                                     </tr>
                                 </thead>';

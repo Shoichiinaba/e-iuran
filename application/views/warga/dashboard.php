@@ -214,7 +214,7 @@ div:where(.swal2-icon) {
                     <div id="btn-tunggakan" class="col-md-6 mb-4 stretch-card transparent">
                         <div class="card card-light-blue">
                             <div class="card-body">
-                                <p class="mb-2 font-weight-bold">Tunggakan</p>
+                                <p class="mb-2 font-weight-bold">Tagihan Belum Dibayar</p>
                                 <p class="fs-30 mb-2 info-total-tagihan"></p>
                                 <p class="info-tunggakan">2 Bulan</p>
                             </div>
