@@ -1,3 +1,7 @@
+<!-- daterangepicker -->
+<script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<!-- akhir daterangepicker -->
 <!-- Plugin js for this page -->
 <script src="<?= base_url('assets'); ?>/vendors/chart.js/Chart.min.js"></script>
 <!-- End plugin js for this page -->

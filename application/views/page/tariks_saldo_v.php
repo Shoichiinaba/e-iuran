@@ -125,6 +125,10 @@ select:focus+label {
     -ms-transform: translateY(-20px);
     transform: translateY(-20px);
 }
+
+#fil-daterange {
+    height: 28px;
+}
 </style>
 
 <div class="main-panel">
@@ -193,7 +197,7 @@ select:focus+label {
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0">
                                     <div class="input-wrapper">
                                         <label class="label-in">Nominal</label>
-                                        <input type="text" id="nominal" value="" class="col-lg-12" readonly>
+                                        <input type="text" id="nominal" value="" class="col-lg-12">
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 pr-2 pl-0">
@@ -214,12 +218,28 @@ select:focus+label {
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="demo">
-                                <button type="submit" id="tombol" class="btn btn-outline-success btn-icon-text">
-                                    <i class="ti-archive"> </i>
-                                    Tarik Saldo
-                                </button>
+                            <div class="row">
+                                <div class="col-md-4 mt-4">
+                                    <div class="template-demo">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text text-body bg-gradient-success"><i
+                                                    class="ti-calendar" style="color:white;"
+                                                    aria-hidden="true"></i></span>
+                                            <input type="text" class="form-control" id="fil-daterange"
+                                                name="fil_daterange" placeholder=" Pilih Range Tanggal">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <div class="template-demo">
+                                        <button type="submit" id="tombol" class="btn btn-outline-success btn-icon-text">
+                                            <i class="ti-archive"> </i>
+                                            Tarik Saldo
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -276,30 +296,61 @@ select:focus+label {
 
 <script>
 $(document).ready(function() {
-    // filter saldo
+    var startDate = null;
+    var endDate = null;
+
+    $('#fil-daterange').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+            cancelLabel: 'Clear',
+            applyLabel: 'Pilih',
+            format: 'DD-MM-YYYY',
+        }
+    });
+
+    // Filter saldo
     $("#id-rtrw").change(function() {
-        var id_rtrw = $(this).val();
+        updateData();
+    });
+
+    $('#fil-daterange').on('apply.daterangepicker', function(ev, picker) {
+        startDate = picker.startDate.format('DD-MM-YYYY');
+        endDate = picker.endDate.format('DD-MM-YYYY');
+        $(this).val(picker.startDate.format('DD-MM-YYYY') + ' - ' + picker.endDate.format(
+            'DD-MM-YYYY'));
+
+        updateData();
+    });
+
+    $('#fil-daterange').on('cancel.daterangepicker', function(ev, p) {
+        startDate = null;
+        endDate = null;
+        $(this).val('');
+    });
+
+    function updateData() {
+        var id_rtrw = $("#id-rtrw").val();
         var segment3 = '<?= $this->uri->segment(3); ?>';
 
         $.ajax({
             type: "POST",
             url: "<?= site_url('Tarik_saldo/form_tarik_ajax/') ?>" + segment3,
-            // url: "Tarik_saldo/form_tarik",
             data: {
                 id_rtrw: id_rtrw,
+                startDate: startDate,
+                endDate: endDate
             },
             success: function(response) {
                 const json = JSON.parse(response);
                 $('#tarik-saldo #saldo').html(json.totalDPP);
                 $('#tarik-saldo #nominal').val(json.DPP);
-
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log("Error: " + errorThrown);
                 $("#saldo").text("Terjadi kesalahan. Silakan coba lagi.");
             },
         });
-    });
+    }
 
     // akhir filter saldo
 

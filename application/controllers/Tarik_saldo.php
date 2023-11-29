@@ -51,8 +51,6 @@ class Tarik_saldo extends AUTH_Controller
         $id = $this->session->userdata('userdata')->id_rtrw;
 
         $id_rtrw = $this->input->post('id_rtrw');
-
-        //$id_perum = $this->input->get('id_perumahan');
         $perum = $this->uri->segment(3);
 
         $data['menunggu'] = $this->M_dashboard->jumlah_byr($id);
@@ -60,16 +58,6 @@ class Tarik_saldo extends AUTH_Controller
         $data['nomer'] = $this->M_saldo->no_tf();
         $data['perum'] = $this->M_perumahan->get_perumahan();
         $data['rtrw'] = $this->M_perumahan->get_rttarik($perum);
-
-        // Ambil id_rtrw dari permintaan POST
-        // $id_rtrw = '2';
-
-        // Ambil saldo berdasarkan perumahan dan id_rtrw
-        $saldo = $this->M_saldo->get_filter_saldo($perum, $id_rtrw);
-        $totalDPP = calculate_saldo($saldo);
-        $Rp_saldo = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
-        $data['totalDPP'] = $Rp_saldo;
-        $data['DPP'] = $totalDPP;
 
         // saldo Xendit
         xendit_loaded();
@@ -86,19 +74,24 @@ class Tarik_saldo extends AUTH_Controller
     public function form_tarik_ajax()
     {
         $id_rtrw = $this->input->post('id_rtrw');
+        $startDate = $this->input->post('startDate');
+        $endDate = $this->input->post('endDate');
         $perum = $this->uri->segment(3);
-        $data['perum'] = $this->M_perumahan->get_perumahan();
-        $data['rtrw'] = $this->M_perumahan->get_rttarik($perum);
+        // $data['perum'] = $this->M_perumahan->get_perumahan();
+        // $data['rtrw'] = $this->M_perumahan->get_rttarik($perum);
+        // $startDate = '18-11-2023';
+        // $endDate = '19-11-2023';
+        // var_dump($startDate);
 
 
-        // Ambil saldo berdasarkan perumahan dan id_rtrw
-        $saldo = $this->M_saldo->get_filter_saldo($perum, $id_rtrw);
+        $saldo = $this->M_saldo->get_filter_saldo($perum, $id_rtrw, $startDate, $endDate);
         $totalDPP = calculate_saldo($saldo);
         $Rp_saldo = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
         $data['totalDPP'] = $Rp_saldo;
         $data['DPP'] = $totalDPP;
         echo json_encode($data);
     }
+
 
 
    function get_data_tf()

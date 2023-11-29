@@ -29,6 +29,10 @@
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/navs/style.css">
     <!-- end nav bawah -->
 
+    <!-- daterangepicker -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <!-- akhirdaterangepicker -->
+
     <!-- inject:css -->
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/vertical-layout-light/style.css">
 

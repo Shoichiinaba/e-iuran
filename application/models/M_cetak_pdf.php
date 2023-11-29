@@ -19,12 +19,12 @@ class M_cetak_pdf extends CI_Model
         return $query->result();
     }
 
-    function m_bukti_tarik($id_perum)
+    function m_bukti_tarik($id_saldo)
     {
         $this->db->select('*');
         $this->db->from('saldo');
         $this->db->join('perumahan', 'saldo.id_perum = perumahan.id_perumahan');
-        // $this->db->where('saldo.id_perum', $id_perum);
+        $this->db->where('id_saldo', $id_saldo);
         $query = $this->db->get();
         return $query->result();
     }

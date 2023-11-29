@@ -41,6 +41,7 @@ class Cetak_invoice extends AUTH_Controller
 
     public function bikti_tf()
     {
+        $id_saldo = $this->uri->segment(3);
         $id = $this->session->userdata('id_rtrw');
         $id_perum = $this->session->userdata('id_perum');
 
@@ -51,10 +52,9 @@ class Cetak_invoice extends AUTH_Controller
         $paper = 'A4';
         $orientation = "potrait";
 
-        $data['data_tarik'] = $this->M_cetak_pdf->m_bukti_tarik($id_perum);
+        $data['data_tarik'] = $this->M_cetak_pdf->m_bukti_tarik($id_saldo);
         $html = $this->load->view('page/cetak/bukti_pdf', $data, true);
 
         $this->pdfgenerator->generate($html, $file_pdf, $paper, $orientation);
     }
 }
-// http://localhost/site_map/Laporan_pdf/data/6/Subsidi/A1-A10-A12/

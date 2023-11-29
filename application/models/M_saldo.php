@@ -19,7 +19,7 @@ class M_saldo extends CI_Model
         return $query->result();
     }
 
-    function get_filter_saldo($id_perum, $id_rtrw)
+    function get_filter_saldo($id_perum, $id_rtrw, $startDate, $endDate)
     {
         $this->db->select('*');
         $this->db->from('transaksi');
@@ -29,9 +29,22 @@ class M_saldo extends CI_Model
         $this->db->where('transaksi.id_rtrw', $id_rtrw);
         $this->db->where('tagihan.status', 2);
         $this->db->where('transaksi.status_saldo', 1);
+
+        // if ($startDate && $endDate) {
+        //     // Konversi string tanggal ke format tanggal MySQL
+        //     $this->db->where("STR_TO_DATE(transaksi.tgl_byr, '%d-%m-%Y') >=", $startDate, false);
+        //     $this->db->where("STR_TO_DATE(transaksi.tgl_byr, '%d-%m-%Y') <=", $endDate, false);
+        // }
+
+        if ($startDate && $endDate) {
+            $this->db->where('transaksi.tgl_byr >=', $startDate);
+            $this->db->where('transaksi.tgl_byr <=', $endDate);
+        }
+
         $this->db->group_by('transaksi.code_tagihan');
 
         $query = $this->db->get();
+        // echo $this->db->last_query();
         return $query->result();
     }
 
