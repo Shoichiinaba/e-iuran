@@ -8,8 +8,7 @@ class M_client extends CI_Model
 {
     function m_biodata($id_warga)
     {
-
-        $this->db->select('warga.nama,warga.no_rumah,warga.no_hp, perumahan.nama as nm_perum, rt-rw.rt,rt-rw.rw ');
+        $this->db->select('warga.id_warga, warga.id_perum, warga.id_rtrw, warga.nama,warga.no_rumah,warga.no_hp,warga.status_segel, perumahan.nama as nm_perum, rt-rw.rt,rt-rw.rw ');
         $this->db->from('warga');
         $this->db->join('perumahan', 'perumahan.id_perumahan = warga.id_perum');
         $this->db->join('rt-rw', 'rt-rw.id_rtrw = warga.id_rtrw');
@@ -26,6 +25,7 @@ class M_client extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+
     function m_info_konf_byr($id_warga)
     {
         $this->db->select('*, COUNT(tagihan.status = 1) as bulan, SUM(lain_lain + nominal) as total');
@@ -45,6 +45,19 @@ class M_client extends CI_Model
         $this->db->where('id_warga', $id_warga);
         $query = $this->db->get();
         return $query->result();
+    }
+
+    function m_bayar_tagihan_air($id_warga, $status)
+    {
+
+        $this->db->select('*');
+        $this->db->from('tagihan');
+        $this->db->where('status', $status);
+        $this->db->where('id_warga', $id_warga);
+        $query = $this->db->get();
+        $q['result'] = $query->result();
+        $q['num_rows'] = $query->num_rows();
+        return $q;
     }
 
     function m_transaksi($id_warga, $status){
@@ -74,8 +87,14 @@ class M_client extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+
     function m_upload_transaksi($data){
         $result = $this->db->insert('transaksi', $data);
+        return $result;
+    }
+
+    function m_segel_saldo($segel_saldo){
+        $result = $this->db->insert('segel_meteran', $segel_saldo);
         return $result;
     }
 
@@ -99,6 +118,27 @@ class M_client extends CI_Model
             ->update('tagihan');
         return $update;
     }
+
+    function m_status_segel($id_warga)
+    {
+        $update = $this->db->set('status_segel', '2')
+        ->where('id_warga', $id_warga)
+        ->where('status_segel', '1')
+        ->update('warga');
+        return $update;
+    }
+
+    function m_pay($code_tagihan)
+    {
+        $this->db->select('*');
+        $this->db->from('transaksi');
+        $this->db->join('warga', 'warga.id_warga = transaksi.id_warga');
+        $this->db->where('transaksi.code_tagihan', $code_tagihan);
+        $this->db->limit(1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 
     function m_update_tagihan_pembayaran($code_tagihan, $status)
     {

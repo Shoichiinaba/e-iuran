@@ -65,34 +65,45 @@ class Data_tagihan extends AUTH_Controller
     }
 
     public function buat_tagihan() {
-        $data = array(
-            'id_rtrw' => $this->input->post('id_rtrw'),
-            'id_warga' => $this->input->post('id_warga'),
-            'id_iuran' => $this->input->post('id_iuran'),
-            'no_invoice' => $this->input->post('no_invoice'),
-            'thn_tagihan' => $this->input->post('thn_tagihan'),
-            'bln_tagihan' => $this->input->post('bln_tagihan'),
-            'kubik1' => $this->input->post('kubik1'),
-            'kubik_in' => $this->input->post('kubik_in'),
-            'hasil_kubik' => $this->input->post('hasil_kubik'),
-            'abunament' => $this->input->post('abunament'),
-            'perkubik' => $this->input->post('perkubik'),
-            'lain_lain' => $this->input->post('lain_lain'),
-            'taxs' => $this->input->post('taxs'),
-            'nominal' => $this->input->post('nominal')
-        );
+        $id_warga = $this->input->post('id_warga');
+        $bln_tagihan = $this->input->post('bln_tagihan');
+        $thn_tagihan = $this->input->post('thn_tagihan');
 
-        $this->load->model('M_transaksi');
-        $result = $this->M_transaksi->save_data($data);
-
-        if ($result) {
-            $response = array('status' => 'success', 'message' => 'Data berhasil disimpan.');
+        // Cek apakah data sudah ada
+        $is_exist = $this->M_transaksi->check_existing_data($id_warga, $bln_tagihan, $thn_tagihan);
+        if($is_exist) {
+            $response = array('status' => 'exist', 'message' => 'Data sudah Di Buat Tagihan Bulan ini.');
         } else {
-            $response = array('status' => 'error', 'message' => 'Gagal menyimpan data.');
+            $data = array(
+                'id_rtrw' => $this->input->post('id_rtrw'),
+                'id_warga' => $id_warga,
+                'id_iuran' => $this->input->post('id_iuran'),
+                'no_invoice' => $this->input->post('no_invoice'),
+                'thn_tagihan' => $thn_tagihan,
+                'bln_tagihan' => $bln_tagihan,
+                'kubik1' => $this->input->post('kubik1'),
+                'kubik_in' => $this->input->post('kubik_in'),
+                'hasil_kubik' => $this->input->post('hasil_kubik'),
+                'abunament' => $this->input->post('abunament'),
+                'perkubik' => $this->input->post('perkubik'),
+                'lain_lain' => $this->input->post('lain_lain'),
+                'taxs' => $this->input->post('taxs'),
+                'nominal' => $this->input->post('nominal')
+            );
+
+            $this->load->model('M_transaksi');
+            $result = $this->M_transaksi->save_data($data);
+
+            if ($result) {
+                $response = array('status' => 'success', 'message' => 'Data berhasil disimpan.');
+            } else {
+                $response = array('status' => 'error', 'message' => 'Gagal menyimpan data.');
+            }
         }
 
         echo json_encode($response);
     }
+
 
     function hapus_iuran($params = '')
     {

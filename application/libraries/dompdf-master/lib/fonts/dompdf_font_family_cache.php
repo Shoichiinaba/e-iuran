@@ -87,6 +87,6 @@
     'normal' => $fontDir . '/nucleoicons-normal_623e142cbe3f31a2b93f3bc0cbe19c5e',
   ),
   'glyphicons halflings' => array(
-    'normal' => $fontDir . '/glyphicons-halflings-normal_4ced20531a4f462a8c5c535d4debd2eb',
+    'normal' => $fontDir . '/glyphicons-halflings-normal_91a063d0f3772b152f606edc0383c99d',
   ),
 ) ?>

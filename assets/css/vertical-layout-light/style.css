@@ -15263,7 +15263,8 @@ a.close.disabled {
   left: 0;
   z-index: 1060;
   display: block;
-  max-width: 276px;
+  /* width: 300px; */
+  max-width: 400px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-style: normal;
   font-weight: 400;
@@ -15283,7 +15284,7 @@ a.close.disabled {
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
+  border-radius: 0.5rem;
 }
 
 .popover .arrow {
@@ -19059,7 +19060,7 @@ a.text-dark:hover, a.text-dark:focus {
   .table, .jsgrid .jsgrid-table {
     border-collapse: collapse !important;
   }
-  
+
   .table td,
   .jsgrid .jsgrid-table td, .table th, .jsgrid .jsgrid-table th {
     background-color: #ffffff !important;

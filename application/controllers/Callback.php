@@ -11,9 +11,12 @@ class Callback extends CI_Controller
         parent::__construct();
     }
 
-    function callback_invoice() {
+        function callback_invoice() {
+
         xendit_loaded();
         $this->db->trans_begin();
+
+
         try {
             $rawRequest          = file_get_contents("php://input");
             $request             = json_decode($rawRequest, true);
@@ -25,20 +28,22 @@ class Callback extends CI_Controller
             $_paidAmount         = $request['paid_amount'];
             $_paidAt             = $request['paid_at'];
             $_paymentChannel     = $request['payment_channel'];
-            $_paymentDestination = $request['payment_destination'];
 
-            // sesion
-            $id_rtrw = null;
-            $userData = $this->session->userdata('userdata');
+        if (preg_match('/CT-\d+\/\d+-([A-Z]\d+)-\d+/', $_externalId, $matches)) {
+            $code_rumah = $matches[1];
+        } else {
+            throw new Exception("Invalid external_id format");
+        }
 
-            if (is_object($userData) && property_exists($userData, 'id_rtrw')) {
-                $id_rtrw = $userData->id_rtrw;
-            }
+            // var_dump($id_warga);
+            // exit;
 
             $status = '1';
             if ($_status == 'PAID') {
                 $status = '2';
                 $status_saldo = '1';
+                $status_segel = '2';
+                $nominal = '200000';
 
                 $date_convert = Carbon::parse($_paidAt);
 
@@ -48,6 +53,16 @@ class Callback extends CI_Controller
                 $this->db->set('status', $status)
                          ->where('code_tagihan', $_externalId)
                          ->update('tagihan');
+
+                $this->db->set('status_segel', $status_segel)
+                            ->where('no_rumah',  $code_rumah)
+                            ->where('status_segel',  '1')
+                            ->update('warga');
+
+                $this->db->insert('segel_meteran', [
+                        'code_tagihan' => $_externalId,
+                        'nominal'   => $nominal
+                        ]);
 
                 $transfer_exists   = $this->db->get_where('transaksi', [
                     'code_tagihan' => $_externalId
@@ -82,6 +97,8 @@ class Callback extends CI_Controller
             } else {
                 $this->db->trans_commit();
             }
+            // var_dump($id_warga);
+            // exit;
 
             $response = [
                 'status'  => true,

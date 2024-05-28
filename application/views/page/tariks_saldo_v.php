@@ -141,13 +141,13 @@ select:focus+label {
                         <div class="card card-light bg-gradient-success">
                             <div class="card-body">
                                 <h2 class="mb-2 mt-0 pt-0">Saldo</h2>
-                                <h2 id="saldo" class="fs-80 pb-2 mb-2 mt-1 pt-1 text-center" style="color:white"
+                                <h3 id="saldo" class="fs-80 pb-2 mb-2 mt-1 pt-1 text-center" style="color:white"
                                     data-saldo=" ">Rp. 0
 
-                                </h2>
+                                </h3>
                                 <hr style="color: white; border: 1px solid;">
-                                <h5 class="fs-10 pb-0 mb-0 text-center" style="color:blue"> Saldo
-                                    Xendit : <b style="color:red"> <?=$xendit; ?> </b></h5>
+                                <h6 class="fs-8 pb-0 mb-0 text-center" style="color:blue"> Saldo Segel
+                                    : <b style="color:red" data-saldo_segel=" " id="saldo_segel"> Rp. 0 </b></h6>
                             </div>
                         </div>
                     </div>
@@ -198,6 +198,12 @@ select:focus+label {
                                     <div class="input-wrapper">
                                         <label class="label-in">Nominal</label>
                                         <input type="text" id="nominal" value="" class="col-lg-12">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0">
+                                    <div class="input-wrapper">
+                                        <label class="label-in">segel</label>
+                                        <input type="text" id="segel" value="" class="col-lg-12">
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 pr-2 pl-0">
@@ -272,6 +278,7 @@ select:focus+label {
                                             <th>Nama perumahan</th>
                                             <th>RT RW</th>
                                             <th>Tanggal</th>
+                                            <th>Segel</th>
                                             <th>Nominal</th>
                                             <th>Fee</th>
                                             <th>Total</th>
@@ -344,6 +351,8 @@ $(document).ready(function() {
                 const json = JSON.parse(response);
                 $('#tarik-saldo #saldo').html(json.totalDPP);
                 $('#tarik-saldo #nominal').val(json.DPP);
+                $('#tarik-saldo #segel').val(json.segel);
+                $('#tarik-saldo #saldo_segel').html(json.saldo_segel);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log("Error: " + errorThrown);
@@ -362,6 +371,7 @@ $(document).ready(function() {
         var no_tarik = $('#no_tarik').val();
         var tanggal = $('#tanggal').val();
         var nominal = $('#nominal').val();
+        var segel = $('#segel').val();
         var fee = $('#fee').val();
         var totdpp = $('#totdpp').val();
 
@@ -374,6 +384,7 @@ $(document).ready(function() {
                 id_rtrw: id_rtrw,
                 no_tarik: no_tarik,
                 tanggal: tanggal,
+                segel: segel,
                 nominal: nominal,
                 fee: fee,
                 totdpp: totdpp,
@@ -394,6 +405,7 @@ $(document).ready(function() {
                     $('#id_perum').val('');
                     $('#fee').val('');
                     $('#totdpp').val('');
+                    $('#segel').val('');
                     // Bersihkan input lainnya sesuai kebutuhan
 
                     window.location.href =
@@ -462,17 +474,19 @@ const nominalInput = document.getElementById('nominal');
 const feeInput = document.getElementById('fee');
 const rpfeeInput = document.getElementById('Rp_fee');
 const totaldppInput = document.getElementById('totdpp');
+const segelInput = document.getElementById('segel');
 
 // Fungsi untuk menghitung dan menampilkan hasilnya di 'saldo'
 function hitungfeetarik() {
     const nominalValue = parseFloat(nominalInput.value);
     const feeValue = parseFloat(feeInput.value);
+    const segelValue = parseFloat(segelInput.value);
 
     if (!isNaN(nominalValue) && !isNaN(feeValue)) {
         const hasiltarik = nominalValue * feeValue / 100;
         rpfeeInput.value = hasiltarik.toFixed(0);
 
-        saldodpp = nominalValue - hasiltarik
+        saldodpp = nominalValue - hasiltarik + segelValue
         totaldppInput.value = saldodpp.toFixed(0);
     }
 }

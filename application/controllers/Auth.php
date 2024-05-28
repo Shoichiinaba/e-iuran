@@ -24,12 +24,6 @@ class Auth extends CI_Controller
 			$this->load->view('warga/login');
 		} else {
 			redirect('Dashboard');
-			// $role = $this->session->userdata('status')->role;
-			// if ($role == 'Warga') {
-
-			// } else {
-			// 	redirect('Client_dash');
-			// }
 		}
 	}
 
@@ -39,8 +33,8 @@ class Auth extends CI_Controller
 		$this->form_validation->set_rules('password', 'Password', 'required');
 
 		if ($this->form_validation->run() == TRUE) {
-			$username = trim($_POST['username']);
-			$password = trim($_POST['password']);
+			$username = trim($this->input->post('username'));
+			$password = trim($this->input->post('password'));
 
 			$data = $this->M_auth->m_client_login($username, $password);
 
@@ -53,10 +47,18 @@ class Auth extends CI_Controller
 					'status' => "Loged in"
 				];
 				$this->session->set_userdata($session);
-				redirect('Dashboard');
+
+				$role = $data->role;
+				if ($role == 'Warga') {
+					redirect('Dashboard');
+				} elseif ($role == 'Finance') {
+					redirect('Pembayaran_cash');
+				} else {
+					redirect('Auth');
+				}
 			}
 		} else {
-			$this->session->set_flashdata('result_login', '<br>email Dan Password Harus Diisi.');
+			$this->session->set_flashdata('result_login', '<br>Username dan Password Harus Diisi.');
 			redirect('Auth');
 		}
 	}

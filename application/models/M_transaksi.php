@@ -64,34 +64,40 @@ class M_transaksi extends CI_Model
     }
 
     public function no_invoice() {
+        $rt_query = $this->db->select('rt')->get('rt-rw');
+        $rt = $rt_query->row()->rt;
 
-        $this->db->select('rt');
-        $this->db->from('rt-rw');
-        $query_rt = $this->db->get();
-        $rt = $query_rt->row()->rt;
+        $this->db->select("MAX(CAST(RIGHT(tagihan.no_invoice, 4) AS UNSIGNED)) as kode", FALSE);
+        $this->db->order_by('no_invoice', 'DESC')->limit(1);
+        $invoice_query = $this->db->get('tagihan');
 
-        $this->db->select("RIGHT(tagihan.no_invoice, 4) as kode", FALSE);
-        $this->db->order_by('no_invoice', 'DESC');
-        $this->db->limit(1);
-
-        $query_ = $this->db->get('tagihan');
-        if ($query_->num_rows() <> 0) {
-            $data_ = $query_->row();
-            $kode_ = intval($data_->kode) + 1;
+        if ($invoice_query->num_rows() > 0) {
+            $data = $invoice_query->row();
+            $kode = intval($data->kode) + 1;
         } else {
-            $kode_ = 1;
+            $kode = 1;
         }
 
+        // Format nomor tagihan
         $tahun = date("y");
         $bulan = date("m");
-        $kode_max_ = str_pad($kode_, 4, "0", STR_PAD_LEFT);
+        $kode_max = str_pad($kode, 4, "0", STR_PAD_LEFT);
 
-        $no_invoice = "IV" . '-' . $rt . '-' . $bulan . '-' . $tahun . '-' . $kode_max_;
+        $no_invoice = "IV-$rt-$bulan-$tahun-$kode_max";
         return $no_invoice;
     }
 
+
     function save_data($data) {
         return $this->db->insert('tagihan', $data);
+    }
+
+    function check_existing_data($id_warga, $bln_tagihan, $thn_tagihan) {
+        $this->db->where('id_warga', $id_warga);
+        $this->db->where('bln_tagihan', $bln_tagihan);
+        $this->db->where('thn_tagihan', $thn_tagihan);
+        $query = $this->db->get('tagihan');
+        return $query->num_rows() > 0;
     }
 
     // untuk data transaksi tagihan warga
@@ -317,6 +323,7 @@ class M_transaksi extends CI_Model
         $this->db->where('transaksi.id_rtrw', $id);
         $this->db->where('tagihan.status', 2);
         $this->db->where('transaksi.status_saldo', 1);
+        $this->db->where('transaksi.foto_bukti !=', 'CASH');
         $this->db->group_by('transaksi.code_tagihan');
 
         $query = $this->db->get();

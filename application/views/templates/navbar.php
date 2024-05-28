@@ -98,7 +98,8 @@
                 </div>
             </li>
             <?php endif; ?>
-            <?php if ($userdata->role == 'Warga') : ?>
+
+            <?php if ($userdata->role == 'Warga' || $userdata->role == 'Finance') : ?>
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                     <img src="<?php echo base_url(); ?>assets/images/user/<?php echo $userdata->foto; ?> "
@@ -115,21 +116,14 @@
             <?php endif; ?>
         </ul>
 
-        <?php if ($userdata->role == 'Admin') : ?>
+        <?php if ($userdata->role == 'Admin' || $userdata->role == 'RT') : ?>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
             data-toggle="offcanvas">
             <span class="icon-menu"></span>
         </button>
         <?php endif; ?>
 
-        <?php if ($userdata->role == 'RT') : ?>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-            data-toggle="offcanvas">
-            <span class="icon-menu"></span>
-        </button>
-        <?php endif; ?>
-
-        <?php if ($userdata->role == 'Warga') : ?>
+        <?php if ($userdata->role == 'Warga' || $userdata->role == 'Finance') : ?>
         <div class="d-md-block d-none">
             <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                 data-toggle="offcanvas">
@@ -137,6 +131,7 @@
             </button>
         </div>
         <?php endif; ?>
+
     </div>
 </nav>
 

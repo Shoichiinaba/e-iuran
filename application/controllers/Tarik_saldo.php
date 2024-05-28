@@ -30,6 +30,7 @@ class Tarik_saldo extends AUTH_Controller
                 $id_perumahan = $perum_data->id_perumahan;
 
                 $saldo_data = $this->M_saldo->get_saldo($id_perumahan);
+                $saldo_seg = $this->M_saldo->get_saldo_segel($id_perumahan);
 
                 $totalDPP = 0;
                 foreach ($saldo_data as $s) {
@@ -38,7 +39,13 @@ class Tarik_saldo extends AUTH_Controller
                     $totalDPP += $DPP;
                 }
 
+                $saldo_segel = 0;
+                foreach ($saldo_seg as $s) {
+                    $saldo_segel += $s->nominal;
+                }
+
                 $data['perum_balances'][$id_perumahan] = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
+                $data['segel_balances'][$id_perumahan] = 'Rp. ' . number_format($saldo_segel, 0, ',', '.');
             }
         // akhir code saldo
 
@@ -77,18 +84,20 @@ class Tarik_saldo extends AUTH_Controller
         $startDate = $this->input->post('startDate');
         $endDate = $this->input->post('endDate');
         $perum = $this->uri->segment(3);
-        // $data['perum'] = $this->M_perumahan->get_perumahan();
-        // $data['rtrw'] = $this->M_perumahan->get_rttarik($perum);
-        // $startDate = '18-11-2023';
-        // $endDate = '19-11-2023';
-        // var_dump($startDate);
-
 
         $saldo = $this->M_saldo->get_filter_saldo($perum, $id_rtrw, $startDate, $endDate);
+        $saldo_segel = $this->M_saldo->get_filter_saldo_seg($perum, $id_rtrw, $startDate, $endDate);
+        // saldo transaksi IPL & Air
         $totalDPP = calculate_saldo($saldo);
         $Rp_saldo = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
+        // saldo transaksi penyegelan meteran
+        $total_saldo_segel = calculate_saldo_segel($saldo_segel);
+        $Rp_saldo_segel = 'Rp. ' . number_format($total_saldo_segel, 0, ',', '.');
+
         $data['totalDPP'] = $Rp_saldo;
+        $data['saldo_segel'] = $Rp_saldo_segel;
         $data['DPP'] = $totalDPP;
+        $data['segel'] =  $total_saldo_segel;
         echo json_encode($data);
     }
 
@@ -106,6 +115,7 @@ class Tarik_saldo extends AUTH_Controller
 
         $Rp_dpp     = 'Rp. ' . number_format($tf->dpp, 0, ',', '.');
         $Rp_akhir     = 'Rp. ' . number_format($tf->saldo, 0, ',', '.');
+        $Rp_segel     = 'Rp. ' . number_format($tf->segel, 0, ',', '.');
         $tanggal_formatted = date('d/m/Y', strtotime($tf->tanggal));
 
         $no++;
@@ -115,6 +125,7 @@ class Tarik_saldo extends AUTH_Controller
         $row[] = '<td class="font-weight-medium"><div class="badge bg-gradient-info">' . $tf->nama . '</div> </td>';
         $row[] = '<td class="font-weight-medium"><div class="badge badge-danger">' . $tf->rt . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge bg-gradient-primary">' . $tf->rw . '</div></td>';
         $row[] = $tanggal_formatted;
+        $row[] = $Rp_segel;
         $row[] = $Rp_dpp;
         $row[] = $tf->fee. ' %';
         $row[] = $Rp_akhir;
@@ -142,6 +153,7 @@ class Tarik_saldo extends AUTH_Controller
             'id_rtrw'        => $this->input->post('id_rtrw'),
             'code_tranfer '  => $this->input->post('no_tarik'),
             'tanggal'        => $this->input->post('tanggal'),
+            'segel'          => $this->input->post('segel'),
             'fee'            => $this->input->post('fee'),
             'dpp'            => $this->input->post('nominal'),
             'saldo'          => $this->input->post('totdpp'),

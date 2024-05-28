@@ -15,6 +15,7 @@
     <!-- plugins:css -->
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/feather/feather.css">
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendors/css/vendor.bundle.base.css">
     <!-- endinject -->
 

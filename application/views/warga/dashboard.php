@@ -194,6 +194,11 @@ div:where(.swal2-icon) {
 .bg-active-tr {
     background: navajowhite;
 }
+
+.tr-ceklis-bayar {
+    background: linear-gradient(45deg, #89ff00, transparent);
+    font-weight: bold;
+}
 </style>
 <div class="main-panel">
     <div class="content-wrapper">
@@ -203,7 +208,6 @@ div:where(.swal2-icon) {
                     <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                         <h3 class="font-weight-bold">Welcome <i class="text-info"><?php echo $userdata->nama; ?></i>
                         </h3>
-                        <!-- <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span class="text-primary">3 unread alerts!</span></h6> -->
                     </div>
                 </div>
             </div>
@@ -260,15 +264,17 @@ div:where(.swal2-icon) {
             <div class="row mx-auto">
                 <div class="col-lg-6 col-md-6 col-12 mt-3">
                     <h5>Ditagihkan Ke :</h5>
-                    <p class="mb-0"><?= $data->nama; ?> | <?php echo $userdata->no_rumah; ?></p>
-                    <p class="mb-0"><?= $data->nm_perum; ?> NO.<?= $data->no_rumah; ?> RT/<?= $data->rt; ?>
-                        RW/<?= $data->rw; ?></p>
+                    <p class="mb-0"><?= $data->nama; ?> | <?php echo $data->no_rumah; ?></p>
+                    <p class="mb-0"><?= $data->nm_perum; ?> NO.<?= $data->no_rumah; ?>
+                        RT/<?= $data->rt; ?>RW/<?= $data->rw; ?></p>
                     <p class="mb-0"><?= $data->no_hp; ?></p>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12 mt-3">
                     <h5 class=" text-byr">Dibayarkan ke :</h5>
                     <p class="mb-0 text-byr">Pengelola <?= $data->nm_perum; ?></p>
                 </div>
+                <input type="hidden" id="id-warga" value="<?= $data->id_warga; ?>">
+                <input type="hidden" id="status-segel" value="<?= $data->status_segel; ?>">
             </div>
             <?php }; ?>
             <div class="row pl-3 pr-3">
@@ -299,7 +305,7 @@ div:where(.swal2-icon) {
                     <button type="submit" class="btn btn-danger float-right col-12 btn-batal-byr">Batalkan
                         pembayaran</button>
                 </div>
-                <div class="col">
+                <div class="col mt-2 mb-2">
                     <button type="submit" class="btn btn-primary float-right btn-bayar col-12">Buat pembayaran</button>
                     <?php
                     if ($transaksi) {
@@ -320,6 +326,7 @@ div:where(.swal2-icon) {
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Bayar tagihan</h5>
                 </div>
+                <?php if ($userdata->role == 'Warga'): ?>
                 <div class="modal-body pt-1 pl-2 pr-2 pb-1">
                     <div class="row" hidden>
                         <div class="col-lg-7 col-md-7 col-12">
@@ -358,12 +365,58 @@ div:where(.swal2-icon) {
                     </div>
                 </div>
                 <div class="row ">
-                    <!-- <div class="col"> -->
-                    <center>
-                        <img id="preview-bukti" src="" class="img-fluid" style="max-width: 50%;">
-                    </center>
-                    <!-- </div> -->
                 </div>
+                <?php elseif ($userdata->role == 'Finance'): ?>
+                <div class="modal-body pt-1 pl-2 pr-2 pb-1">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-12">
+                            <div class="input-wrapper">
+                                <div class="input-group">
+                                    <span class="input-group-text text-body"><i class="ti-calendar"></i></span>
+                                    <input type="date" class="form-control" id="tgl-byr">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php foreach ($biodata as $data) {
+
+                    ?>
+
+                    <input type="hidden" id="id-warga" class="col-lg-12" value="<?= $data->id_warga; ?>">
+                    <input type="hidden" id="id-rtrw" class="col-lg-12" value="<?= $data->id_rtrw; ?>">
+                    <input type="hidden" id="id-perum" class="col-lg-12" value="<?= $data->id_perum; ?>">
+                    <input type="hidden" id="no-rumah" class="col-lg-12" value="<?= $data->no_rumah; ?>">
+
+                    <?php }; ?>
+
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <div class="input-wrapper">
+                                <label class="label-in">Bulan</label>
+                                <input type="text" id="bulan-val" class="col-lg-12" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-wrapper">
+                                <label class="label-in">Total</label>
+                                <input type="text" id="tagihan-val" class="col-lg-12" value="" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3 upload-bukti">
+                        <div class="input-group col-xs-12">
+                            <input type="file" id="file-upload" hidden>
+                            <input type="text" class="form-control file-upload-info" disabled=""
+                                placeholder="Upload bukti bayar">
+                            <span class="input-group-append">
+                                <button id="btn-upload" class="file-upload-browse btn btn-primary"
+                                    type="button">Upload</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
                 <hr>
                 <div class="row pl-3 pr-3 mb-3">
                     <button type="button" id="btn-kirim" class="btn btn-success col-12" data-dismiss="modal"
@@ -423,36 +476,81 @@ div:where(.swal2-icon) {
         });
 
         $('#btn-kirim').click(function() {
-            // alert($(this).val());
             var $btn = $(this);
             var originalText = $btn.find('#btn-text').text();
+            var role = "<?php echo $this->session->userdata('userdata')->role; ?>";
+            var url = '';
 
             $btn.find('#btn-text').addClass('d-none');
             $btn.find('#btn-loader').removeClass('d-none');
+            $btn.prop('disabled', true); // Disable button to prevent multiple clicks
 
-            if ($(this).val() == 'buat') {
+            if ($btn.val() == 'buat') {
                 let formData = new FormData();
+
                 formData.append('id-tagihan', $('#id-tagihan').val());
                 formData.append('tagihan', $('#tagihan-val').val());
                 formData.append('periode', $('#bulan-val').val());
 
+                if (role === 'Warga') {
+                    url = "<?php echo site_url('Dashboard/buat_pembayaran'); ?>";
+                } else if (role === 'Finance') {
+                    formData.append('tgl_byr', $('#tgl-byr').val());
+                    formData.append('id_warga', $('#id-warga').val());
+                    formData.append('id_rtrw', $('#id-rtrw').val());
+                    formData.append('id_perum', $('#id-perum').val());
+                    formData.append('no_rumah', $('#no-rumah').val());
+                    url = "<?php echo site_url('Dashboard/pembayaran_cash'); ?>";
+                }
+
                 $.ajax({
                     type: 'POST',
-                    url: "<?php echo site_url('Dashboard/buat_pembayaran'); ?>",
+                    url: url,
                     data: formData,
                     cache: false,
                     processData: false,
                     contentType: false,
-                    success: function(data) {
+                    success: function(response) {
+                        var isJSON = false;
+                        try {
+                            var parsedResponse = JSON.parse(response);
+                            isJSON = true;
+                        } catch (e) {
+                            isJSON = false;
+                        }
 
-                        if (data.status) {
-                            $('.btn-bayar').show();
+                        if (isJSON) {
+                            response = parsedResponse;
+                            if (response.status) {
+                                if (role === 'Warga') {
+                                    $('.btn-bayar').show();
+                                    window.location.href = response.detail.redirect_url;
+                                } else if (role === 'Finance') {
+                                    Swal.fire({
+                                        position: "top-center",
+                                        icon: 'success',
+                                        title: 'Berhasil!',
+                                        text: 'Pembayaran CASH Berhasil',
+                                        timer: 1400
+                                    });
+                                }
+                                load_info();
+                                $('#modal-bayar').modal('hide');
+                            } else {
+                                alert("Terjadi kesalahan pada data yang diterima.");
+                            }
+                        } else {
 
-                            window.open(data.detail.redirect_url);
+                            if (role === 'Warga') {
+                                $('.btn-bayar').show();
+                                window.location.href = response.detail.redirect_url;
+
+                            } else {
+                                alert("Response tidak valid untuk peran Finance.");
+                            }
                             load_info();
                             $('#modal-bayar').modal('hide');
                         }
-
                     },
                     error: function() {
                         $('#btn-tunggakan').trigger('click');
@@ -464,7 +562,7 @@ div:where(.swal2-icon) {
                         $btn.prop('disabled', false);
                     }
                 });
-            } else if ($(this).val() == 'konfirmasi') {
+            } else if ($btn.val() == 'konfirmasi') {
                 const foto_bukti = $('#file-upload').prop('files')[0];
                 let formData = new FormData();
                 formData.append('code-tagihan', $('#code-tagihan').val());
@@ -492,6 +590,7 @@ div:where(.swal2-icon) {
                 });
             }
         });
+
     });
 
     $('.upload-bukti').hide();
@@ -581,6 +680,12 @@ div:where(.swal2-icon) {
         let formData = new FormData();
         formData.append('action', action);
         formData.append('status', status);
+
+        var id_warga = $('#id-warga').val();
+        var status_segel = $('#status-segel').val();
+        formData.append('id_warga', id_warga);
+        formData.append('status_segel', status_segel);
+
         $.ajax({
             type: 'POST',
             url: "<?php echo site_url('Dashboard/get_data_blm_bayar'); ?>",
@@ -607,8 +712,8 @@ div:where(.swal2-icon) {
                         $('.tr-bg-' + $(this).data('id-tagihan')).removeClass('bg-active-tr')
                     }
                 });
-                $('#subtotal').val('0')
-                $('#id-tagihan').val('')
+                // $('#subtotal').val('0')
+                // $('#id-tagihan').val('')
                 $('.form-check-input').click(function() {
                     if ($(this).is(":checked")) {
                         $(".btn-bayar").attr("data-bs-toggle", "modal").attr("data-bs-target",
@@ -647,15 +752,16 @@ div:where(.swal2-icon) {
     }
 
     function load_info() {
+        var id_warga = $('#id-warga').val();
+
         $.ajax({
-            // type: 'POST',
+            type: 'POST',
             url: "<?php echo site_url('Dashboard/info'); ?>",
-            // data: formData,
+            data: {
+                id_warga: id_warga
+            },
             cache: false,
-            processData: false,
-            contentType: false,
             success: function(data) {
-                // alert(data);
                 $('#load-info').html(data);
             },
             error: function() {

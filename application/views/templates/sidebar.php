@@ -1,13 +1,23 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
+        <!-- menu finance -->
+        <?php if ($userdata->role == 'Finance') : ?>
+        <li class="nav-item">
+            <a class="nav-link" href="<?php echo site_url('Pembayaran_cash'); ?> ">
+                <i class="fa fa-money menu-icon"></i>
+                <span class="menu-title">Pembayaran Cash</span>
+            </a>
+        </li>
+        <?php endif; ?>
+
+
+        <?php if ($userdata->role == 'RT') : ?>
         <li class="nav-item">
             <a class="nav-link" href="<?php echo site_url('Dashboard'); ?> ">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
             </a>
         </li>
-
-        <?php if ($userdata->role == 'RT') : ?>
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#tagihan" aria-expanded="false" aria-controls="ui-basic">
                 <i class="ti-write menu-icon"></i>
@@ -20,14 +30,14 @@
                             Tagihan</a>
                     </li>
                 </ul>
-                <!-- <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link"
-                            href="<?php echo site_url('Data_tagihan/confm_tagihan'); ?>">Konfirmasi Tagihan</a>
-                    </li>
-                </ul> -->
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link"
                             href="<?php echo site_url('Data_tagihan/data_transaksi'); ?>">Data Transaksi</a>
+                    </li>
+                </ul>
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="<?php echo site_url('Chat_tagihan'); ?>">Chat
+                            Tagihan</a>
                     </li>
                 </ul>
             </div>
@@ -77,6 +87,12 @@
 
         <!-- MENU ADMIN -->
         <?php if ($userdata->role == 'Admin') : ?>
+        <li class="nav-item">
+            <a class="nav-link" href="<?php echo site_url('Dashboard'); ?> ">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
+        </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#tagihan" aria-expanded="false" aria-controls="ui-basic">
                 <i class="ti-write menu-icon"></i>
@@ -163,6 +179,20 @@
             </div>
         </li>
         <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#keuangan" aria-expanded="false" aria-controls="charts">
+                <i class="ti-layout-accordion-list menu-icon"></i>
+                <span class="menu-title">Keuangan</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="keuangan">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="<?php echo site_url('Keuangan'); ?> "> Kas Masuk
+                            & Keluar </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#setting" aria-expanded="false" aria-controls="tables">
                 <i class="ti-settings menu-icon"></i>
                 <span class="menu-title">Pengaturan</span>
@@ -179,6 +209,12 @@
         <?php endif; ?>
 
         <?php if ($userdata->role == 'Warga') : ?>
+        <li class="nav-item">
+            <a class="nav-link" href="<?php echo site_url('Dashboard'); ?> ">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
+        </li>
 
         <li class="nav-item">
             <a class="nav-link" href="<?php echo site_url('Profile'); ?> ">

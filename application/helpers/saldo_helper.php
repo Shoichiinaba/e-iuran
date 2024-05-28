@@ -12,3 +12,13 @@ function calculate_saldo($saldo) {
 
     return $totalDPP;
 }
+
+function calculate_saldo_segel($saldo_segel) {
+    $totalsaldo = 0;
+
+    foreach ($saldo_segel as $s) {
+        $totalsaldo += $s->nominal;
+    }
+
+    return $totalsaldo;
+}

@@ -85,7 +85,8 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Nominal</th>
+                    <th>Saldo Segel</th>
+                    <th>Nominal + Segel</th>
                     <th>Fee</th>
                     <th>Total</th>
                 </tr>

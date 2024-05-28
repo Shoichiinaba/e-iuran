@@ -192,6 +192,7 @@ select:focus+label {
                                         <select type="text" id="thn_tagihan" required>
                                             <option value="2022">2022</option>
                                             <option value="2023">2023</option>
+                                            <option value="2024">2024</option>
                                         </select>
                                     </div>
                                 </div>
@@ -296,17 +297,71 @@ select:focus+label {
                                 </div>
                             </div>
                             <div class="demo">
-                                <button type="submit" class="btn btn-outline-success btn-icon-text">
-                                    <i class="ti-archive"> </i>
-                                    Buat
+                                <button type="submit" class="btn btn-outline-success btn-icon-text" id="btn-buat">
+                                    <i class="ti-archive" id="icon-buat"> </i>
+                                    <span id="btn-text-buat">Buat</span>
+                                    <span id="loading-icon-buat" class="loading"
+                                        style="display: inline-block; float: left; display:none;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
+                                            preserveAspectRatio="xMidYMid" width="24" height="24" style="shape-rendering: auto; display: block; background: rgb(255, 255, 255, 0);
+" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <g>
+                                                <g transform="translate(50 50)">
+                                                    <g transform="scale(0.7)">
+                                                        <g transform="translate(-50 -50)">
+                                                            <g>
+                                                                <animateTransform dur="0.7575757575757576s"
+                                                                    keyTimes="0;1" values="0 50 50;360 50 50"
+                                                                    repeatCount="indefinite" type="rotate"
+                                                                    attributeName="transform"></animateTransform>
+                                                                <path d="M50 50L50 0A50 50 0 0 1 100 50Z" fill="#e15b64"
+                                                                    fill-opacity="0.8"></path>
+                                                            </g>
+                                                            <g>
+                                                                <animateTransform dur="1.0101010101010102s"
+                                                                    keyTimes="0;1" values="0 50 50;360 50 50"
+                                                                    repeatCount="indefinite" type="rotate"
+                                                                    attributeName="transform"></animateTransform>
+                                                                <path transform="rotate(90 50 50)"
+                                                                    d="M50 50L50 0A50 50 0 0 1 100 50Z" fill="#f47e60"
+                                                                    fill-opacity="0.8"></path>
+                                                            </g>
+                                                            <g>
+                                                                <animateTransform dur="1.5151515151515151s"
+                                                                    keyTimes="0;1" values="0 50 50;360 50 50"
+                                                                    repeatCount="indefinite" type="rotate"
+                                                                    attributeName="transform"></animateTransform>
+                                                                <path transform="rotate(180 50 50)"
+                                                                    d="M50 50L50 0A50 50 0 0 1 100 50Z" fill="#f8b26a"
+                                                                    fill-opacity="0.8"></path>
+                                                            </g>
+                                                            <g>
+                                                                <animateTransform dur="3.0303030303030303s"
+                                                                    keyTimes="0;1" values="0 50 50;360 50 50"
+                                                                    repeatCount="indefinite" type="rotate"
+                                                                    attributeName="transform"></animateTransform>
+                                                                <path transform="rotate(270 50 50)"
+                                                                    d="M50 50L50 0A50 50 0 0 1 100 50Z" fill="#abbd81"
+                                                                    fill-opacity="0.8"></path>
+                                                            </g>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                                <g></g>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                    <span style="display: inline-block; float: right; display:none;"
+                                        class="pt-1 pl-1 loading-text">Loading...</span>
                                 </button>
+
                             </div>
                         </div>
         </form>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12 col-lg-12 grid-margin stretch-card">
+<div class="row mr-0 pr-0">
+    <div class="col-md-12 col-lg-12 grid-margin stretch-card mr-0 pr-0">
         <div class="card">
             <div class="card-body pt-1 mt-1">
                 <div class="row mb-1 pb-1">
@@ -360,8 +415,8 @@ select:focus+label {
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
+                    <div class="row pr-0 mr-0">
+                        <div class="col-12 pr-0 mr-0">
                             <div class="table-responsive">
                                 <table id="data-tagihan" class="display expandable-table" style="width:100%">
                                     <thead>
@@ -569,6 +624,12 @@ $(document).ready(function() {
     $('#buat-tagihan').submit(function(event) {
         event.preventDefault();
 
+        $('#btn-text-buat').hide();
+        $('#icon-buat').hide();
+        $('#loading-icon-buat').show();
+        $('.loading-text').show();
+        $('#btn-buat').attr('disabled', true);
+
         var id_rtrw = $('#id-rtrw').val();
         var id_warga = $('#id_warga').val();
         var id_iuran = $('#id_iuran').val();
@@ -606,15 +667,22 @@ $(document).ready(function() {
             },
             dataType: 'json',
             success: function(response) {
-                if (response.status) {
-                    console.log(
-                        response);
+                if (response.status == 'success') {
+                    console.log(response);
 
                     Swal.fire({
+                        position: "top-center",
                         icon: 'success',
                         title: 'Berhasil!',
                         text: 'Tagihan Berhasil Dibuat.',
                     });
+
+                    $('#btn-text-buat').show();
+                    $('#icon-buat').show();
+                    $('#loading-icon-buat').hide();
+                    $('.loading-text').hide();
+                    $('#btn-buat').attr('disabled', false);
+
                     // Bersihkan nilai input secara manual
                     $('#id_warga').val('');
                     $('#kubik-1').val('');
@@ -622,20 +690,32 @@ $(document).ready(function() {
                     $('#kubik-2').val('');
                     $('#nominal').val('');
                     // Bersihkan input lainnya sesuai kebutuhan
+                    var table = $('#data-tagihan').DataTable();
+                    table.ajax.reload(null, false);
 
-                    window.location.href = "<?php echo base_url('Data_tagihan'); ?>";
                 } else {
-                    console.error('Terjadi kesalahan saat validasi data di server.');
+                    // console.error('Terjadi kesalahan saat validasi data di server.');
 
                     Swal.fire({
-                        icon: 'error',
+                        icon: 'warning',
                         title: 'Gagal!',
-                        text: 'Terjadi kesalahan saat validasi data di server.',
+                        text: 'Data sudah Di Buat Tagihan Bulan ini.',
                     });
+
+                    $('#btn-text-buat').show();
+                    $('#icon-buat').show();
+                    $('#loading-icon-buat').hide();
+                    $('.loading-text').hide();
+                    $('#btn-buat').attr('disabled', false);
                 }
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
+                $('#btn-text-buat').hide();
+                $('#icon-buat').hide();
+                $('#loading-icon-buat').show();
+                $('.loading-text').show();
+                $('#btn-buat').attr('disabled', false);
 
                 Swal.fire({
                     icon: 'error',
