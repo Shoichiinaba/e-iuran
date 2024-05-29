@@ -77,9 +77,9 @@ $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	// Offline development
-	// 'username' => 'root',
-	// 'password' => '',
-	// 'database' => 'kina3126_e-iuran',
+	'username' => 'root',
+	'password' => '',
+	'database' => 'kina3126_e-iuran',
 
 	// Demo Production testing
 	// 'username' => 'hicr4985_demo',

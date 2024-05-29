@@ -11,11 +11,10 @@ class Callback extends CI_Controller
         parent::__construct();
     }
 
-        function callback_invoice() {
+    function callback_invoice() {
 
         xendit_loaded();
         $this->db->trans_begin();
-
 
         try {
             $rawRequest          = file_get_contents("php://input");
@@ -42,6 +41,7 @@ class Callback extends CI_Controller
             if ($_status == 'PAID') {
                 $status = '2';
                 $status_saldo = '1';
+                $status_saldo_segel = '1';
                 $status_segel = '2';
                 $nominal = '200000';
 
@@ -59,10 +59,9 @@ class Callback extends CI_Controller
                             ->where('status_segel',  '1')
                             ->update('warga');
 
-                $this->db->insert('segel_meteran', [
-                        'code_tagihan' => $_externalId,
-                        'nominal'   => $nominal
-                        ]);
+                $this->db->set('status_saldo_segel', $status_saldo_segel)
+                            ->where('code_tagihan',  $_externalId)
+                            ->update('segel_meteran');
 
                 $transfer_exists   = $this->db->get_where('transaksi', [
                     'code_tagihan' => $_externalId

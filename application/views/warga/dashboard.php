@@ -338,6 +338,8 @@ div:where(.swal2-icon) {
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" class="form-control" id="segel-status"
+                        value="<?php echo $userdata->status_segel; ?>">
                     <div class="row mt-3">
                         <div class="col-6">
                             <div class="input-wrapper">
@@ -387,6 +389,7 @@ div:where(.swal2-icon) {
                     <input type="hidden" id="id-rtrw" class="col-lg-12" value="<?= $data->id_rtrw; ?>">
                     <input type="hidden" id="id-perum" class="col-lg-12" value="<?= $data->id_perum; ?>">
                     <input type="hidden" id="no-rumah" class="col-lg-12" value="<?= $data->no_rumah; ?>">
+                    <input type="hidden" id="status-segel" class="col-lg-12" value="<?= $data->status_segel; ?>">
 
                     <?php }; ?>
 
@@ -491,6 +494,7 @@ div:where(.swal2-icon) {
                 formData.append('id-tagihan', $('#id-tagihan').val());
                 formData.append('tagihan', $('#tagihan-val').val());
                 formData.append('periode', $('#bulan-val').val());
+                formData.append('segel_status', $('#segel-status').val());
 
                 if (role === 'Warga') {
                     url = "<?php echo site_url('Dashboard/buat_pembayaran'); ?>";
@@ -500,6 +504,7 @@ div:where(.swal2-icon) {
                     formData.append('id_rtrw', $('#id-rtrw').val());
                     formData.append('id_perum', $('#id-perum').val());
                     formData.append('no_rumah', $('#no-rumah').val());
+                    formData.append('status_segel', $('#status-segel').val());
                     url = "<?php echo site_url('Dashboard/pembayaran_cash'); ?>";
                 }
 

@@ -146,7 +146,7 @@ Swal.fire({
                                         <div class="col-lg-2 col-xxl-2 col-md-3">
                                             <div class="input-group input-group-sm filter">
                                                 <span class="input-group-text text-body bg-gradient-primary">
-                                                    <i class="fa fa fa-lock btn-icon-prepend" style="color:white;"
+                                                    <i class="fa fa-lock btn-icon-prepend" style="color:white;"
                                                         aria-hidden="true"></i>
                                                 </span>
                                                 <select class="form-control pt-1" id="fil-status-segel">
@@ -157,7 +157,7 @@ Swal.fire({
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-xxl-2 col-md-3 pl-1 ml-1">
+                                        <div class="col-lg-1 col-xxl-2 col-md-3 align-items-center pl-1 ml-1 mt-0 pt-0">
                                             <a id="cetak" target="_blank" href="#">
                                                 <button type="button" class="btn bg-gradient-primary btn-print">
                                                     <i class="fa fa-print btn-icon-prepend text-center"
@@ -165,6 +165,49 @@ Swal.fire({
                                                 </button>
                                             </a>
                                         </div>
+                                        <!-- <div class="col-md-3 col-lg-8 d-flex justify-content-end">
+                                            <div class="row w-100">
+                                                <div class="col-lg-4 col-md-4 grid-margin">
+                                                    <div class="card d-flex align-items-left shadow-lg">
+                                                        <div class="card-body pl-2 ml-2 pr-1 mr-1 mb-0 pb-0">
+                                                            <div class="d-flex flex-row align-items-center">
+                                                                <img src="<?php echo base_url(); ?>assets/images/icon/wallet.ico"
+                                                                    alt="icon" style="width: 40px; height: 40px;" />
+                                                                <div class="ms-1 mt-0">
+                                                                    <b class="mt-0 text-info card-text">Harus
+                                                                        Disegel</b>
+                                                                    <h6 class="card-title text-info pt-1 mt-0" style="font-size: 15px;"><?=$saldo_cash?></h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 grid-margin">
+                                                    <div class="card d-flex align-items-left shadow-lg">
+                                                        <div class="card-body pl-2 ml-2 pr-1 mr-1 mb-0 pb-0">
+                                                            <div class="d-flex flex-row align-items-center">
+                                                                <div class="ms-1 mt-0">
+                                                                    <b class="mt-0 text-success card-text">Tersegel</b>
+                                                                    <h6 class="card-title text-success pt-1 mt-0" style="font-size: 15px;"><?=$saldo_cash?></h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 grid-margin">
+                                                    <div class="card d-flex align-items-left shadow-lg">
+                                                        <div class="card-body pl-2 ml-2 pr-1 mr-1 mb-0 pb-0">
+                                                            <div class="d-flex flex-row align-items-center">
+                                                                <div class="ms-1">
+                                                                    <b class="mt-2 text-danger card-text">Buka Segel</b>
+                                                                    <h6 class="card-title text-danger pt-1 mt-0" style="font-size: 15px;"><?= $hutang?></h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>

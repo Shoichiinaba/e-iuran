@@ -26,7 +26,7 @@ class M_saldo extends CI_Model
         $this->db->from('segel_meteran');
         $this->db->join('transaksi', 'transaksi.code_tagihan = segel_meteran.code_tagihan');
         $this->db->where('transaksi.id_perum', $id_perumahan);
-        $this->db->where('segel_meteran.status_saldo_segel', 0);
+        $this->db->where('segel_meteran.status_saldo_segel', 1);
         $this->db->group_by('segel_meteran.code_tagihan');
 
         $query = $this->db->get();
@@ -65,7 +65,7 @@ class M_saldo extends CI_Model
         $this->db->join('warga', 'warga.id_warga = transaksi.id_warga');
         $this->db->where('transaksi.id_perum', $id_perum);
         $this->db->where('transaksi.id_rtrw', $id_rtrw);
-        $this->db->where('segel_meteran.status_saldo_segel', 0);
+        $this->db->where('segel_meteran.status_saldo_segel', 1);
 
         if ($startDate && $endDate) {
             $this->db->where('transaksi.tgl_byr >=', $startDate);

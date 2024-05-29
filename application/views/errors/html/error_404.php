@@ -38,7 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <div class="row mt-5">
                             <div class="col-12 text-center mt-xl-2">
-                                <a class="text-white font-weight-medium" href="../../e-iuran/Dashboard">Back to
+                                <a class="text-white font-weight-medium" href="https://hi-care.id/Dashboard">Back to
                                     home</a>
                             </div>
                         </div>

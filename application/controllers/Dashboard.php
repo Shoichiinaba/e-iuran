@@ -340,6 +340,7 @@ class Dashboard extends AUTH_Controller
             $tgl_upload    = $this->input->post('tgl-upload');
             $tagihan       = $this->input->post('tagihan');
             $periode       = $this->input->post('periode');
+            $status_segel  = $this->input->post('segel_status');
             $status        = '1';
             $tahun         = date("y");
             $bulan         = date("m");
@@ -348,6 +349,9 @@ class Dashboard extends AUTH_Controller
             $kode_max_ = str_pad($max_kode, 4, "0", STR_PAD_LEFT);
             $code_tagihan = sprintf("CT-%s/%s-%s-%s%s-%s", $id_perum, $id_rtrw, $no_rumah, $bulan, $tahun, $kode_max_);
             date_default_timezone_set('Asia/Jakarta');
+
+            // var_dump($status_segel);
+            // exit;
 
 
              // code xendit
@@ -387,8 +391,21 @@ class Dashboard extends AUTH_Controller
                 'url_payment'  =>  $payment_url,
 
             ];
+
+            $segel_saldo = [
+                'code_tagihan'     => $code_tagihan,
+                'nominal'          => 200000,
+            ];
+
+
             $this->M_client->m_upload_transaksi($data);
             $this->M_client->m_update_tagihan($code_tagihan, $status, $id_tagihan);
+
+            if ($status_segel == 1) {
+                $segel_sal = $this->M_client->m_segel_saldo($segel_saldo);
+            } else {
+                $segel_sal = true;
+            }
 
             $this->db->trans_commit();
 
@@ -449,6 +466,7 @@ class Dashboard extends AUTH_Controller
             $id_perum      = $this->input->post('id_perum');
             $id_rtrw       = $this->input->post('id_rtrw');
             $no_rumah      = $this->input->post('no_rumah');
+            $status_segel  = $this->input->post('status_segel');
             $status        = '2';
             $tahun         = date("y");
             $bulan         = date("m");
@@ -457,6 +475,9 @@ class Dashboard extends AUTH_Controller
             $kode_max_ = str_pad($max_kode, 4, "0", STR_PAD_LEFT);
             $code_tagihan = sprintf("CSH-%s/%s-%s-%s%s-%s", $id_perum, $id_rtrw, $no_rumah, $bulan, $tahun, $kode_max_);
             date_default_timezone_set('Asia/Jakarta');
+
+            // var_dump($status_segel);
+            // exit;
 
             $data = [
                 'id_rtrw'      => $id_rtrw,
@@ -473,17 +494,20 @@ class Dashboard extends AUTH_Controller
             ];
 
             $segel_saldo = [
-                'code_tagihan'     => $code_tagihan,
-                'nominal'          => 200000,
+                'code_tagihan'          => $code_tagihan,
+                'nominal'               => 200000,
+                'status_saldo_segel'    => 1,
             ];
-
-            // var_dump($data);
-            // exit;
 
             $result_trx = $this->M_client->m_upload_transaksi($data);
             $result_tag = $this->M_client->m_update_tagihan($code_tagihan, $status, $id_tagihan);
             $result_seg = $this->M_client->m_status_segel($id_warga);
-            $segel_sal = $this->M_client->m_segel_saldo($segel_saldo);
+
+            if ($status_segel == 1) {
+                $segel_sal = $this->M_client->m_segel_saldo($segel_saldo);
+            } else {
+                $segel_sal = true;
+            }
 
             if ($result_trx && $result_tag && $result_seg && $segel_sal) {
                 $response = array('status' => 'success', 'message' => 'Data berhasil disimpan.');
