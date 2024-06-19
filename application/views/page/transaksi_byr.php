@@ -116,23 +116,33 @@ Swal.fire({
                     <div class="card-body pt-1 mt-1">
                         <div class="row mb-1 pb-1">
                             <div class="col-md-12 grid-margin mb-0 pb-0">
+                                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                                    <h4 class="font-weight-bold">Data Transaksi
+                                    </h4>
+                                </div>
                                 <div class="row">
-                                    <div class="col-3 col-xl-8 mb-4 mb-xl-0">
-                                        <h4 class="font-weight-bold">Data Transaksi
-                                        </h4>
-                                    </div>
-                                    <div class="col-md-12 col-lg-6 pt-1 mt-1">
-                                        <div class="card-body pt-1 mt-1">
-                                            <div class="template-demo ">
-                                                <div class="input-wrapper p-0 m-0 col-lg-3">
-                                                    <label class="label-select">Status</label>
-                                                    <select type="text" id="status" class="col-lg-12 mt-1 pt-1">
-                                                        <option value="">Pilih !!</option>
-                                                        <option value="1">Menunggu Pembayaran</option>
-                                                        <option value="2">Lunas</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                    <div class="input-group pb-0 col-12">
+                                        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-1 mb-2 p-2">
+                                            <label class="label-select">Status Pembayaran</label>
+                                            <select type="text" id="status" class="col-lg-12 mt-1 pt-1">
+                                                <option value="">Pilih !!</option>
+                                                <option value="1">Menunggu Pembayaran</option>
+                                                <option value="2">Lunas</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-1 mb-2 p-2">
+                                            <label class="label-select">Jenis Pembayaran</label>
+                                            <select type="text" id="jenis-pembayaran" class="col-lg-12 mt-1 pt-1">
+                                                <option value="">Pilih !!</option>
+                                                <?php
+                                                        foreach ($bank as $data) :
+                                                    ?>
+                                                <option value="<?= $data->foto_bukti; ?>"> &nbsp;
+                                                    <?= $data->foto_bukti; ?></option>
+                                                <?php
+                                                        endforeach;
+                                                    ?>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -185,6 +195,7 @@ Swal.fire({
                 "type": "POST",
                 "data": function(d) {
                     d.status = $('#status').val();
+                    d.jenis_pem = $('#jenis-pembayaran').val();
                 }
             },
 
@@ -206,7 +217,7 @@ Swal.fire({
                 },
             ]
         })
-        $('#status').on('change', function() {
+        $('#status, #jenis-pembayaran').on('change', function() {
             // debugging apakah nilai select muncul
             // console.log('Nilai select: ' + $(this).val());
             table.draw();

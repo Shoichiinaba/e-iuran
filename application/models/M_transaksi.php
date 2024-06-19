@@ -112,6 +112,30 @@ class M_transaksi extends CI_Model
         return $query->result();
     }
 
+    function get_bank($id_rtrw, $role)
+    {
+        if ($role == 'Admin') {
+            $this->db->select('foto_bukti');
+            $this->db->from('transaksi');
+            $this->db->where('foto_bukti IS NOT NULL');
+            $this->db->where('foto_bukti !=', '');
+            $this->db->order_by('foto_bukti', 'ASC');
+            $this->db->group_by('foto_bukti');
+            $query = $this->db->get();
+            return $query->result();
+        } else if ($role == 'RT') {
+            $this->db->select('foto_bukti');
+            $this->db->from('transaksi');
+            $this->db->where('foto_bukti IS NOT NULL');
+            $this->db->where('foto_bukti !=', '');
+            $this->db->where('id_rtrw', $id_rtrw);
+            $this->db->order_by('foto_bukti', 'ASC');
+            $this->db->group_by('foto_bukti');
+            $query = $this->db->get();
+            return $query->result();
+        }
+    }
+
     // start datatables
     var $column_order = array(null, 'no_invoice', 'bln_tagihan', 'thn_tagihan');
     var $column_search = array('no_invoice','nama', 'no_rumah', 'bln_tagihan', 'thn_tagihan', 'status');
@@ -222,7 +246,7 @@ class M_transaksi extends CI_Model
     var $column_searchtrx = array('transaksi.code_tagihan', 'no_invoice','nama', 'no_rumah', 'bln_tagihan', 'thn_tagihan', 'transaksi.tgl_upload', 'transaksi.tgl_byr','transaksi.foto_bukti');
     var $ordertrx = array('transaksi.id_transaksi' => 'asc'); // default order
 
-    private function _get_datatables_trx($id, $role,  $status_trans) {
+    private function _get_datatables_trx($id, $role,  $status_trans, $jenis_trans) {
         if ($role == 'Admin') {
 
             $this->db->select('*');
@@ -234,6 +258,10 @@ class M_transaksi extends CI_Model
 
             if ($status_trans !== '') {
                 $this->db->where('tagihan.status', $status_trans);
+            }
+
+            if ($jenis_trans !== '') {
+                $this->db->where('transaksi.foto_bukti', $jenis_trans);
             }
 
             $i = 0;
@@ -273,6 +301,10 @@ class M_transaksi extends CI_Model
                 $this->db->where('tagihan.status', $status_trans);
             }
 
+            if ($jenis_trans !== '') {
+                $this->db->where('transaksi.foto_bukti', $jenis_trans);
+            }
+
             $i = 0;
             foreach ($this->column_searchtrx as $trx) {
                 if(@$_POST['search']['value']) {
@@ -296,15 +328,15 @@ class M_transaksi extends CI_Model
             }
         }
     }
-    function get_datatablest($id, $role, $status_trans) {
-        $this->_get_datatables_trx($id, $role, $status_trans);
+    function get_datatablest($id, $role, $status_trans, $jenis_trans) {
+        $this->_get_datatables_trx($id, $role, $status_trans, $jenis_trans);
         if(@$_POST['length'] != -1)
         $this->db->limit(@$_POST['length'], @$_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
-    function count_filtereds($id,$role, $status_trans) {
-        $this->_get_datatables_trx($id, $role,  $status_trans);
+    function count_filtereds($id,$role, $status_trans, $jenis_trans) {
+        $this->_get_datatables_trx($id, $role,  $status_trans, $jenis_trans);
         $query = $this->db->get();
         return $query->num_rows();
     }

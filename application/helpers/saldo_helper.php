@@ -13,6 +13,18 @@ function calculate_saldo($saldo) {
     return $totalDPP;
 }
 
+function cash_saldo($saldo) {
+    $totalDPP = 0;
+
+    foreach ($saldo as $s) {
+        $tax = $s->periode * $s->taxs;
+        $DPP = $s->jumlah ;
+        $totalDPP += $DPP;
+    }
+
+    return $totalDPP;
+}
+
 function calculate_saldo_segel($saldo_segel) {
     $totalsaldo = 0;
 

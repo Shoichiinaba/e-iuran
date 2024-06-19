@@ -30,9 +30,8 @@ class Data_tagihan extends AUTH_Controller
         $data['menunggu']       = $this->M_dashboard->jumlah_byr($id_rtrw);
         $data['iuran']          = $this->M_transaksi->get_iuran($id_rtrw);
         $data['ifas']           = $this->M_transaksi->iuran_fas($id_rtrw);
-        $data['tax']           = $this->M_transaksi->taxs_adm();
+        $data['tax']            = $this->M_transaksi->taxs_adm();
         $data['filter']         = $this->M_transaksi->get_filter();
-        $data['nomer']          = $this->M_transaksi->no_invoice();
 
         // di looping karena untuk memasukan element badge kedalam select
         $warga_data = array();
@@ -48,6 +47,12 @@ class Data_tagihan extends AUTH_Controller
         $data['content'] = 'page/tagihan_v';
         $this->load->view($this->template, $data);
     }
+
+    public function no_invoice() {
+        $nomer_invoice = $this->M_transaksi->no_invoice();
+        echo json_encode(array('nomer' => $nomer_invoice));
+    }
+
 
     public function get_meter() {
         $id_warga = $this->input->get('id_warga');
@@ -166,8 +171,9 @@ class Data_tagihan extends AUTH_Controller
         $role = $this->session->userdata('userdata')->role;
         $data['userdata']       = $this->userdata;
         $data['menunggu']       = $this->M_dashboard->jumlah_byr($id_rtrw);
-        $data['filter']          = $this->M_transaksi->get_filter();
-        $data['content'] = 'page/transaksi_byr';
+        $data['filter']         = $this->M_transaksi->get_filter();
+        $data['bank']           = $this->M_transaksi->get_bank($id_rtrw, $role);
+        $data['content']        = 'page/transaksi_byr';
         $this->load->view($this->template, $data);
     }
 
@@ -175,8 +181,10 @@ class Data_tagihan extends AUTH_Controller
         $id = $this->session->userdata('userdata')->id_rtrw;
         $role = $this->session->userdata('userdata')->role;
         $status_trans = $this->input->post('status');
+        $jenis_trans = $this->input->post('jenis_pem');
 
-        $list = $this->M_transaksi->get_datatablest($id, $role, $status_trans);
+
+        $list = $this->M_transaksi->get_datatablest($id, $role, $status_trans, $jenis_trans);
         $data = array();
         $no = @$_POST['start'];
         foreach ($list as $trx) {
@@ -202,7 +210,7 @@ class Data_tagihan extends AUTH_Controller
         $output = array(
                     "draw" => @$_POST['draw'],
                     "recordsTotal" => $this->M_transaksi->count_all_trx(),
-                    "recordsFiltered" => $this->M_transaksi->count_filtereds($id, $role, $status_trans),
+                    "recordsFiltered" => $this->M_transaksi->count_filtereds($id, $role, $status_trans, $jenis_trans),
                     "data" => $data,
                 );
         // output to json format

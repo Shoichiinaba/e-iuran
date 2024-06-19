@@ -9,7 +9,8 @@
             <div class="col-12">
                 <div class="row">
                     <?php foreach ($perum as $data) { ?>
-                    <div class="col-12 col-sm-6 col-md-6 col-xl-3 grid-margin stretch-card grid-margin mr-0 pr-0">
+                    <div
+                        class="col-12 col-sm-6 col-md-6 col-xl-3 grid-margin stretch-card grid-margin mr-0 pr-0 mb-1 pb-1">
                         <div class="card">
                             <a href="<?= base_url('Tarik_saldo/form_tarik/'.$data->id_perumahan) ?>" type="button">
                                 <div class="card-body bg-gradient-primary pb-1 mb-1">

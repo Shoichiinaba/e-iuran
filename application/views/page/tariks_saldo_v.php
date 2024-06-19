@@ -200,7 +200,7 @@ select:focus+label {
                                         <input type="text" id="nominal" value="" class="col-lg-12">
                                     </div>
                                 </div>
-                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0">
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0" hidden>
                                     <div class="input-wrapper">
                                         <label class="label-in">segel</label>
                                         <input type="text" id="segel" value="" class="col-lg-12">
@@ -259,9 +259,9 @@ select:focus+label {
         <div class="card">
             <div class="card-body pt-1 mt-1">
                 <div class="row mb-1 pb-1">
-                    <div class="col-md-12 grid-margin mb-0 pb-0">
+                    <div class="col-md-12 col-sm-12 grid-margin mb-0 pb-0">
                         <div class="row">
-                            <div class="col-3 col-xl-8 mb-4 mb-xl-0">
+                            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                                 <h4 class="font-weight-bold">Data Tarik Saldo
                                 </h4>
                             </div>

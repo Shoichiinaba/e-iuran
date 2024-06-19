@@ -166,6 +166,12 @@ textarea:focus+label {
     -ms-transform: translateY(-20px);
     transform: translateY(-20px);
 }
+
+@media (max-width: 768px) {
+    .flex-md-row {
+        flex-direction: column !important;
+    }
+}
 </style>
 
 <!-- alerts -->
@@ -194,12 +200,19 @@ Swal.fire({
 <?php endif; ?>
 <!-- akhir alerts -->
 
+
+<?php
+$current_month = date('m');
+$current_year = date('Y');
+?>
+
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
             <div class="col-md-12 col-lg-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body pt-1 mt-1">
+
                         <div class="row">
                             <div class="template-demo col-lg-4 col-md-4 pt-2 mb-1">
                                 <div class="grid-margin pt-2 mb-2 pb-2">
@@ -250,24 +263,25 @@ Swal.fire({
                                     </button>
                                 </div>
                             </div>
-                            <div class="pt-2 mb-6 col-md-8 col-lg-8 d-flex justify-content-end">
-                                <div class="col-lg-4 col-md-4 grid-margin pt-2 pt-2 pl-0 pr-2">
+                            <div
+                                class="pt-2 mb-6 col-md-8 col-lg-8 col-sm-8 d-flex flex-column flex-md-row justify-content-end">
+                                <div class="col-lg-4 col-md-4 col-sm-12 grid-margin pt-2 pt-2 pl-0 pr-2 pb-1 mb-1">
                                     <div class="card d-flex align-items-left shadow-lg">
                                         <div class="card-body pl-2 ml-2 pr-1 mr-1 mb-0 pb-0">
                                             <div class="d-flex flex-row align-items-right">
                                                 <img src="<?php echo base_url(); ?>assets/images/icon/wallet.ico"
                                                     alt="icon" style="width: 40px; height: 40px;" />
                                                 <div class="ms-1 mt-0">
-                                                    <b class="mt-0 text-info card-text">Saldo
-                                                        Sebelumnya</b>
-                                                    <h6 class="card-title text-info pt-1 mt-0" style="font-size: 15px;">
-                                                        <?=$saldo_cash?></h6>
+                                                    <b class="mt-0 text-info card-text">Saldo Bulan Lalu</b>
+                                                    <h6 class="card-title text-info pt-1 mt-0" style="font-size: 15px;"
+                                                        id="saldo-sebelumnya">
+                                                    </h6>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-md-4 grid-margin pt-2 pt-2 pl-0 pr-1">
+                                <div class="col-lg-4 col-md-4 col-sm-12 grid-margin pt-2 pt-2 pl-0 pr-1 pb-1 mb-1">
                                     <div class="card d-flex align-items-left shadow-lg">
                                         <div class="card-body pl-2 ml-2 pr-1 mr-1 mb-0 pb-0">
                                             <div class="d-flex flex-row align-items-right">
@@ -350,7 +364,7 @@ Swal.fire({
                                                         c12.51,4.045,17.356,7.752,17.356,12.861C425.22,357.092,418.757,361.918,407.864,363.722z" />
                                                 </svg>
                                                 <div class="ms-1 mt-0">
-                                                    <b class="mt-0 text-success card-text">Saldo CASH</b>
+                                                    <b class="mt-0 text-success card-text">Saldo Cash</b>
                                                     <h6 class="card-title text-success pt-1 mt-0"
                                                         style="font-size: 15px;"><?=$saldo_cash?></h6>
                                                 </div>
@@ -358,10 +372,10 @@ Swal.fire({
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-md-4 grid-margin pt-2 pr-1 pr-0 pl-1">
+                                <div class="col-lg-4 col-md-4 col-sm-12 grid-margin pt-2 pt-2 pl-0 pr-1">
                                     <div class="card d-flex align-items-left shadow-lg">
-                                        <div class="card-body pl-2 ml-2 pr-1 mr-1 pb-0 mb-0">
-                                            <div class="d-flex flex-row align-items-left">
+                                        <div class="card-body pl-2 ml-2 pr-1 mr-1 mb-0 pb-0">
+                                            <div class="d-flex flex-row align-items-right">
                                                 <svg height="40px" width="40px" version="1.1" id="Layer_1"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -399,8 +413,8 @@ Swal.fire({
                                                         </g>
                                                     </g>
                                                 </svg>
-                                                <div class="ms-1">
-                                                    <b class="mt-2 text-danger card-text">Hutang</b>
+                                                <div class="ms-1 mt-0">
+                                                    <b class="mt-0 text-danger card-text">Hutang</b>
                                                     <h6 class="card-title text-danger pt-1 mt-0"
                                                         style="font-size: 15px;"><?= $hutang?></h6>
                                                 </div>
@@ -413,7 +427,7 @@ Swal.fire({
                         <div class="row mb-1 pb-1">
                             <div class="col-md-12 grid-margin mb-0 pb-0">
                                 <div class="row">
-                                    <div class="col-3 col-xl-8 mb-4 mb-xl-0">
+                                    <div class="col-xl-8 col-sm-12 mb-4 mb-xl-0">
                                         <h4 class="font-weight-bold">Data Keluar Masuk
                                         </h4>
                                     </div>
@@ -428,7 +442,7 @@ Swal.fire({
                                                     <i class="fa fa-id-card-o" style="color:white;"
                                                         aria-hidden="true"></i>
                                                 </span>
-                                                <select class="form-control pt-1" id="fil-kategori">
+                                                <select class="form-control pt-1" id="fil-bulan">
                                                     <option value=""> &nbsp; Filter Bulan</option>
                                                     <option value="01"> &nbsp; Januari</option>
                                                     <option value="02"> &nbsp; Februari</option>
@@ -445,17 +459,37 @@ Swal.fire({
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-xxl-2 col-md-3 ml-0 pl-0">
+                                        <div class="col-lg-2 col-xxl-2 col-md-3">
                                             <div class="input-group input-group-sm filter">
-                                                <span class="input-group-text text-body bg-gradient-primary"><i
-                                                        class="fa fa-calendar" style="color:white;"
-                                                        aria-hidden="true"></i></span>
+                                                <span class="input-group-text text-body bg-gradient-primary">
+                                                    <i class="fa fa-id-card-o" style="color:white;"
+                                                        aria-hidden="true"></i>
+                                                </span>
+                                                <select class="form-control pt-1" id="fil-tahun">
+                                                    <option value=""> &nbsp; Filter Tahun</option>
+                                                    <?php
+                                                        foreach ($tahun as $data) :
+                                                    ?>
+                                                    <option value="<?= $data->tahun; ?>"> &nbsp;
+                                                        <?= $data->tahun; ?></option>
+                                                    <?php
+                                                        endforeach;
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-xxl-2 col-md-3 col-sm-12 mb-2">
+                                            <div class="input-group input-group-sm filter">
+                                                <span class="input-group-text text-body bg-gradient-primary">
+                                                    <i class="fa fa-calendar" style="color:white;"
+                                                        aria-hidden="true"></i>
+                                                </span>
                                                 <input type="text" class="form-control" id="fil-daterange"
                                                     name="fil_daterange" placeholder=" Pilih Range Tanggal">
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-xxl-2 col-md-3 pl-0">
-                                            <a id="cetak" target="_blank" href="<?php echo site_url(''); ?>">
+                                        <div class="col-lg-2 col-xxl-2 col-md-3">
+                                            <a id="print" target="_blank">
                                                 <button type="button" class="btn bg-gradient-success cetak">
                                                     <i class="fa fa-print" style="font-size:small;"></i>
                                                 </button>
@@ -510,9 +544,8 @@ Swal.fire({
                         <div class="input-group pb-0">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
                                 <div class="input-wrapper">
-                                    <input type="text" id="no-penerimaan" class="col-lg-12" value="<?= $no_rec; ?>"
-                                        required>
-                                    <label class="label-in">No_transaksi</label>
+                                    <input type="text" id="no-penerimaan" class="col-lg-12" required>
+                                    <label class="label-in">No transaksi</label>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
@@ -584,9 +617,8 @@ Swal.fire({
                         <div class="input-group pb-0">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
                                 <div class="input-wrapper">
-                                    <input type="text" id="no-pembayaran" class="col-lg-12" value="<?= $no_pay; ?>"
-                                        required>
-                                    <label class=" label-pem">No_transaksi</label>
+                                    <input type="text" id="no-pembayaran" class="col-lg-12" required>
+                                    <label class=" label-pem">No transaksi</label>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0">
@@ -597,11 +629,21 @@ Swal.fire({
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt-2 mb-2 p-0">
                                 <div class="input-wrapper">
+                                    <label class="label-select">Jenis Pemasukan</label>
+                                    <select type="text" id="bayar-hutang" required>
+                                        <option value="">Pilih Jenis Pemasukan</option>
+                                        <option value="Hutang">Hutang</option>
+                                        <option value="Hi-care">Hi-care</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt-2 mb-2 p-0">
+                                <div class="input-wrapper">
                                     <input type="number" id="nominal-pembayaran" class="col-lg-12" required>
                                     <label class="label-pem">Nominal</label>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt-2 mb-2 p-0">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-2 mb-2 p-0">
                                 <div class="input-wrapper">
                                     <input id="ket-pembayaran" class="col-lg-12" required></input>
                                     <label class="label-pem">Keterangan</label>
@@ -637,6 +679,42 @@ Swal.fire({
 
     <script>
     $(document).ready(function() {
+        $('#penerimaan').on('shown.bs.modal', function() {
+            $.ajax({
+                url: '<?php echo base_url('Keuangan/no_penerimaan') ?>',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    $('#no-penerimaan').val(response
+                        .nomer);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function() {
+        $('#pembayaran').on('shown.bs.modal', function() {
+            $.ajax({
+                url: '<?php echo base_url('Keuangan/no_pembayaran') ?>',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    $('#no-pembayaran').val(response.nomer);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function() {
+        $('#fil-daterange').daterangepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            clearBtn: true,
+            todayHighlight: true
+        });
+
+        $('#fil-daterange').val('');
+
         var table;
 
         table = $('#data-keuangan').DataTable({
@@ -649,6 +727,11 @@ Swal.fire({
             "ajax": {
                 "url": "<?=site_url('Keuangan/get_data_keuangan')?>",
                 "type": "POST",
+                "data": function(d) {
+                    d.fil_bulan = $('#fil-bulan').val();
+                    d.fil_tahun = $('#fil-tahun').val();
+                    d.fil_daterange = $('#fil-daterange').val();
+                }
             },
 
             "footerCallback": function(row, data, start, end, display) {
@@ -668,6 +751,12 @@ Swal.fire({
                     page: 'current'
                 }).footer()).html(totalNominalObj);
             }
+        })
+
+        $('#fil-bulan, #fil-tahun, #fil-daterange').on('change', function() {
+            // debugging apakah nilai select muncul
+            // console.log('Nilai select: ' + $(this).val());
+            table.draw();
         });
 
         // buat transaksi penerimaan
@@ -757,6 +846,7 @@ Swal.fire({
 
         var no_pembayaran = $('#no-pembayaran').val();
         var tgl_pembayaran = $('#tgl-pembayaran').val();
+        var bayar_hutang = $('#bayar-hutang').val();
         var nominal_pembayaran = $('#nominal-pembayaran').val();
         var ket_pembayaran = $('#ket-pembayaran').val();
 
@@ -766,6 +856,7 @@ Swal.fire({
             data: {
                 no_pembayaran: no_pembayaran,
                 tgl_pembayaran: tgl_pembayaran,
+                bayar_hutang: bayar_hutang,
                 nominal_pembayaran: nominal_pembayaran,
                 ket_pembayaran: ket_pembayaran,
 
@@ -831,4 +922,65 @@ Swal.fire({
         $('#btn-pembayaran').show();
         $('#loading-icon-pembayaran').hide();
     });
+
+    // menset filter bulan & tahun ke hari sekarang
+    document.addEventListener('DOMContentLoaded', function() {
+        var currentMonth = "<?= $current_month ?>";
+        var currentYear = "<?= $current_year ?>";
+
+        document.getElementById('fil-bulan').value = currentMonth;
+        document.getElementById('fil-tahun').value = currentYear;
+    });
+
+
+    $(document).ready(function() {
+        function fetchSaldoBlnLalu(filterBulan, filterTahun) {
+            $.ajax({
+                url: '<?php echo site_url("Keuangan/saldo_bln_lalu"); ?>',
+                type: 'POST',
+                data: {
+                    fil_bulan: filterBulan,
+                    fil_tahun: filterTahun
+                },
+                dataType: 'json',
+                success: function(data) {
+                    $('#saldo-sebelumnya').text(data.totalDPP);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching saldo:', error);
+                }
+            });
+        }
+
+        // Ambil nilai filter bulan dan tahun, dan panggil fetchSaldoBlnLalu
+        var filterBulan = $('#fil-bulan').val();
+        var filterTahun = $('#fil-tahun').val();
+
+        // Panggil fetchSaldoBlnLalu dengan nilai default
+        fetchSaldoBlnLalu(filterBulan, filterTahun);
+
+        // Tambahkan event listener jika user mengubah nilai filter
+        $('#fil-bulan, #fil-tahun').on('change', function() {
+            filterBulan = $('#fil-bulan').val();
+            filterTahun = $('#fil-tahun').val();
+            fetchSaldoBlnLalu(filterBulan, filterTahun);
+        });
+    });
+
+    // kode untuk print pdf
+    $('#print').on('click', function() {
+        printFilteredData();
+    });
+
+    function printFilteredData() {
+
+        var fil_bulan = $('#fil-bulan').val();
+        var fil_tahun = $('#fil-tahun').val();
+        var fil_daterange = $('#fil-daterange').val();
+
+        var printUrl = "<?php echo site_url('Lap_segel/lap_keuangan'); ?>";
+        printUrl += "?fil_bulan=" + fil_bulan + "&fil_tahun=" + fil_tahun + "&fil_daterange=" + fil_daterange;
+
+        window.open(printUrl, '_blank');
+    }
     </script>

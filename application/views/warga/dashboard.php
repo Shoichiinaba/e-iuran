@@ -375,7 +375,9 @@ div:where(.swal2-icon) {
                             <div class="input-wrapper">
                                 <div class="input-group">
                                     <span class="input-group-text text-body"><i class="ti-calendar"></i></span>
-                                    <input type="date" class="form-control" id="tgl-byr">
+                                    <input type="date" class="form-control" id="tgl-byr" required
+                                        oninvalid="this.setCustomValidity('Harap pilih tanggal pembayaran')"
+                                        oninput="this.setCustomValidity('')">
                                 </div>
                             </div>
                         </div>

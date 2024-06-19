@@ -137,4 +137,76 @@ class M_chat extends CI_Model
 
         return $updated;
     }
+
+	function count_bulan($id_warga, $id_rtrw) {
+        $this->db->select('bln_tagihan, COUNT(*) as total_tagihan');
+        $this->db->from('tagihan');
+        $this->db->where('id_warga', $id_warga);
+        $this->db->where('id_rtrw', $id_rtrw);
+        $this->db->where('status', 0);
+        $this->db->group_by('bln_tagihan');
+        $query = $this->db->get();
+
+        $tagihan_by_bulan = array();
+
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $tagihan_by_bulan[$row->bln_tagihan] = $row->total_tagihan;
+            }
+        }
+
+        return count($tagihan_by_bulan);
+    }
+
+    function data_segel($id_rtrw) {
+        $this->db->select('tagihan.id_warga');
+        $this->db->distinct();
+        $this->db->from('tagihan');
+        $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
+        $this->db->where('warga.status_segel', 0);
+        $this->db->where('warga.id_rtrw', $id_rtrw);
+        $query = $this->db->get();
+
+        $warga_tagihan_lewat_2_bulan = 0;
+
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $id_warga = $row->id_warga;
+                if ($this->count_bulan($id_warga, $id_rtrw) > 2) {
+                    $warga_tagihan_lewat_2_bulan++;
+                }
+            }
+        }
+
+        return $warga_tagihan_lewat_2_bulan;
+    }
+
+    public function data_tersegel( $id_rtrw)
+	{
+		$this->db->select('warga, COUNT(*) as jumlah_record');
+		$this->db->from('warga');
+		$this->db->where('status_segel', 1);
+        $this->db->where('id_rtrw', $id_rtrw);
+    	return $this->db->count_all_results();
+	}
+
+    public function data_buka( $id_rtrw)
+	{
+		$this->db->select('warga, COUNT(*) as jumlah_record');
+		$this->db->from('warga');
+		$this->db->where('status_segel', 2);
+        $this->db->where('id_rtrw', $id_rtrw);
+    	return $this->db->count_all_results();
+	}
+
+    public function get_data_warga($id)
+	{
+        $this->db->select('*');
+        $this->db->from('tagihan');
+        $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
+        $this->db->where('tagihan.id_rtrw', $id);
+        $this->db->where('tagihan.status', 0);
+        $query = $this->db->get();
+        return $query->result();
+	}
 }

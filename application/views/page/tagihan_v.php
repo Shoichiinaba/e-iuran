@@ -200,7 +200,7 @@ select:focus+label {
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0" hidden>
                                     <div class="input-wrapper">
                                         <label class="label-in">invoice</label>
-                                        <input type="text" id="invoice" value="<?= $nomer; ?>" class="col-lg-12">
+                                        <input type="text" id="invoice" class="col-lg-12">
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0" hidden>
@@ -367,11 +367,11 @@ select:focus+label {
                 <div class="row mb-1 pb-1">
                     <div class="col-md-12 grid-margin mb-0 pb-0">
                         <div class="row">
-                            <div class="col-3 col-xl-8 mb-4 mb-xl-0">
+                            <div class="col-xl-8 mb-4 mb-xl-0 mb-1 pb-1">
                                 <h4 class="font-weight-bold">Data Tagihan
                                 </h4>
                             </div>
-                            <div class="input-group pb-0 col-6">
+                            <div class="input-group pb-0">
                                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
                                     <label class="label-select">Bulan</label>
                                     <select type="text" id="bln_filter" class="col-lg-12 mt-1 pt-1">
@@ -456,11 +456,11 @@ select:focus+label {
                         <div class="row mb-1 pb-1">
                             <div class="col-md-12 grid-margin mb-0 pb-0">
                                 <div class="row">
-                                    <div class="col-3 col-xl-8 mb-4 mb-xl-0">
+                                    <div class="col-xl-8 mb-4 mb-xl-0 mb-1 pb-1">
                                         <h4 class="font-weight-bold">Data Tagihan
                                         </h4>
                                     </div>
-                                    <div class="input-group pb-0 col-6">
+                                    <div class="input-group pb-0">
                                         <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
                                             <label class="label-select">Bulan</label>
                                             <select type="text" id="bln_filter" class="col-lg-12 mt-1 pt-1">
@@ -540,6 +540,20 @@ select:focus+label {
 
 <!-- kode javascript untuk manipulasi data -->
 <script>
+$(document).ready(function() {
+    setInterval(function() {
+        $.ajax({
+            url: '<?php echo base_url('Data_tagihan/no_invoice') ?>',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                $('#invoice').val(response
+                    .nomer);
+            }
+        });
+    }, 5000);
+});
+
 $(document).ready(function() {
 
     $('.js-example-basic-single').select2({

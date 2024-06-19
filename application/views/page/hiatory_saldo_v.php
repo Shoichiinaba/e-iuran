@@ -9,7 +9,7 @@
                         <div class="row mb-1 pb-1">
                             <div class="col-md-12 grid-margin mb-0 pb-0">
                                 <div class="row">
-                                    <div class="col-3 col-xl-8 mb-4 mb-xl-0">
+                                    <div class="col-xl-8 mb-4 mb-xl-0">
                                         <h4 class="font-weight-bold">Data Tarik Saldo
                                         </h4>
                                     </div>

@@ -137,13 +137,13 @@ Swal.fire({
                     <div class="card-body pt-1 mt-1">
                         <div class="row mb-1 pb-1">
                             <div class="col-md-12 grid-margin mb-0 pb-0">
+                                <div class="col-xl-8 mb-4 mb-xl-0">
+                                    <h4 class="font-weight-bold">Kelola Data Tagihan
+                                    </h4>
+                                </div>
                                 <div class="row">
-                                    <div class="col-3 col-xl-8 mb-4 mb-xl-0">
-                                        <h4 class="font-weight-bold">Data Transaksi
-                                        </h4>
-                                    </div>
                                     <div class="row mb-2">
-                                        <div class="col-lg-2 col-xxl-2 col-md-3">
+                                        <div class="col-lg-2 col-xxl-2 col-md-3 col-sm-3 mb-1">
                                             <div class="input-group input-group-sm filter">
                                                 <span class="input-group-text text-body bg-gradient-primary">
                                                     <i class="fa fa-lock btn-icon-prepend" style="color:white;"
@@ -157,7 +157,7 @@ Swal.fire({
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-lg-1 col-xxl-2 col-md-3 align-items-center pl-1 ml-1 mt-0 pt-0">
+                                        <div class="col-lg-1 col-xxl-2 col-md-3 col-sm-3 align-items-center mb-2 pb-2">
                                             <a id="cetak" target="_blank" href="#">
                                                 <button type="button" class="btn bg-gradient-primary btn-print">
                                                     <i class="fa fa-print btn-icon-prepend text-center"
@@ -165,49 +165,63 @@ Swal.fire({
                                                 </button>
                                             </a>
                                         </div>
-                                        <!-- <div class="col-md-3 col-lg-8 d-flex justify-content-end">
+                                        <div class="col-md-8 col-lg-8 d-flex justify-content-end ml-auto mt-0 pt-0">
                                             <div class="row w-100">
-                                                <div class="col-lg-4 col-md-4 grid-margin">
+                                                <div class="col-lg-4 col-md-4 grid-margin mb-1 pb-1">
                                                     <div class="card d-flex align-items-left shadow-lg">
                                                         <div class="card-body pl-2 ml-2 pr-1 mr-1 mb-0 pb-0">
                                                             <div class="d-flex flex-row align-items-center">
-                                                                <img src="<?php echo base_url(); ?>assets/images/icon/wallet.ico"
-                                                                    alt="icon" style="width: 40px; height: 40px;" />
-                                                                <div class="ms-1 mt-0">
+                                                                <i
+                                                                    class="fa fa-unlock-alt text-info icon-md mb-2 pb-2"></i>
+                                                                <div class="ms-2">
                                                                     <b class="mt-0 text-info card-text">Harus
                                                                         Disegel</b>
-                                                                    <h6 class="card-title text-info pt-1 mt-0" style="font-size: 15px;"><?=$saldo_cash?></h6>
+                                                                    <h6 class="card-title text-info pt-1 mt-0"
+                                                                        style="font-size: 15px;"><?= $harus_segel?></h6>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-3 col-md-4 grid-margin">
+                                                <div class="col-lg-4 col-md-4 grid-margin mb-1 pb-1">
                                                     <div class="card d-flex align-items-left shadow-lg">
                                                         <div class="card-body pl-2 ml-2 pr-1 mr-1 mb-0 pb-0">
                                                             <div class="d-flex flex-row align-items-center">
-                                                                <div class="ms-1 mt-0">
-                                                                    <b class="mt-0 text-success card-text">Tersegel</b>
-                                                                    <h6 class="card-title text-success pt-1 mt-0" style="font-size: 15px;"><?=$saldo_cash?></h6>
+                                                                <i class="fa fa-lock text-danger icon-md mb-2 pb-2"></i>
+                                                                <div class="ms-2">
+                                                                    <b class="mt-0 text-danger card-text">Tersegel</b>
+                                                                    <h6 class="card-title text-danger pt-1 mt-0"
+                                                                        style="font-size: 15px;"><?= $tersegel?></h6>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-3 col-md-4 grid-margin">
+                                                <div class="col-lg-4 col-md-4 grid-margin mb-2 pb-2">
                                                     <div class="card d-flex align-items-left shadow-lg">
                                                         <div class="card-body pl-2 ml-2 pr-1 mr-1 mb-0 pb-0">
                                                             <div class="d-flex flex-row align-items-center">
-                                                                <div class="ms-1">
-                                                                    <b class="mt-2 text-danger card-text">Buka Segel</b>
-                                                                    <h6 class="card-title text-danger pt-1 mt-0" style="font-size: 15px;"><?= $hutang?></h6>
+                                                                <i
+                                                                    class="fa fa-unlock text-success icon-md mb-2 pb-2"></i>
+                                                                <div class="ms-2">
+                                                                    <b class="mt-2 text-success card-text">Buka
+                                                                        Segel</b>
+                                                                    <h6 class="card-title text-success pt-1 mt-0"
+                                                                        style="font-size: 15px;"><?= $buka_segel?></h6>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div> -->
+                                        </div>
+                                        <div class="mb-1 mt-1 pt-1">
+                                            <button type="button" class="btn btn-outline-success btn-sm btn-icon-text"
+                                                onclick="broadcast()">
+                                                <i class="fa fa-whatsapp"></i>
+                                                Broadcast WA
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -404,4 +418,56 @@ Swal.fire({
         window.open(printUrl, '_blank');
     }
     // akhir kode untuk print pdf
+
+    // kode whatsapps broadcast
+    function broadcast() {
+        Swal.fire({
+            title: 'Apakah Anda yakin ingin Kirim Broadcast WA?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Kirim!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                kirimRequest();
+            }
+        });
+    }
+
+    function kirimRequest() {
+        $.ajax({
+            url: '<?php echo base_url("Chat_tagihan/API_wa"); ?>',
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire({
+                        position: "top-center",
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Pesan Broadcast Berhasil terkirim.',
+                        timer: 1400
+                    });
+                } else {
+                    Swal.fire({
+                        position: "top-center",
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: response.message,
+                        timer: 1400
+                    });
+                }
+            },
+            error: function() {
+                Swal.fire({
+                    position: "top-center",
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: 'Terjadi kesalahan saat mengirim request.',
+                    timer: 1400
+                });
+            }
+        });
+    }
     </script>
