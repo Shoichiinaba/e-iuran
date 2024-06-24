@@ -18,22 +18,11 @@ class Keuangan extends AUTH_Controller
 
     public function index()
     {
-        // hitung salgo
-        $hutang                  = $this->M_keuangan->saldo_hutang();
-        $Rp_hutang               = 'Rp. ' . number_format($hutang, 0, ',', '.');
-        $saldo                   = $this->M_keuangan->get_cash();
-        $saldo_cash              = cash_saldo($saldo);
-        $Rp_saldo_cash           = 'Rp. ' . number_format( $saldo_cash, 0, ',', '.');
-
         $id_rtrw                 = $this->session->userdata('userdata')->id_rtrw;
         $id_warga                = $this->input->get('id');
         $data['userdata']        = $this->userdata;
         $data['menunggu']        = $this->M_dashboard->jumlah_byr($id_rtrw);
         $data['tahun']           = $this->M_keuangan->get_tahun();
-        $data['no_rec']          = $this->M_keuangan->no_penerimaan();
-        $data['no_pay']          = $this->M_keuangan->no_pembayaran();
-        $data['hutang']          = $Rp_hutang;
-        $data['saldo_cash']      = $Rp_saldo_cash;
         $data['content']         = 'page/keuangan';
         $this->load->view($this->template, $data);
     }
@@ -46,6 +35,23 @@ class Keuangan extends AUTH_Controller
     public function no_pembayaran() {
         $nomer_pembayaran = $this->M_keuangan->no_pembayaran();
         echo json_encode(array('nomer' => $nomer_pembayaran));
+    }
+
+    public function saldo_cash() {
+        $saldo                   = $this->M_keuangan->get_cash();
+        $saldo_cash              = cash_saldo($saldo);
+        $Rp_saldo_cash           = 'Rp. ' . number_format( $saldo_cash, 0, ',', '.');
+
+        $data['saldo_cash'] = $Rp_saldo_cash;
+        echo json_encode($data);
+    }
+
+    public function saldo_hutang() {
+        $hutang                  = $this->M_keuangan->saldo_hutang();
+        $Rp_hutang               = 'Rp. ' . number_format( $hutang, 0, ',', '.');
+
+        $data['saldo_hutang'] = $Rp_hutang;
+        echo json_encode($data);
     }
 
     function saldo_bln_lalu() {
@@ -146,14 +152,21 @@ class Keuangan extends AUTH_Controller
             'keterangan' => $this->input->post('ket_penerimaan'),
         );
 
-        $this->load->model('M_keuangan');
         $result = $this->M_keuangan->save_data($data);
 
         if ($result) {
+            if ($this->input->post('jenis_pemasukan') == 'Saldo Cash') {
+                $update_data = array('status_saldo' => 2);
+                $this->db->where('foto_bukti', 'CASH');
+                $this->db->where('status_saldo', '1');
+                $this->db->update('transaksi', $update_data);
+            }
+
             $response = array('status' => 'success', 'message' => 'Data berhasil disimpan.');
         } else {
             $response = array('status' => 'error', 'message' => 'Gagal menyimpan data.');
         }
+
 
         echo json_encode($response);
     }

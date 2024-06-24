@@ -366,7 +366,7 @@ $current_year = date('Y');
                                                 <div class="ms-1 mt-0">
                                                     <b class="mt-0 text-success card-text">Saldo Cash</b>
                                                     <h6 class="card-title text-success pt-1 mt-0"
-                                                        style="font-size: 15px;"><?=$saldo_cash?></h6>
+                                                        style="font-size: 15px;" id="saldo-cash"></h6>
                                                 </div>
                                             </div>
                                         </div>
@@ -416,7 +416,7 @@ $current_year = date('Y');
                                                 <div class="ms-1 mt-0">
                                                     <b class="mt-0 text-danger card-text">Hutang</b>
                                                     <h6 class="card-title text-danger pt-1 mt-0"
-                                                        style="font-size: 15px;"><?= $hutang?></h6>
+                                                        style="font-size: 15px;" id="saldo-hutang"></h6>
                                                 </div>
                                             </div>
                                         </div>
@@ -561,6 +561,7 @@ $current_year = date('Y');
                                         <option value="">Pilih Jenis Pemasukan</option>
                                         <option value="Hutang">Hutang</option>
                                         <option value="Hi-care">Hi-care</option>
+                                        <option value="Saldo Cash">Saldo Cash</option>
                                     </select>
                                 </div>
                             </div>
@@ -705,6 +706,40 @@ $current_year = date('Y');
         });
     });
 
+    function SaldoCash() {
+        $.ajax({
+            url: '<?php echo base_url('Keuangan/saldo_cash') ?>',
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                $('#saldo-cash').text(data.saldo_cash);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching saldo:', error);
+            }
+        });
+    }
+
+    function SaldoHutang() {
+        $.ajax({
+            url: '<?php echo base_url('Keuangan/saldo_hutang') ?>',
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                $('#saldo-hutang').text(data.saldo_hutang);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching saldo:', error);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        SaldoCash();
+        SaldoHutang();
+    });
+
+
     $(document).ready(function() {
         $('#fil-daterange').daterangepicker({
             format: 'yyyy-mm-dd',
@@ -798,6 +833,7 @@ $current_year = date('Y');
                             timer: 1400
                         });
 
+                        SaldoCash();
 
                         $('#btn-text-penerimaan').hide();
                         $('#loading-icon-penerimaan').show();
@@ -876,6 +912,8 @@ $current_year = date('Y');
                         text: 'Pembayaran Berhasil Dibuat.',
                         timer: 1400
                     });
+
+                    SaldoHutang();
 
                     var table = $('#data-keuangan').DataTable();
                     table.ajax.reload(null, false);

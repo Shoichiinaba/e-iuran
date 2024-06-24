@@ -468,6 +468,7 @@ class Dashboard extends AUTH_Controller
             $no_rumah      = $this->input->post('no_rumah');
             $status_segel  = $this->input->post('status_segel');
             $status        = '2';
+            $status_saldo  = '1';
             $tahun         = date("y");
             $bulan         = date("m");
             $id_tagihan    = explode(',', $this->input->post('id-tagihan'));
@@ -488,8 +489,8 @@ class Dashboard extends AUTH_Controller
                 'code_tagihan' => $code_tagihan,
                 'periode'      => $periode,
                 'jumlah'       => preg_replace('/[Rp. ]/', '', $tagihan),
-                'foto_bukti'   =>  'CASH',
-                'status_saldo' =>  1,
+                'foto_bukti'   => 'CASH',
+                'status_saldo' => $status_saldo,
 
             ];
 
