@@ -118,7 +118,7 @@ class M_saldo extends CI_Model
     // datatable serverside untuk transaksi histori
     var $column_order = array(null, 'code_tranfer', 'tanggal');
     var $column_search = array('code_tranfer', 'tanggal','saldo');
-    var $ordertrx = array('transaksi.id_transaksi' => 'asc');
+    var $ordertrx = array('id_saldo' => 'asc');
 
     private function _get_datatables_tf($id_perum, $id)
     {
@@ -127,6 +127,7 @@ class M_saldo extends CI_Model
             $this->db->join('perumahan', 'saldo.id_perum = perumahan.id_perumahan');
             $this->db->where('saldo.id_perum', $id_perum);
             $this->db->where('saldo.id_rtrw', $id);
+            $this->db->order_by('saldo.id_saldo', 'DESC');
 
             $i = 0;
             foreach ($this->column_search as $trx) {
