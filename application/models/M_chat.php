@@ -11,6 +11,7 @@ class M_chat extends CI_Model
 
         $this->db->select('*');
         $this->db->from('tagihan');
+        $this->db->join('report', 'report.id_warga = tagihan.id_warga', 'left');
         $this->db->join('warga', 'warga.id_warga = tagihan.id_warga');
         $this->db->where('tagihan.id_rtrw', $id);
         $this->db->where('(tagihan.status = 0 OR (tagihan.status = 0 AND warga.status_segel > 0) OR(tagihan.status= 2 AND warga.status_segel = 2))');

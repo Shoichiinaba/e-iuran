@@ -94,6 +94,7 @@ class M_warga extends CI_Model
                 'keterangan' => $row['keterangan'],
                 'username' => $row['username'],
                 'password' => $row['password'],
+                'kapling_gabungan' => $row['kapling_gabungan'],
                 'role' => $row['role'],
                 'foto' => $row['foto'],
             );

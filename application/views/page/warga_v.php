@@ -157,6 +157,16 @@ Swal.fire({
                                 </select>
                             </div>
                             <?php endif ;?>
+                            <div class="form-group col-lg-6">
+                                <div class="form-check form-check-primary">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="kapling_gabungan[]"
+                                            value="1" onclick="this.previousElementSibling.value=this.checked?1:0;">
+                                        Kapling Gabungan
+                                    </label>
+                                    <input type="hidden" name="kapling_gabungan[]" value="0">
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
@@ -209,6 +219,7 @@ Swal.fire({
                                 </select>
                             </div>
                             <?php endif ;?>
+
                             <?php if ($userdata->role=='Admin' ):?>
                             <div class="form-group mr-3 ml-1 col-lg-5 col-sm-4">
                                 <label for="perumedit">Perumahan</label>
@@ -232,6 +243,7 @@ Swal.fire({
                                 </select>
                             </div>
                             <?php endif ;?>
+
                             <div class="form-group mr-3 ml-3">
                                 <label for="namaedit">Nama</label>
                                 <input type="text" name="nama" id="namaedit" class="form-control"

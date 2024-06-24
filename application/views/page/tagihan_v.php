@@ -153,7 +153,8 @@ select:focus+label {
                                 <option value="">....</option>
                                 <?php foreach ($warga as $data) { ?>
                                 <option value="<?= $data['id']; ?>" data-badge="<?= $data['badge']; ?>"
-                                    data-no-rumah="<?= $data['no_rumah']; ?>">
+                                    data-no-rumah="<?= $data['no_rumah']; ?>"
+                                    data-kapling-gabungan="<?= $data['kapling_gabungan']; ?>">
                                     <?= $data['text']; ?>
                                 </option>
                                 <?php } ?>
@@ -210,6 +211,13 @@ select:focus+label {
                                             class="col-lg-12">
                                     </div>
                                 </div>
+
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="kapling-gabungan" class="col-lg-12" value="">
+                                    </div>
+                                </div>
+
                                 <?php foreach ($ifas as $data) { ?>
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
                                     <div class="input-wrapper">
@@ -218,6 +226,13 @@ select:focus+label {
                                     </div>
                                 </div>
                                 <?php } ?>
+
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="hasil-ipl" class="col-lg-12">
+                                    </div>
+                                </div>
+
                                 <?php foreach ($tax as $data) { ?>
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12  mt-1 mb-2 p-0" hidden>
                                     <div class="input-wrapper">
@@ -555,7 +570,6 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-
     $('.js-example-basic-single').select2({
         matcher: function(params, data) {
             var term = $.trim(params.term);
@@ -564,10 +578,7 @@ $(document).ready(function() {
             }
 
             var badge = data.element.dataset.badge;
-
-            // Pastikan data.text dan badge tidak null atau undefined sebelum mengaksesnya
             if (data.text && badge) {
-                // Cek apakah term cocok dengan nama atau nomor rumah
                 if (data.text.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
                     badge.toLowerCase().indexOf(term.toLowerCase()) > -1) {
                     return data;
@@ -604,6 +615,34 @@ $(document).ready(function() {
             return data.text;
         }
     });
+
+    $('#id_warga').on('change', function() {
+        var selectedOption = $(this).find('option:selected');
+        var kaplingGabungan = selectedOption.data('kapling-gabungan');
+        $('#kapling-gabungan').val(kaplingGabungan);
+
+        calculateHasilIpl();
+    });
+
+    $('#kapling-gabungan').on('input', function() {
+        calculateHasilIpl();
+    });
+
+    function calculateHasilIpl() {
+        var kaplingGabungan = parseInt($('#kapling-gabungan').val());
+        var lainLain = parseInt($('#lain-lain').val());
+        var hasilIpl = 0;
+
+        if (kaplingGabungan === 1) {
+            hasilIpl = lainLain - 25000;
+        } else if (kaplingGabungan === 0) {
+            hasilIpl = lainLain;
+        }
+
+        $('#hasil-ipl').val(hasilIpl);
+    }
+
+
 
     // Fungsi untuk mengambil data kubik dari server
     function getKubikData(id_warga) {
@@ -655,7 +694,7 @@ $(document).ready(function() {
         var hasil_kubik = $('#kubik-2').val();
         var abunament = $('#abo1').val();
         var perkubik = $('#perkubik').val();
-        var lain_lain = $('#lain-lain').val();
+        var lain_lain = $('#hasil-ipl').val();
         var taxs = $('#taxs').val();
         var nominal = $('#nominal').val();
 

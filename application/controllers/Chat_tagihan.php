@@ -74,7 +74,16 @@ class Chat_tagihan extends AUTH_Controller
                             }
             $segelButton .= '</div>';
 
-
+            // status WA
+            $status_wa = '<div class="col-md-12 col-lg-12 col-sm-12 justify-content-center ml-0 pl-0 mt-1">';
+                            if ($trx->state == 'sent') {
+                                $status_wa .= '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.53033 12.9697C4.23744 12.6768 3.76256 12.6768 3.46967 12.9697C3.17678 13.2626 3.17678 13.7374 3.46967 14.0303L7.96967 18.5303C8.26256 18.8232 8.73744 18.8232 9.03033 18.5303L20.0303 7.53033C20.3232 7.23744 20.3232 6.76256 20.0303 6.46967C19.7374 6.17678 19.2626 6.17678 18.9697 6.46967L8.5 16.9393L4.53033 12.9697Z" fill="#212121"/></svg> Sent';
+                            } elseif ($trx->state == 'delivered') {
+                                $status_wa .= '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512"><polyline points="465 127 241 384 149 292" style="fill:none;stroke:#000;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/><line x1="140" y1="385" x2="47" y2="292" style="fill:none;stroke:#000;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/><line x1="363" y1="127" x2="236" y2="273" style="fill:none;stroke:#000;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/></svg> Delivered';
+                            } elseif ($trx->state == 'read') {
+                                $status_wa .= '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512"><polyline points="465 127 241 384 149 292" style="fill:none;stroke:#00C3FF;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/><line x1="140" y1="385" x2="47" y2="292" style="fill:none;stroke:#00C3FF;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/><line x1="363" y1="127" x2="236" y2="273" style="fill:none;stroke:#00C3FF;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/></svg> Read';
+                            }
+             $status_wa .= '</div>';
 
             $no++;
             $row = array();
@@ -85,6 +94,7 @@ class Chat_tagihan extends AUTH_Controller
             $row[] = $Rp_total;
             $row[] = $status;
             $row[] = '<div class="d-flex">' . $whatsappButton . $segelButton . '</div>';
+            $row[] = $status_wa;
 
             $data[] = $row;
 
@@ -132,8 +142,7 @@ class Chat_tagihan extends AUTH_Controller
 
     public function API_wa()
     {
-        $token = "_k!@CHhsQkv5ojrCidcY";
-        // $token = "PPK3+BQuokovN16rcM2R";
+        $token = "EzKKqF+#joMYXgdCJmEh";
         $id = $this->session->userdata('userdata')->id_rtrw;
         $data_warga = $this->M_chat->get_data_warga($id);
 
@@ -144,21 +153,18 @@ class Chat_tagihan extends AUTH_Controller
             $target = $trx->no_hp;
             $nama = $trx->nama;
             $no_rumah = $trx->no_rumah;
+            $id_warga = $trx->id_warga;
 
-            $periode_tagihan = $this->M_chat->count_tagihan_by_warga($trx->id_warga, $id);
-            $nominal_tagihan = $this->M_chat->count_tagihan_nominal($trx->id_warga, $id);
+            $periode_tagihan = $this->M_chat->count_tagihan_by_warga($id_warga, $id);
+            $nominal_tagihan = $this->M_chat->count_tagihan_nominal($id_warga, $id);
             $Rp_total = 'Rp. ' . number_format($nominal_tagihan, 0, ',', '.');
 
-            $tagihan_by_bulan = $this->M_chat->count_tagihan_bulan($trx->id_warga, $id);
+            $tagihan_by_bulan = $this->M_chat->count_tagihan_bulan($id_warga, $id);
             $bulan_array = array_keys($tagihan_by_bulan);
             $bulan = implode(", ", $bulan_array);
 
-
             $message = "Assalamualaikum Bapak / Ibu $nama Di Blok $no_rumah, Mohon maaf Kami dari pengelola Bukit Permai (Hi-care), Memberitahukan Bahwa Bapak/Ibu Memiliki Tagihan Iuran Iuran Sebanyak $periode_tagihan Bulan, Yaitu di Bulan $bulan , sebesar $Rp_total .
             Silahkan melakukan pembayaran melalui link dibawah ini https://hi-care.id/. Meteran akan di Blokir jika tunggakan pembayaran melebihi 2 Bulan Trimakasih Atas Perhatiannya";
-
-            // var_dump($message);
-            // exit;
 
             $curl = curl_init();
 
@@ -183,18 +189,29 @@ class Chat_tagihan extends AUTH_Controller
             ));
 
             $response = curl_exec($curl);
-            $err = curl_error($curl);
             curl_close($curl);
 
-            if ($err) {
-                $fail_count++;
-            } else {
-                $response_data = json_decode($response, true);
-                if (isset($response_data['status']) && $response_data['status'] == 'success') {
-                    $success_count++;
-                } else {
-                    $fail_count++;
+            $res = json_decode($response, true);
+
+            if ($res && isset($res['id']) && is_array($res['id'])) {
+                foreach ($res['id'] as $k => $v) {
+                    $target     = $res["target"][$k];
+                    $status     = $res["process"];
+
+                    $this->db->insert('report', [
+                        'id'        => $v,
+                        'id_warga'  => $id_warga,
+                        'target'    => $target,
+                        'message'   => $message,
+                        'status'    => $status
+                    ]);
                 }
+            }
+
+            if (isset($res['status']) && $res['status'] == 'success') {
+                $success_count++;
+            } else {
+                $fail_count++;
             }
         }
 

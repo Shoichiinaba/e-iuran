@@ -238,6 +238,7 @@ Swal.fire({
                                                     <th>Total + Tax</th>
                                                     <th>Status </th>
                                                     <th>Aksi </th>
+                                                    <th>Status WA </th>
                                                 </tr>
                                             </thead>
                                             </tbody>

@@ -40,9 +40,11 @@ class Data_tagihan extends AUTH_Controller
                 'id' => $warga->id_warga,
                 'text' => $warga->nama,
                 'badge' => $warga->no_rumah,
-                'no_rumah' => $warga->no_rumah
+                'no_rumah' => $warga->no_rumah,
+                'kapling_gabungan' => $warga->kapling_gabungan
             );
         }
+
         $data['warga'] = $warga_data;
         $data['content'] = 'page/tagihan_v';
         $this->load->view($this->template, $data);
@@ -56,7 +58,6 @@ class Data_tagihan extends AUTH_Controller
 
     public function get_meter() {
         $id_warga = $this->input->get('id_warga');
-        // $id_warga = 1 ;
         $kubikData = $this->M_transaksi->get_meter($id_warga);
 
         $data_kubik_in = array();

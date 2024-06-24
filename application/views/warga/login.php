@@ -33,7 +33,6 @@
 .form-control {
     width: 100%;
     padding-right: 40px;
-    /* Sesuaikan agar teks tidak tumpang tindih dengan ikon */
 }
 
 .toggle-password {

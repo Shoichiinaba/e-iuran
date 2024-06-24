@@ -83,6 +83,7 @@ class Warga extends AUTH_Controller
         $no_hp = $this->input->post('no_hp');
         $keterangan = $this->input->post('keterangan');
         $code = $this->input->post('code');
+        $kapling_gabungan = $this->input->post('kapling_gabungan');
         $role = 'Warga';
         $foto = 'default.png';
 
@@ -100,12 +101,12 @@ class Warga extends AUTH_Controller
                     'keterangan' => $keterangan[$key],
                     'username' =>  $username,
                     'password' => $password,
+                    'kapling_gabungan' => $kapling_gabungan[$key],
                     'role' => $role,
                     'foto' => $foto,
                 );
             }
         }
-
 
         if (!empty($data)) {
             $inserted_rows = $this->M_warga->insert_warga($data);
