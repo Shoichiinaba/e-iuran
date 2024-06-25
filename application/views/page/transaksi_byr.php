@@ -122,7 +122,7 @@ Swal.fire({
                                 </div>
                                 <div class="row">
                                     <div class="input-group pb-0 col-12">
-                                        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-1 mb-2 p-2">
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 mt-1 mb-2 p-2">
                                             <label class="label-select">Status Pembayaran</label>
                                             <select type="text" id="status" class="col-lg-12 mt-1 pt-1">
                                                 <option value="">Pilih !!</option>
@@ -130,7 +130,7 @@ Swal.fire({
                                                 <option value="2">Lunas</option>
                                             </select>
                                         </div>
-                                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-1 mb-2 p-2">
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 mt-1 mb-2 p-2">
                                             <label class="label-select">Jenis Pembayaran</label>
                                             <select type="text" id="jenis-pembayaran" class="col-lg-12 mt-1 pt-1">
                                                 <option value="">Pilih !!</option>

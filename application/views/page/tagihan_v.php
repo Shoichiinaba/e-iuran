@@ -387,7 +387,7 @@ select:focus+label {
                                 </h4>
                             </div>
                             <div class="input-group pb-0">
-                                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
                                     <label class="label-select">Bulan</label>
                                     <select type="text" id="bln_filter" class="col-lg-12 mt-1 pt-1">
                                         <option value="">Pilih !!</option>
@@ -405,7 +405,7 @@ select:focus+label {
                                         <option value="Desember">Desember</option>
                                     </select>
                                 </div>
-                                <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
                                     <label class="label-select">Tahun</label>
                                     <select type="text" id="thn_filter" class="col-lg-12 mt-1 pt-1">
                                         <option value="">Pilih !!</option>
@@ -419,8 +419,8 @@ select:focus+label {
                                         ?>
                                     </select>
                                 </div>
-                                <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
-                                    <label class="label-select">Status</label>
+                                <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                    <label class="lael-select">Status</label>
                                     <select type="text" id="status_filter" class="col-lg-12 mt-1 pt-1">
                                         <option value="">Pilih !!</option>
                                         <option value="0">Belum Bayar</option>
@@ -476,7 +476,7 @@ select:focus+label {
                                         </h4>
                                     </div>
                                     <div class="input-group pb-0">
-                                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                        <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
                                             <label class="label-select">Bulan</label>
                                             <select type="text" id="bln_filter" class="col-lg-12 mt-1 pt-1">
                                                 <option value="">Pilih !!</option>
@@ -494,7 +494,7 @@ select:focus+label {
                                                 <option value="Desember">Desember</option>
                                             </select>
                                         </div>
-                                        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                        <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
                                             <label class="label-select">Tahun</label>
                                             <select type="text" id="thn_filter" class="col-lg-12 mt-1 pt-1">
                                                 <option value="">Pilih !!</option>
@@ -508,7 +508,7 @@ select:focus+label {
                                         ?>
                                             </select>
                                         </div>
-                                        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                        <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
                                             <label class="label-select">Status</label>
                                             <select type="text" id="status_filter" class="col-lg-12 mt-1 pt-1">
                                                 <option value="">Pilih !!</option>

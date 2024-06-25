@@ -76,5 +76,21 @@ class Lap_segel extends AUTH_Controller
         $html = $this->load->view('page/laporan/laporan_keuangan', $data, true);
         $this->pdfgenerator->generate($html, $file_pdf, $paper, $orientation);
     }
+
+    function lap_cash()
+    {
+        $this->load->library('pdfgenerator');
+        $this->load->model('M_cetak_cash');
+        $filteredData = $this->M_cetak_cash->get_pembayaran_cash();
+
+        $data['title'] = "Laporan Data Pembayaran Cash";
+        $data['filteredData'] = $filteredData;
+        $file_pdf = 'laporan_Data_Pembayaran_Cash';
+        $paper = 'A4';
+        $orientation = "Landscape";
+        $html = $this->load->view('page/laporan/laporan_cash', $data, true);
+        $this->pdfgenerator->generate($html, $file_pdf, $paper, $orientation);
+    }
+
 }
 ?>
