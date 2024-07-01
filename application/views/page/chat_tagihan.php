@@ -239,6 +239,7 @@ Swal.fire({
                                                     <th>Status </th>
                                                     <th>Aksi </th>
                                                     <th>Status WA </th>
+                                                    <th>Jml. Chat </th>
                                                 </tr>
                                             </thead>
                                             </tbody>

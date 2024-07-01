@@ -420,7 +420,7 @@ select:focus+label {
                                     </select>
                                 </div>
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
-                                    <label class="lael-select">Status</label>
+                                    <label class="label-select">Status</label>
                                     <select type="text" id="status_filter" class="col-lg-12 mt-1 pt-1">
                                         <option value="">Pilih !!</option>
                                         <option value="0">Belum Bayar</option>

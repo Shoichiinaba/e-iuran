@@ -55,17 +55,17 @@
 
 <body>
     <div class="container">
-        <h2 class="text-center">Laporan Data PEmbayaran Cash</h2><br><br>
+        <h2 class="text-center">Laporan Data Hutang</h2><br><br>
         <table id="data-segel" class="table table-bordered">
             <thead>
                 <tr>
-                    <th>No.</th>
-                    <th>No. Pembayaran</th>
-                    <th>Nama || No rumah</th>
-                    <th>Periode</th>
-                    <th>Tgl. Bayar</th>
-                    <th>Pembayaran</th>
-                    <th>Total</th>
+                    <th style="width: 5%;">No.</th>
+                    <th style="width: 18%;">N0. Transaksi</th>
+                    <th style="width: 15%;">Tanggal</th>
+                    <th style="width: 20%;">Keterangan</th>
+                    <th style="width: 18%;">Hutang</th>
+                    <th style="width: 18%;">Pembayaran</th>
+                    <th style="width: 19%;">Hutang</th>
                 </tr>
             </thead>
 
@@ -78,19 +78,22 @@
                     return 'Rp ' . number_format($number, 0, ',', '.');
                 }
 
-                foreach ($filteredData as $csh):
+                foreach ($data_hutang as $hut):
+                    $tanggal = !empty($hut->tanggal) ? date('d-m-Y', strtotime($hut->tanggal)) : '';
+                    $credit = is_numeric($hut->credit) ? format_rupiah($hut->credit) : '';
+                    $debit = is_numeric($hut->debit) ? format_rupiah($hut->debit) : '';
                 ?>
                 <tr>
                     <td><?= $no++; ?></td>
-                    <td><?= $csh->code_tagihan; ?></td>
-                    <td><?= $csh->nama;?> || <?= $csh->no_rumah;?></td>
-                    <td><?= $csh->periode;?> Bulan</td>
-                    <td><?= $csh->tgl_upload; ?></td>
-                    <td><?= $csh->foto_bukti; ?></td>
-                    <td><?= format_rupiah($csh->jumlah); ?></td>
+                    <td><?= $hut->no_transaksi; ?></td>
+                    <td><?= $tanggal; ?></td>
+                    <td><?= $hut->keterangan; ?></td>
+                    <td><?= $credit; ?></td>
+                    <td><?= $debit; ?></td>
+                    <td><?= format_rupiah($hut->hutang); ?></td>
                 </tr>
                 <?php
-                    $total_saldo += $csh->jumlah;
+                   $total_saldo = $hut->hutang;
                     endforeach;
                 ?>
             </tbody>

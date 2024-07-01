@@ -81,9 +81,14 @@ class Chat_tagihan extends AUTH_Controller
                             } elseif ($trx->state == 'delivered') {
                                 $status_wa .= '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512"><polyline points="465 127 241 384 149 292" style="fill:none;stroke:#000;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/><line x1="140" y1="385" x2="47" y2="292" style="fill:none;stroke:#000;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/><line x1="363" y1="127" x2="236" y2="273" style="fill:none;stroke:#000;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/></svg> Delivered';
                             } elseif ($trx->state == 'read') {
-                                $status_wa .= '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512"><polyline points="465 127 241 384 149 292" style="fill:none;stroke:#00C3FF;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/><line x1="140" y1="385" x2="47" y2="292" style="fill:none;stroke:#00C3FF;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/><line x1="363" y1="127" x2="236" y2="273" style="fill:none;stroke:#00C3FF;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/></svg> Read';
+                                $status_wa .= '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 512 512"><polyline points="465 127 241 384 149 292" style="fill:none;stroke:#00C3FF;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/><line x1="140" y1="385" x2="47" y2="292" style="fill:none;stroke:#00C3FF;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/><line x1="363" y1="127" x2="236" y2="273" style="fill:none;stroke:#00C3FF;stroke-linecap:square;stroke-miterlimit:10;stroke-width:44px"/></svg> Read';
                             }
-             $status_wa .= '</div>';
+            $status_wa .= '</div>';
+
+            $jml_chat = '<td class="pr-0 text-right">';
+            $jml_chat .= '<div class="badge badge-pill badge-success">'.$trx->jumlah_chat.'<i class="ti-email ms-2"></i></div>';
+            $jml_chat .= '</td>';
+
 
             $no++;
             $row = array();
@@ -95,6 +100,7 @@ class Chat_tagihan extends AUTH_Controller
             $row[] = $status;
             $row[] = '<div class="d-flex">' . $whatsappButton . $segelButton . '</div>';
             $row[] = $status_wa;
+            $row[] = $jml_chat;
 
             $data[] = $row;
 
@@ -195,16 +201,31 @@ class Chat_tagihan extends AUTH_Controller
 
             if ($res && isset($res['id']) && is_array($res['id'])) {
                 foreach ($res['id'] as $k => $v) {
-                    $target     = $res["target"][$k];
-                    $status     = $res["process"];
+                    $target = $res["target"][$k];
+                    $status = $res["process"];
 
-                    $this->db->insert('report', [
-                        'id'        => $v,
-                        'id_warga'  => $id_warga,
-                        'target'    => $target,
-                        'message'   => $message,
-                        'status'    => $status
-                    ]);
+                    $existing_report = $this->db->get_where('report', ['target' => $target])->row();
+                    if ($existing_report) {
+                        $this->db->where('target', $target);
+                        $this->db->update('report', [
+                            'id' => $v,
+                            'id_warga' => $id_warga,
+                            'message' => $message,
+                            'status' => $status,
+                            'state' => '',
+                            'jumlah_chat' => $existing_report->jumlah_chat + 1
+                        ]);
+                    } else {
+                        $this->db->insert('report', [
+                            'id' => $v,
+                            'id_warga' => $id_warga,
+                            'target' => $target,
+                            'message' => $message,
+                            'status' => $status,
+                            'state' => '',
+                            'jumlah_chat' => 1
+                        ]);
+                    }
                 }
             }
 
@@ -221,5 +242,6 @@ class Chat_tagihan extends AUTH_Controller
             echo json_encode(array('success' => false, 'message' => 'Broadcast gagal ke beberapa penerima'));
         }
     }
+
 
 }

@@ -92,5 +92,32 @@ class Lap_segel extends AUTH_Controller
         $this->pdfgenerator->generate($html, $file_pdf, $paper, $orientation);
     }
 
+    function lap_hutang()
+    {
+        $this->load->library('pdfgenerator');
+        $this->load->model('M_cetak_hutang');
+        $filteredData = $this->M_cetak_hutang->get_data_hutang();
+
+        $hutang = 0;
+        $data_hutang = [];
+
+        if ($filteredData) {
+            foreach ($filteredData as $hut) {
+                $hutang += $hut->credit - $hut->debit;
+                $hut->hutang = $hutang;
+                $data_hutang[] = $hut;
+            }
+        }
+
+        $data['title'] = "Laporan Data Hutang";
+        $data['data_hutang'] =  $data_hutang;
+        $file_pdf = 'laporan_Data_hutang';
+        $paper = 'A4';
+        $orientation = "Landscape";
+        $html = $this->load->view('page/laporan/laporan_hutang', $data, true);
+        $this->pdfgenerator->generate($html, $file_pdf, $paper, $orientation);
+    }
+
+
 }
 ?>
