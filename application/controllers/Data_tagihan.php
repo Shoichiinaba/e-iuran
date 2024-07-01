@@ -32,6 +32,7 @@ class Data_tagihan extends AUTH_Controller
         $data['ifas']           = $this->M_transaksi->iuran_fas($id_rtrw);
         $data['tax']            = $this->M_transaksi->taxs_adm();
         $data['filter']         = $this->M_transaksi->get_filter();
+        $data['filter_perum']   = $this->M_transaksi->get_filter_perum();
 
         // di looping karena untuk memasukan element badge kedalam select
         $warga_data = array();
@@ -125,31 +126,33 @@ class Data_tagihan extends AUTH_Controller
         $bulan_filter = $this->input->post('bln_filter');
         $status_filter = $this->input->post('status_filter');
         $tahun_filter = $this->input->post('thn_filter');
+        $filter_perum = $this->input->post('nama_perum');
 
-        $list = $this->M_transaksi->get_datatables($id, $role, $bulan_filter, $status_filter, $tahun_filter);
+        $list = $this->M_transaksi->get_datatables($id, $role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum);
         $data = array();
         $no = @$_POST['start'];
         foreach ($list as $tagih) {
             $status = ($tagih->status == 0) ? '<td class="font-weight-medium"><div class="badge badge-danger">Belum Bayar</div></td>' : ($tagih->status == 2 ? '<td class="font-weight-medium"><div class="badge badge-success">Lunas</div></td>' : '<td class="font-weight-medium"><div class="badge badge-info">Status Lain</div></td>');
             $total = $tagih->nominal + $tagih->lain_lain;
-            // $taxs = $total * $tagih->taxs / 100;
-            // $tax_nom = $total + $taxs;
 
             $formatted_nominal = 'Rp. ' . number_format($tagih->nominal, 0, ',', '.');
             $formatted_lain = 'Rp. ' . number_format($tagih->lain_lain, 0, ',', '.');
-            // $taxs = $tagih->taxs. '%' ;
             $Rp_total = 'Rp. ' . number_format($total, 0, ',', '.');
 
             $no++;
             $row = array();
             $row[] = $no.".";
             $row[] = $tagih->no_invoice;
-            $row[] = $tagih->nama . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge badge-info">' . $tagih->no_rumah . '</div></td>';
+
+            if ($role == 'Admin') {
+                $row[] = '<td class="font-weight-medium"><div class="badge badge-primary">' . $tagih->nama_perum . '</div></td>';
+            }
+
+            $row[] = $tagih->nama_warga . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge badge-info">' . $tagih->no_rumah . '</div></td>';
             $row[] = $tagih->bln_tagihan;
             $row[] = $tagih->thn_tagihan;
             $row[] = $formatted_nominal;
             $row[] = $formatted_lain;
-            // $row[] = $tagih->taxs. " %";
             $row[] = $Rp_total;
             $row[] = $status;
 
@@ -158,7 +161,7 @@ class Data_tagihan extends AUTH_Controller
         $output = array(
                     "draw" => @$_POST['draw'],
                     "recordsTotal" => $this->M_transaksi->count_all(),
-                    "recordsFiltered" => $this->M_transaksi->count_filtered($id, $role, $bulan_filter, $status_filter, $tahun_filter),
+                    "recordsFiltered" => $this->M_transaksi->count_filtered($id, $role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum),
                     "data" => $data,
                 );
         // output to json format
@@ -174,6 +177,7 @@ class Data_tagihan extends AUTH_Controller
         $data['menunggu']       = $this->M_dashboard->jumlah_byr($id_rtrw);
         $data['filter']         = $this->M_transaksi->get_filter();
         $data['bank']           = $this->M_transaksi->get_bank($id_rtrw, $role);
+        $data['filter_perum']   = $this->M_transaksi->get_filter_perum();
         $data['content']        = 'page/transaksi_byr';
         $this->load->view($this->template, $data);
     }
@@ -183,9 +187,10 @@ class Data_tagihan extends AUTH_Controller
         $role = $this->session->userdata('userdata')->role;
         $status_trans = $this->input->post('status');
         $jenis_trans = $this->input->post('jenis_pem');
+        $perum_filter = $this->input->post('perum_filter');
 
 
-        $list = $this->M_transaksi->get_datatablest($id, $role, $status_trans, $jenis_trans);
+        $list = $this->M_transaksi->get_datatablest($id, $role, $status_trans, $jenis_trans, $perum_filter);
         $data = array();
         $no = @$_POST['start'];
         foreach ($list as $trx) {
@@ -198,7 +203,12 @@ class Data_tagihan extends AUTH_Controller
             $row[] = $no.".";
             $row[] = $trx->no_invoice;
             $row[] = $trx->code_tagihan;
-            $row[] = $trx->nama . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge badge-info">' . $trx->no_rumah . '</div></td>';
+
+            if ($role == 'Admin') {
+                $row[] = '<td class="font-weight-medium"><div class="badge badge-primary">' . $trx->nama_perum . '</div></td>';
+            }
+
+            $row[] = $trx->nama_warga . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge badge-info">' . $trx->no_rumah . '</div></td>';
             $row[] = $trx->foto_bukti;
             $row[] = $trx->tgl_upload;
             $row[] = $trx->tgl_byr;
@@ -211,7 +221,7 @@ class Data_tagihan extends AUTH_Controller
         $output = array(
                     "draw" => @$_POST['draw'],
                     "recordsTotal" => $this->M_transaksi->count_all_trx(),
-                    "recordsFiltered" => $this->M_transaksi->count_filtereds($id, $role, $status_trans, $jenis_trans),
+                    "recordsFiltered" => $this->M_transaksi->count_filtereds($id, $role, $status_trans, $jenis_trans, $perum_filter),
                     "data" => $data,
                 );
         // output to json format

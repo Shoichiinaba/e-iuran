@@ -144,6 +144,24 @@ Swal.fire({
                                                     ?>
                                             </select>
                                         </div>
+
+                                        <?php if ($userdata->role == 'Admin') : ?>
+                                        <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                            <label class="label-select">Perumahan</label>
+                                            <select type="text" id="perum_filter" class="col-lg-12 mt-1 pt-1">
+                                                <option value="">Pilih !!</option>
+                                                <?php
+                                                        foreach ($filter_perum as $data) :
+                                                    ?>
+                                                <option value="<?= $data->nama; ?>">
+                                                    <?= $data->nama; ?></option>
+                                                <?php
+                                                        endforeach;
+                                                    ?>
+                                            </select>
+                                        </div>
+                                        <?php endif; ?>
+
                                     </div>
                                 </div>
                             </div>
@@ -196,8 +214,14 @@ Swal.fire({
                 "data": function(d) {
                     d.status = $('#status').val();
                     d.jenis_pem = $('#jenis-pembayaran').val();
+                    d.perum_filter = $('#perum_filter').val();
                 }
             },
+
+            "lengthMenu": [
+                [10, 25, 50, 75, 100, -1],
+                [10, 25, 50, 75, 100, "All"]
+            ],
 
             "columnDefs": [{
                     "targets": [1, 3, 4, 5, 8],
@@ -217,7 +241,7 @@ Swal.fire({
                 },
             ]
         })
-        $('#status, #jenis-pembayaran').on('change', function() {
+        $('#status, #jenis-pembayaran, #perum_filter').on('change', function() {
             // debugging apakah nilai select muncul
             // console.log('Nilai select: ' + $(this).val());
             table.draw();

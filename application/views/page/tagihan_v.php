@@ -499,13 +499,13 @@ select:focus+label {
                                             <select type="text" id="thn_filter" class="col-lg-12 mt-1 pt-1">
                                                 <option value="">Pilih !!</option>
                                                 <?php
-                                            foreach ($filter as $data) :
-                                        ?>
+                                                    foreach ($filter as $data) :
+                                                ?>
                                                 <option value="<?= $data->thn_tagihan; ?>"> &nbsp;
                                                     <?= $data->thn_tagihan; ?></option>
                                                 <?php
-                                            endforeach;
-                                        ?>
+                                                    endforeach;
+                                                ?>
                                             </select>
                                         </div>
                                         <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
@@ -514,6 +514,20 @@ select:focus+label {
                                                 <option value="">Pilih !!</option>
                                                 <option value="0">Belum Bayar</option>
                                                 <option value="2">Lunas</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-2">
+                                            <label class="label-select">Perumahan</label>
+                                            <select type="text" id="perum_filter" class="col-lg-12 mt-1 pt-1">
+                                                <option value="">Pilih !!</option>
+                                                <?php
+                                                    foreach ($filter_perum as $data) :
+                                                ?>
+                                                <option value="<?= $data->nama; ?>">
+                                                    <?= $data->nama; ?></option>
+                                                <?php
+                                                    endforeach;
+                                                ?>
                                             </select>
                                         </div>
                                     </div>
@@ -527,6 +541,7 @@ select:focus+label {
                                                 <tr>
                                                     <th>No</th>
                                                     <th>No. Invoice</th>
+                                                    <th>Perumahan</th>
                                                     <th>Nama || No Rumah</th>
                                                     <th>Bulan</th>
                                                     <th>Tahun</th>
@@ -801,9 +816,14 @@ $(document).ready(function() {
                 d.bln_filter = $('#bln_filter').val();
                 d.status_filter = $('#status_filter').val();
                 d.thn_filter = $('#thn_filter').val();
+                d.nama_perum = $('#perum_filter').val();
             }
         },
 
+        "lengthMenu": [
+            [10, 25, 50, 75, 100, -1],
+            [10, 25, 50, 75, 100, "All"]
+        ],
         "columnDefs": [{
                 "targets": [1, 3, 4, 5, 8],
                 "className": 'text-right'
@@ -822,9 +842,9 @@ $(document).ready(function() {
             },
         ]
     })
-    $('#bln_filter, #status_filter, #thn_filter').on('change', function() {
+    $('#bln_filter, #status_filter, #thn_filter, #perum_filter').on('change', function() {
         // debugging apakah nilai select muncul
-        // console.log('Nilai select: ' + $(this).val());
+        console.log('Nilai select: ' + $(this).val());
         table.draw();
     });
 
