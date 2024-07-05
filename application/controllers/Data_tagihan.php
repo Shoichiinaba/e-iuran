@@ -158,6 +158,7 @@ class Data_tagihan extends AUTH_Controller
 
             $data[] = $row;
         }
+
         $output = array(
                     "draw" => @$_POST['draw'],
                     "recordsTotal" => $this->M_transaksi->count_all(),
@@ -224,7 +225,7 @@ class Data_tagihan extends AUTH_Controller
                     "recordsFiltered" => $this->M_transaksi->count_filtereds($id, $role, $status_trans, $jenis_trans, $perum_filter),
                     "data" => $data,
                 );
-        // output to json format
+
         echo json_encode($output);
     }
     // akhir data transaksi pembayaran

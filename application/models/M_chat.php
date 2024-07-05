@@ -23,7 +23,7 @@ class M_chat extends CI_Model
         }
         elseif ($filter_segel !== '') {
             $this->db->where('tagihan.status = 0 AND warga.status_segel = 0');
-            $this->db->having('COUNT(tagihan.bln_tagihan) >', 2);
+            $this->db->having('COUNT(tagihan.bln_tagihan) >', 3);
         }
 
             $i = 0;
@@ -168,18 +168,18 @@ class M_chat extends CI_Model
         $this->db->where('warga.id_rtrw', $id_rtrw);
         $query = $this->db->get();
 
-        $warga_tagihan_lewat_2_bulan = 0;
+        $warga_tagihan_lewat_3_bulan = 0;
 
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
                 $id_warga = $row->id_warga;
-                if ($this->count_bulan($id_warga, $id_rtrw) > 2) {
-                    $warga_tagihan_lewat_2_bulan++;
+                if ($this->count_bulan($id_warga, $id_rtrw) > 3) {
+                    $warga_tagihan_lewat_3_bulan++;
                 }
             }
         }
 
-        return $warga_tagihan_lewat_2_bulan;
+        return $warga_tagihan_lewat_3_bulan;
     }
 
     public function data_tersegel( $id_rtrw)

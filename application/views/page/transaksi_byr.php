@@ -174,6 +174,11 @@ Swal.fire({
                                                     <th>No</th>
                                                     <th>No. Invoice</th>
                                                     <th>No. Pembayaran</th>
+
+                                                    <?php if ($userdata->role == 'Admin') : ?>
+                                                    <th>Perumahan</th>
+                                                    <?php endif; ?>
+
                                                     <th>Nama || No Rumah</th>
                                                     <th>Bank</th>
                                                     <th>Tgl. Buat Pembayaran</th>

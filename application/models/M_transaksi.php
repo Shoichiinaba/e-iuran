@@ -128,6 +128,7 @@ class M_transaksi extends CI_Model
             $this->db->from('transaksi');
             $this->db->where('foto_bukti IS NOT NULL');
             $this->db->where('foto_bukti !=', '');
+            $this->db->where_not_in('foto_bukti', ['Update date', 'Hi-care']);
             $this->db->order_by('foto_bukti', 'ASC');
             $this->db->group_by('foto_bukti');
             $query = $this->db->get();
@@ -137,6 +138,7 @@ class M_transaksi extends CI_Model
             $this->db->from('transaksi');
             $this->db->where('foto_bukti IS NOT NULL');
             $this->db->where('foto_bukti !=', '');
+            $this->db->where_not_in('foto_bukti', ['Update date', 'Hi-care']);
             $this->db->where('id_rtrw', $id_rtrw);
             $this->db->order_by('foto_bukti', 'ASC');
             $this->db->group_by('foto_bukti');

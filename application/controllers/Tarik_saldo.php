@@ -19,7 +19,6 @@ class Tarik_saldo extends AUTH_Controller
         $id = $this->session->userdata('userdata')->id_rtrw;
         $data['menunggu']       = $this->M_dashboard->jumlah_byr($id);
         $data['userdata']       = $this->userdata;
-        $data['nomer']          = $this->M_saldo->no_tf();
         $data['perum']          = $this->M_perumahan->get_perumahan();
 
         // code saldo
@@ -51,6 +50,11 @@ class Tarik_saldo extends AUTH_Controller
 
         $data['content'] = 'page/tariks_v';
         $this->load->view($this->template, $data);
+    }
+
+    public function no_transaksi() {
+        $nomer_transaksi = $this->M_saldo->no_tf();
+        echo json_encode(array('nomer' => $nomer_transaksi));
     }
 
    public function form_tarik()

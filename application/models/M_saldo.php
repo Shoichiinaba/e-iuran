@@ -80,7 +80,7 @@ class M_saldo extends CI_Model
 
     public function no_tf() {
 
-        $this->db->select("RIGHT(saldo.code_tranfer, 4) as kode", FALSE);
+        $this->db->select("MAX(CAST(RIGHT(saldo.code_tranfer, 4) AS UNSIGNED)) as kode", FALSE);
         $this->db->order_by('code_tranfer', 'DESC');
         $this->db->limit(1);
 
@@ -96,8 +96,9 @@ class M_saldo extends CI_Model
         $bulan = date("m");
         $kode_max_ = str_pad($kode_, 4, "0", STR_PAD_LEFT);
 
-        $no_invoice = "TF" . "SAL" . '-' . $bulan . '-' . $tahun . '-' . $kode_max_;
+        $no_invoice = "IV-SAL-$bulan-$tahun-$kode_max_";
         return $no_invoice;
+
     }
 
     function save_data($data) {

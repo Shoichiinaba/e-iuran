@@ -174,8 +174,7 @@ select:focus+label {
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0">
                                     <div class="input-wrapper">
                                         <label class="label-in">No. penarikan</label>
-                                        <input type="text" id="no_tarik" value="<?= $nomer; ?>" class="col-lg-12"
-                                            readonly>
+                                        <input type="text" id="no_tarik" class="col-lg-12" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 pr-1 pl-0">
@@ -302,6 +301,20 @@ select:focus+label {
 
 
 <script>
+$(document).ready(function() {
+    setInterval(function() {
+        $.ajax({
+            url: '<?php echo base_url('Tarik_saldo/no_transaksi') ?>',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                $('#no_tarik').val(response
+                    .nomer);
+            }
+        });
+    }, 5000);
+});
+
 $(document).ready(function() {
     var startDate = null;
     var endDate = null;

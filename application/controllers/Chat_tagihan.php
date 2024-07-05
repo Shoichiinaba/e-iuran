@@ -65,7 +65,7 @@ class Chat_tagihan extends AUTH_Controller
 
             // Tombol segel
             $segelButton = '<div class="col-md-4 col-sm-6 justify-content-center ml-0 pl-0 mt-1">';
-                            if ($trx->status_segel == 0 && $periode_tagihan > 2) {
+                            if ($trx->status_segel == 0 && $periode_tagihan > 3) {
                                 $segelButton .= '<button class="btn btn-outline-warning pt-1 pb-1 btn-segel" onclick="segel_meteran(' . $trx->id_warga . ')"><i class="fa fa-eye-slash"></i> Segel</button>';
                             } elseif ($trx->status_segel == 2) {
                                 $segelButton .= '<button class="btn btn-outline-success btn-buka-custom" onclick="buka_segel(' . $trx->id_warga . ')"><Buka class="fa fa-unlock btn-icon-prepend"> Buka Segel</button>';

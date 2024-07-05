@@ -153,40 +153,41 @@
                     </div>
                 </div>
             </div>
+            <div class="main_footer">
+                <div class="banner_img"></div>
+            </div>
             <!-- content-wrapper ends -->
         </div>
         <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="<?= base_url('assets'); ?>/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="<?= base_url('assets'); ?>/js/off-canvas.js"></script>
-    <script src="<?= base_url('assets'); ?>/js/hoverable-collapse.js"></script>
-    <script src="<?= base_url('assets'); ?>/js/template.js"></script>
-    <script src="<?= base_url('assets'); ?>/js/settings.js"></script>
-    <script src="<?= base_url('assets'); ?>/js/todolist.js"></script>
-    <!-- endinject -->
-
-    <script>
-    // show password
-    function togglePasswordVisibility(inputId) {
-        var passwordInput = document.getElementById(inputId);
-        var icon = document.querySelector('.toggle-password');
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            passwordInput.type = "password";
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
-    }
-    </script>
 </body>
+
+<script src="<?= base_url('assets'); ?>/vendors/js/vendor.bundle.base.js"></script>
+<!-- endinject -->
+
+<!-- inject:js -->
+<script src="<?= base_url('assets'); ?>/js/off-canvas.js"></script>
+<script src="<?= base_url('assets'); ?>/js/hoverable-collapse.js"></script>
+<script src="<?= base_url('assets'); ?>/js/template.js"></script>
+<script src="<?= base_url('assets'); ?>/js/settings.js"></script>
+<script src="<?= base_url('assets'); ?>/js/todolist.js"></script>
+<!-- endinject -->
+
+<script>
+// show password
+function togglePasswordVisibility(inputId) {
+    var passwordInput = document.getElementById(inputId);
+    var icon = document.querySelector('.toggle-password');
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = "password";
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+</script>
 
 </html>
