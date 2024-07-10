@@ -422,7 +422,7 @@ $(document).ready(function() {
                     // Bersihkan input lainnya sesuai kebutuhan
 
                     window.location.href =
-                        "<?=site_url('Tarik_saldo/form_tarik/')?><?= $this->uri->segment(3);?>";
+                        "<?= site_url('Tarik_saldo/form_tarik/') ?><?= $this->uri->segment(3); ?>";
                 } else {
                     console.error('Terjadi kesalahan saat validasi data di server.');
 
@@ -459,7 +459,7 @@ table = $('#data-trxsal').DataTable({
     "processing": true,
     "serverSide": true,
     "ajax": {
-        "url": "<?=site_url('Tarik_saldo/get_data_tf/')?><?= $this->uri->segment(3);?>",
+        "url": "<?= site_url('Tarik_saldo/get_data_tf/') ?><?= $this->uri->segment(3); ?>",
         "type": "POST",
     },
 

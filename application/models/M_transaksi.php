@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_transaksi extends CI_Model
 {
@@ -63,7 +63,8 @@ class M_transaksi extends CI_Model
         return $query->result();
     }
 
-    public function no_invoice() {
+    public function no_invoice()
+    {
         $rt_query = $this->db->select('rt')->get('rt-rw');
         $rt = $rt_query->row()->rt;
 
@@ -88,11 +89,13 @@ class M_transaksi extends CI_Model
     }
 
 
-    function save_data($data) {
+    function save_data($data)
+    {
         return $this->db->insert('tagihan', $data);
     }
 
-    function check_existing_data($id_warga, $bln_tagihan, $thn_tagihan) {
+    function check_existing_data($id_warga, $bln_tagihan, $thn_tagihan)
+    {
         $this->db->where('id_warga', $id_warga);
         $this->db->where('bln_tagihan', $bln_tagihan);
         $this->db->where('thn_tagihan', $thn_tagihan);
@@ -149,7 +152,7 @@ class M_transaksi extends CI_Model
 
     // start datatables
     var $column_order = array(null, 'tagihan.no_invoice', 'tagihan.bln_tagihan', 'tagihan.thn_tagihan');
-    var $column_search = array('tagihan.no_invoice','warga.nama', 'warga.no_rumah', 'tagihan.bln_tagihan', 'tagihan.thn_tagihan', 'tagihan.status');
+    var $column_search = array('tagihan.no_invoice', 'warga.nama', 'warga.no_rumah', 'tagihan.bln_tagihan', 'tagihan.thn_tagihan', 'tagihan.status');
     var $order = array('tagihan.no_invoice' => 'desc');
 
     private function _get_datatables_query($id, $role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum)
@@ -177,26 +180,25 @@ class M_transaksi extends CI_Model
 
             $i = 0;
             foreach ($this->column_search as $item) {
-                if(@$_POST['search']['value']) {
-                    if($i===0) {
+                if (@$_POST['search']['value']) {
+                    if ($i === 0) {
                         $this->db->group_start();
                         $this->db->like($item, $_POST['search']['value']);
                     } else {
                         $this->db->or_like($item, $_POST['search']['value']);
                     }
-                    if(count($this->column_search) - 1 == $i)
+                    if (count($this->column_search) - 1 == $i)
                         $this->db->group_end();
                 }
                 $i++;
             }
-            if(isset($_POST['order'])) {
+            if (isset($_POST['order'])) {
                 $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-            }  else if(isset($this->order)) {
+            } else if (isset($this->order)) {
                 $order = $this->order;
                 $this->db->order_by(key($order), $order[key($order)]);
             }
-
-    } else if ($role == 'RT') {
+        } else if ($role == 'RT') {
 
             $this->db->select('*, warga.nama as nama_warga');
             $this->db->from('tagihan');
@@ -217,40 +219,43 @@ class M_transaksi extends CI_Model
 
             $i = 0;
             foreach ($this->column_search as $item) {
-                if(@$_POST['search']['value']) {
-                    if($i===0) {
+                if (@$_POST['search']['value']) {
+                    if ($i === 0) {
                         $this->db->group_start();
                         $this->db->like($item, $_POST['search']['value']);
                     } else {
                         $this->db->or_like($item, $_POST['search']['value']);
                     }
-                    if(count($this->column_search) - 1 == $i)
+                    if (count($this->column_search) - 1 == $i)
                         $this->db->group_end();
                 }
                 $i++;
             }
 
-            if(isset($_POST['order'])) {
+            if (isset($_POST['order'])) {
                 $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-            }  else if(isset($this->order)) {
+            } else if (isset($this->order)) {
                 $order = $this->order;
                 $this->db->order_by(key($order), $order[key($order)]);
             }
         }
     }
-    function get_datatables($id, $role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum ) {
+    function get_datatables($id, $role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum)
+    {
         $this->_get_datatables_query($id, $role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum);
-        if(@$_POST['length'] != -1)
-        $this->db->limit(@$_POST['length'], @$_POST['start']);
+        if (@$_POST['length'] != -1)
+            $this->db->limit(@$_POST['length'], @$_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
-    function count_filtered($id,$role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum) {
+    function count_filtered($id, $role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum)
+    {
         $this->_get_datatables_query($id, $role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum);
         $query = $this->db->get();
         return $query->num_rows();
     }
-    function count_all() {
+    function count_all()
+    {
         $this->db->from('tagihan');
         return $this->db->count_all_results();
     }
@@ -258,10 +263,11 @@ class M_transaksi extends CI_Model
 
     // datatable serverside untuk transaksi pembayaran
     var $column_ordertrx = array(null, 'transaksi.code_tagihan', 'transaksi.no_invoice', 'bln_tagihan', 'thn_tagihan');
-    var $column_searchtrx = array('transaksi.code_tagihan', 'no_invoice','warga.nama', 'warga.no_rumah', 'bln_tagihan', 'thn_tagihan', 'transaksi.tgl_upload', 'transaksi.tgl_byr','transaksi.foto_bukti');
+    var $column_searchtrx = array('transaksi.code_tagihan', 'no_invoice', 'warga.nama', 'warga.no_rumah', 'bln_tagihan', 'thn_tagihan', 'transaksi.tgl_upload', 'transaksi.tgl_byr', 'transaksi.foto_bukti');
     var $ordertrx = array('transaksi.id_transaksi' => 'asc');
 
-    private function _get_datatables_trx($id, $role,  $status_trans, $jenis_trans, $perum_filter) {
+    private function _get_datatables_trx($id, $role,  $status_trans, $jenis_trans, $perum_filter, $status_saldo)
+    {
         if ($role == 'Admin') {
 
             $this->db->select('*, warga.nama as nama_warga, perumahan.nama as nama_perum');
@@ -284,29 +290,32 @@ class M_transaksi extends CI_Model
                 $this->db->where('perumahan.nama', $perum_filter);
             }
 
+            if ($status_saldo !== '') {
+                $this->db->where('transaksi.status_saldo', $status_saldo);
+            }
+
             $i = 0;
             foreach ($this->column_searchtrx as $trx) {
-                if(@$_POST['search']['value']) {
-                    if($i===0) {
+                if (@$_POST['search']['value']) {
+                    if ($i === 0) {
                         $this->db->group_start();
                         $this->db->like($trx, $_POST['search']['value']);
                     } else {
                         $this->db->or_like($trx, $_POST['search']['value']);
                     }
-                    if(count($this->column_searchtrx) - 1 == $i)
+                    if (count($this->column_searchtrx) - 1 == $i)
                         $this->db->group_end();
                 }
                 $i++;
             }
 
-            if(isset($_POST['order'])) {
+            if (isset($_POST['order'])) {
                 $this->db->order_by($this->column_ordertrx[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-            }  else if(isset($this->order)) {
+            } else if (isset($this->order)) {
                 $order = $this->order;
                 $this->db->order_by(key($order), $order[key($order)]);
             }
-
-    } else if ($role == 'RT') {
+        } else if ($role == 'RT') {
 
             $this->db->select('*, warga.nama as nama_warga');
             $this->db->from('transaksi');
@@ -324,48 +333,56 @@ class M_transaksi extends CI_Model
                 $this->db->where('transaksi.foto_bukti', $jenis_trans);
             }
 
+            if ($status_saldo !== '') {
+                $this->db->where('transaksi.status_saldo', $status_saldo);
+            }
+
             $i = 0;
             foreach ($this->column_searchtrx as $trx) {
-                if(@$_POST['search']['value']) {
-                    if($i===0) {
+                if (@$_POST['search']['value']) {
+                    if ($i === 0) {
                         $this->db->group_start();
                         $this->db->like($trx, $_POST['search']['value']);
                     } else {
                         $this->db->or_like($trx, $_POST['search']['value']);
                     }
-                    if(count($this->column_searchtrx) - 1 == $i)
+                    if (count($this->column_searchtrx) - 1 == $i)
                         $this->db->group_end();
                 }
                 $i++;
             }
 
-            if(isset($_POST['order'])) {
+            if (isset($_POST['order'])) {
                 $this->db->order_by($this->column_ordertrx[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-            }  else if(isset($this->order)) {
+            } else if (isset($this->order)) {
                 $order = $this->order;
                 $this->db->order_by(key($order), $order[key($order)]);
             }
         }
     }
-    function get_datatablest($id, $role, $status_trans, $jenis_trans, $perum_filter) {
-        $this->_get_datatables_trx($id, $role, $status_trans, $jenis_trans, $perum_filter);
-        if(@$_POST['length'] != -1)
-        $this->db->limit(@$_POST['length'], @$_POST['start']);
+    function get_datatablest($id, $role, $status_trans, $jenis_trans, $perum_filter, $status_saldo)
+    {
+        $this->_get_datatables_trx($id, $role, $status_trans, $jenis_trans, $perum_filter, $status_saldo);
+        if (@$_POST['length'] != -1)
+            $this->db->limit(@$_POST['length'], @$_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
-    function count_filtereds($id,$role, $status_trans, $jenis_trans, $perum_filter) {
-        $this->_get_datatables_trx($id, $role,  $status_trans, $jenis_trans, $perum_filter);
+    function count_filtereds($id, $role, $status_trans, $jenis_trans, $perum_filter, $status_saldo)
+    {
+        $this->_get_datatables_trx($id, $role,  $status_trans, $jenis_trans, $perum_filter, $status_saldo);
         $query = $this->db->get();
         return $query->num_rows();
     }
-    function count_all_trx() {
+    function count_all_trx()
+    {
         $this->db->from('transaksi');
         return $this->db->count_all_results();
     }
     // akhir datatable serverside untuk transaksi pembayaran
 
-    function get_saldo($id_perum, $id) {
+    function get_saldo($id_perum, $id)
+    {
         $this->db->select('*');
         $this->db->from('transaksi');
         $this->db->join('tagihan', 'tagihan.code_tagihan = transaksi.code_tagihan');
@@ -380,5 +397,4 @@ class M_transaksi extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-
 }

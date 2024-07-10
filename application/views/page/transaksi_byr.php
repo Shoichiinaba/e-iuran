@@ -84,10 +84,10 @@ select:focus+label {
 
 <!-- alerts -->
 <?php
-        $sukses_message = $this->session->flashdata('sukses');
-        $gagal_message = $this->session->flashdata('gagal');
-    ?>
-<?php if ($sukses_message): ?>
+$sukses_message = $this->session->flashdata('sukses');
+$gagal_message = $this->session->flashdata('gagal');
+?>
+<?php if ($sukses_message) : ?>
 <script>
 Swal.fire({
     icon: 'success',
@@ -97,7 +97,7 @@ Swal.fire({
 </script>
 <?php endif; ?>
 
-<?php if ($gagal_message): ?>
+<?php if ($gagal_message) : ?>
 <script>
 Swal.fire({
     icon: 'error',
@@ -135,13 +135,21 @@ Swal.fire({
                                             <select type="text" id="jenis-pembayaran" class="col-lg-12 mt-1 pt-1">
                                                 <option value="">Pilih !!</option>
                                                 <?php
-                                                        foreach ($bank as $data) :
-                                                    ?>
+                                                foreach ($bank as $data) :
+                                                ?>
                                                 <option value="<?= $data->foto_bukti; ?>"> &nbsp;
                                                     <?= $data->foto_bukti; ?></option>
                                                 <?php
-                                                        endforeach;
-                                                    ?>
+                                                endforeach;
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 mt-1 mb-2 p-2">
+                                            <label class="label-select">Status Saldo</label>
+                                            <select type="text" id="status-saldo" class="col-lg-12 mt-1 pt-1">
+                                                <option value="">Pilih !!</option>
+                                                <option value="1">Belum Ditarik</option>
+                                                <option value="2">Sudah Ditarik</option>
                                             </select>
                                         </div>
 
@@ -151,12 +159,12 @@ Swal.fire({
                                             <select type="text" id="perum_filter" class="col-lg-12 mt-1 pt-1">
                                                 <option value="">Pilih !!</option>
                                                 <?php
-                                                        foreach ($filter_perum as $data) :
+                                                    foreach ($filter_perum as $data) :
                                                     ?>
                                                 <option value="<?= $data->nama; ?>">
                                                     <?= $data->nama; ?></option>
                                                 <?php
-                                                        endforeach;
+                                                    endforeach;
                                                     ?>
                                             </select>
                                         </div>
@@ -190,6 +198,12 @@ Swal.fire({
                                             </thead>
                                             </tbody>
                                             <tfoot>
+                                                <tr>
+                                                    <th colspan="9" class="bg-primary text-right text-light"
+                                                        style="font-weight: bold;">Total Nominal: &nbsp;
+                                                    </th>
+                                                    <th></th>
+                                                </tr>
                                             </tfoot>
                                         </table>
                                     </div>
@@ -214,12 +228,13 @@ Swal.fire({
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "<?=site_url('Data_tagihan/get_datapay')?>",
+                "url": "<?= site_url('Data_tagihan/get_datapay') ?>",
                 "type": "POST",
                 "data": function(d) {
                     d.status = $('#status').val();
                     d.jenis_pem = $('#jenis-pembayaran').val();
                     d.perum_filter = $('#perum_filter').val();
+                    d.saldoStat_filter = $('#status-saldo').val();
                 }
             },
 
@@ -227,6 +242,25 @@ Swal.fire({
                 [10, 25, 50, 75, 100, -1],
                 [10, 25, 50, 75, 100, "All"]
             ],
+
+            "pageLength": -1,
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api(),
+                    data;
+
+                var totalNominal = api.column(9, {
+                        page: 'current'
+                    }).data()
+                    .reduce(function(a, b) {
+                        return a + parseFloat(b.replace(/[^\d.-]/g, ''));
+                    }, 0);
+
+                var totalNominalObj = api.ajax.json().totalNominal;
+
+                $(api.column(9, {
+                    page: 'current'
+                }).footer()).html(totalNominalObj);
+            },
 
             "columnDefs": [{
                     "targets": [1, 3, 4, 5, 8],
@@ -246,7 +280,7 @@ Swal.fire({
                 },
             ]
         })
-        $('#status, #jenis-pembayaran, #perum_filter').on('change', function() {
+        $('#status, #jenis-pembayaran, #perum_filter, #status-saldo').on('change', function() {
             // debugging apakah nilai select muncul
             // console.log('Nilai select: ' + $(this).val());
             table.draw();

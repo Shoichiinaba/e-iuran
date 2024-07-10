@@ -1,5 +1,6 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
+
 use Carbon\Carbon;
 use Xendit\Invoice;
 
@@ -7,16 +8,16 @@ class Data_tagihan extends AUTH_Controller
 {
     var $template = 'templates/index';
 
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->load->model('M_transaksi');
         $this->load->model('M_dashboard');
-
     }
 
     // xendit
-    function show_saldo(){
+    function show_saldo()
+    {
         xendit_loaded();
         $getBalance = \Xendit\Balance::getBalance('CASH');
         var_dump($getBalance);
@@ -51,13 +52,15 @@ class Data_tagihan extends AUTH_Controller
         $this->load->view($this->template, $data);
     }
 
-    public function no_invoice() {
+    public function no_invoice()
+    {
         $nomer_invoice = $this->M_transaksi->no_invoice();
         echo json_encode(array('nomer' => $nomer_invoice));
     }
 
 
-    public function get_meter() {
+    public function get_meter()
+    {
         $id_warga = $this->input->get('id_warga');
         $kubikData = $this->M_transaksi->get_meter($id_warga);
 
@@ -71,14 +74,15 @@ class Data_tagihan extends AUTH_Controller
         echo json_encode($data_kubik_in);
     }
 
-    public function buat_tagihan() {
+    public function buat_tagihan()
+    {
         $id_warga = $this->input->post('id_warga');
         $bln_tagihan = $this->input->post('bln_tagihan');
         $thn_tagihan = $this->input->post('thn_tagihan');
 
         // Cek apakah data sudah ada
         $is_exist = $this->M_transaksi->check_existing_data($id_warga, $bln_tagihan, $thn_tagihan);
-        if($is_exist) {
+        if ($is_exist) {
             $response = array('status' => 'exist', 'message' => 'Data sudah Di Buat Tagihan Bulan ini.');
         } else {
             $data = array(
@@ -120,7 +124,8 @@ class Data_tagihan extends AUTH_Controller
     }
 
     // untuk mengirim data semua transaksi
-    function get_trx() {
+    function get_trx()
+    {
         $id = $this->session->userdata('userdata')->id_rtrw;
         $role = $this->session->userdata('userdata')->role;
         $bulan_filter = $this->input->post('bln_filter');
@@ -141,7 +146,7 @@ class Data_tagihan extends AUTH_Controller
 
             $no++;
             $row = array();
-            $row[] = $no.".";
+            $row[] = $no . ".";
             $row[] = $tagih->no_invoice;
 
             if ($role == 'Admin') {
@@ -160,11 +165,11 @@ class Data_tagihan extends AUTH_Controller
         }
 
         $output = array(
-                    "draw" => @$_POST['draw'],
-                    "recordsTotal" => $this->M_transaksi->count_all(),
-                    "recordsFiltered" => $this->M_transaksi->count_filtered($id, $role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum),
-                    "data" => $data,
-                );
+            "draw" => @$_POST['draw'],
+            "recordsTotal" => $this->M_transaksi->count_all(),
+            "recordsFiltered" => $this->M_transaksi->count_filtered($id, $role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum),
+            "data" => $data,
+        );
         // output to json format
         echo json_encode($output);
     }
@@ -174,34 +179,39 @@ class Data_tagihan extends AUTH_Controller
     {
         $id_rtrw = $this->session->userdata('userdata')->id_rtrw;
         $role = $this->session->userdata('userdata')->role;
-        $data['userdata']       = $this->userdata;
-        $data['menunggu']       = $this->M_dashboard->jumlah_byr($id_rtrw);
-        $data['filter']         = $this->M_transaksi->get_filter();
-        $data['bank']           = $this->M_transaksi->get_bank($id_rtrw, $role);
-        $data['filter_perum']   = $this->M_transaksi->get_filter_perum();
-        $data['content']        = 'page/transaksi_byr';
+        $data['userdata']           = $this->userdata;
+        $data['menunggu']           = $this->M_dashboard->jumlah_byr($id_rtrw);
+        $data['filter']             = $this->M_transaksi->get_filter();
+        $data['bank']               = $this->M_transaksi->get_bank($id_rtrw, $role);
+        $data['filter_perum']       = $this->M_transaksi->get_filter_perum();
+        $data['content']            = 'page/transaksi_byr';
         $this->load->view($this->template, $data);
     }
 
-    function get_datapay() {
+    function get_datapay()
+    {
         $id = $this->session->userdata('userdata')->id_rtrw;
         $role = $this->session->userdata('userdata')->role;
         $status_trans = $this->input->post('status');
         $jenis_trans = $this->input->post('jenis_pem');
         $perum_filter = $this->input->post('perum_filter');
+        $status_saldo = $this->input->post('saldoStat_filter');
 
 
-        $list = $this->M_transaksi->get_datatablest($id, $role, $status_trans, $jenis_trans, $perum_filter);
+        $list = $this->M_transaksi->get_datatablest($id, $role, $status_trans, $jenis_trans, $perum_filter, $status_saldo);
         $data = array();
         $no = @$_POST['start'];
+        $total_nominal = 0;
+
         foreach ($list as $trx) {
             $status = ($trx->status == 1) ? '<td class="font-weight-medium"><div class="badge badge-warning">Menunggu Pembayaran </div></td>' : ($trx->status == 2 ? '<td class="font-weight-medium"><div class="badge badge-success">Lunas</div></td>' : '<td class="font-weight-medium"><div class="badge badge-info">Status Lain</div></td>');
             $total = $trx->jumlah;
             $Rp_total = 'Rp. ' . number_format($total, 0, ',', '.');
+            $total_nominal += $trx->jumlah;
 
             $no++;
             $row = array();
-            $row[] = $no.".";
+            $row[] = $no . ".";
             $row[] = $trx->no_invoice;
             $row[] = $trx->code_tagihan;
 
@@ -219,12 +229,16 @@ class Data_tagihan extends AUTH_Controller
 
             $data[] = $row;
         }
+
+        $totalNominalFormatted = 'Rp. ' . number_format($total_nominal, 0, ',', '.');
+
         $output = array(
-                    "draw" => @$_POST['draw'],
-                    "recordsTotal" => $this->M_transaksi->count_all_trx(),
-                    "recordsFiltered" => $this->M_transaksi->count_filtereds($id, $role, $status_trans, $jenis_trans, $perum_filter),
-                    "data" => $data,
-                );
+            "draw" => @$_POST['draw'],
+            "recordsTotal" => $this->M_transaksi->count_all_trx(),
+            "recordsFiltered" => $this->M_transaksi->count_filtereds($id, $role, $status_trans, $jenis_trans, $perum_filter, $status_saldo),
+            "data" => $data,
+            "totalNominal" => $totalNominalFormatted
+        );
 
         echo json_encode($output);
     }

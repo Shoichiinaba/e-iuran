@@ -1,11 +1,11 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Tarik_saldo extends AUTH_Controller
 {
     var $template = 'templates/index';
 
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->load->model('M_saldo');
@@ -14,8 +14,8 @@ class Tarik_saldo extends AUTH_Controller
         $this->load->helper('saldo_helper');
     }
 
-     public function index()
-     {
+    public function index()
+    {
         $id = $this->session->userdata('userdata')->id_rtrw;
         $data['menunggu']       = $this->M_dashboard->jumlah_byr($id);
         $data['userdata']       = $this->userdata;
@@ -23,41 +23,42 @@ class Tarik_saldo extends AUTH_Controller
 
         // code saldo
         $perum = $this->M_perumahan->get_perumahan();
-            $data['perum_balances'] = array();
+        $data['perum_balances'] = array();
 
-            foreach ($perum as $perum_data) {
-                $id_perumahan = $perum_data->id_perumahan;
+        foreach ($perum as $perum_data) {
+            $id_perumahan = $perum_data->id_perumahan;
 
-                $saldo_data = $this->M_saldo->get_saldo($id_perumahan);
-                $saldo_seg = $this->M_saldo->get_saldo_segel($id_perumahan);
+            $saldo_data = $this->M_saldo->get_saldo($id_perumahan);
+            $saldo_seg = $this->M_saldo->get_saldo_segel($id_perumahan);
 
-                $totalDPP = 0;
-                foreach ($saldo_data as $s) {
-                    $tax = $s->periode * $s->taxs;
-                    $DPP = $s->jumlah - $tax;
-                    $totalDPP += $DPP;
-                }
-
-                $saldo_segel = 0;
-                foreach ($saldo_seg as $s) {
-                    $saldo_segel += $s->nominal;
-                }
-
-                $data['perum_balances'][$id_perumahan] = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
-                $data['segel_balances'][$id_perumahan] = 'Rp. ' . number_format($saldo_segel, 0, ',', '.');
+            $totalDPP = 0;
+            foreach ($saldo_data as $s) {
+                $tax = $s->periode * $s->taxs;
+                $DPP = $s->jumlah - $tax;
+                $totalDPP += $DPP;
             }
+
+            $saldo_segel = 0;
+            foreach ($saldo_seg as $s) {
+                $saldo_segel += $s->nominal;
+            }
+
+            $data['perum_balances'][$id_perumahan] = 'Rp. ' . number_format($totalDPP, 0, ',', '.');
+            $data['segel_balances'][$id_perumahan] = 'Rp. ' . number_format($saldo_segel, 0, ',', '.');
+        }
         // akhir code saldo
 
         $data['content'] = 'page/tariks_v';
         $this->load->view($this->template, $data);
     }
 
-    public function no_transaksi() {
+    public function no_transaksi()
+    {
         $nomer_transaksi = $this->M_saldo->no_tf();
         echo json_encode(array('nomer' => $nomer_transaksi));
     }
 
-   public function form_tarik()
+    public function form_tarik()
     {
         $id = $this->session->userdata('userdata')->id_rtrw;
 
@@ -83,6 +84,7 @@ class Tarik_saldo extends AUTH_Controller
     }
 
     public function form_tarik_ajax()
+
     {
         $id_rtrw = $this->input->post('id_rtrw');
         $startDate = $this->input->post('startDate');
@@ -107,47 +109,46 @@ class Tarik_saldo extends AUTH_Controller
 
 
 
-   function get_data_tf()
-   {
-
-    $id_perum = $this->uri->segment(3);
-    $list = $this->M_saldo->get_datatables($id_perum);
-    $data = array();
-    $no = @$_POST['start'];
-    foreach ($list as $tf)
+    function get_data_tf()
     {
 
-        $Rp_dpp     = 'Rp. ' . number_format($tf->dpp, 0, ',', '.');
-        $Rp_akhir     = 'Rp. ' . number_format($tf->saldo, 0, ',', '.');
-        $Rp_segel     = 'Rp. ' . number_format($tf->segel, 0, ',', '.');
-        $tanggal_formatted = date('d/m/Y', strtotime($tf->tanggal));
+        $id_perum = $this->uri->segment(3);
+        $list = $this->M_saldo->get_datatables($id_perum);
+        $data = array();
+        $no = @$_POST['start'];
+        foreach ($list as $tf) {
 
-        $no++;
-        $row = array();
-        $row[] = $no.".";
-        $row[] = $tf->code_tranfer;
-        $row[] = '<td class="font-weight-medium"><div class="badge bg-gradient-info">' . $tf->nama . '</div> </td>';
-        $row[] = '<td class="font-weight-medium"><div class="badge badge-danger">' . $tf->rt . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge bg-gradient-primary">' . $tf->rw . '</div></td>';
-        $row[] = $tanggal_formatted;
-        $row[] = $Rp_segel;
-        $row[] = $Rp_dpp;
-        $row[] = $tf->fee. ' %';
-        $row[] = $Rp_akhir;
+            $Rp_dpp     = 'Rp. ' . number_format($tf->dpp, 0, ',', '.');
+            $Rp_akhir     = 'Rp. ' . number_format($tf->saldo, 0, ',', '.');
+            $Rp_segel     = 'Rp. ' . number_format($tf->segel, 0, ',', '.');
+            $tanggal_formatted = date('d/m/Y', strtotime($tf->tanggal));
 
-        $data[] = $row;
+            $no++;
+            $row = array();
+            $row[] = $no . ".";
+            $row[] = $tf->code_tranfer;
+            $row[] = '<td class="font-weight-medium"><div class="badge bg-gradient-info">' . $tf->nama . '</div> </td>';
+            $row[] = '<td class="font-weight-medium"><div class="badge badge-danger">' . $tf->rt . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge bg-gradient-primary">' . $tf->rw . '</div></td>';
+            $row[] = $tanggal_formatted;
+            $row[] = $Rp_segel;
+            $row[] = $Rp_dpp;
+            $row[] = $tf->fee . ' %';
+            $row[] = $Rp_akhir;
+
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => @$_POST['draw'],
+            "recordsTotal" => $this->M_saldo->count_all_tf($id_perum),
+            "recordsFiltered" => $this->M_saldo->count_filtered($id_perum),
+            "data" => $data,
+        );
+        // output to json format
+        echo json_encode($output);
     }
-    $output = array(
-                "draw" => @$_POST['draw'],
-                "recordsTotal" => $this->M_saldo->count_all_tf($id_perum),
-                "recordsFiltered" => $this->M_saldo->count_filtered($id_perum),
-                "data" => $data,
-            );
-    // output to json format
-    echo json_encode($output);
 
-    }
-
-    public function buat_tarik() {
+    public function buat_tarik()
+    {
         $status        = '2';
         $id_perum      = $this->input->post('id_perum');
         $id_rtrw       = $this->input->post('id_rtrw');
@@ -159,7 +160,6 @@ class Tarik_saldo extends AUTH_Controller
             'tanggal'        => $this->input->post('tanggal'),
             'segel'          => $this->input->post('segel'),
             'fee'            => $this->input->post('fee'),
-            'dpp'            => $this->input->post('nominal'),
             'saldo'          => $this->input->post('totdpp'),
         );
 
@@ -174,5 +174,4 @@ class Tarik_saldo extends AUTH_Controller
 
         echo json_encode($response);
     }
-
 }

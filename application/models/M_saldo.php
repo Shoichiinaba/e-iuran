@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_saldo extends CI_Model
 {
@@ -78,7 +78,8 @@ class M_saldo extends CI_Model
         return $query->result();
     }
 
-    public function no_tf() {
+    public function no_tf()
+    {
 
         $this->db->select("MAX(CAST(RIGHT(saldo.code_tranfer, 4) AS UNSIGNED)) as kode", FALSE);
         $this->db->order_by('code_tranfer', 'DESC');
@@ -98,10 +99,10 @@ class M_saldo extends CI_Model
 
         $no_invoice = "IV-SAL-$bulan-$tahun-$kode_max_";
         return $no_invoice;
-
     }
 
-    function save_data($data) {
+    function save_data($data)
+    {
         return $this->db->insert('saldo', $data);
     }
 
@@ -115,57 +116,59 @@ class M_saldo extends CI_Model
         return $update;
     }
 
-
     // datatable serverside untuk transaksi histori
     var $column_order = array(null, 'code_tranfer', 'tanggal');
-    var $column_search = array('code_tranfer', 'tanggal','saldo');
+    var $column_search = array('code_tranfer', 'tanggal', 'saldo');
     var $ordertrx = array('id_saldo' => 'asc');
 
     private function _get_datatables_tf($id_perum, $id)
     {
-            $this->db->select('*');
-            $this->db->from('saldo');
-            $this->db->join('perumahan', 'saldo.id_perum = perumahan.id_perumahan');
-            $this->db->where('saldo.id_perum', $id_perum);
-            $this->db->where('saldo.id_rtrw', $id);
-            $this->db->order_by('saldo.id_saldo', 'DESC');
+        $this->db->select('*');
+        $this->db->from('saldo');
+        $this->db->join('perumahan', 'saldo.id_perum = perumahan.id_perumahan');
+        $this->db->where('saldo.id_perum', $id_perum);
+        $this->db->where('saldo.id_rtrw', $id);
+        $this->db->order_by('saldo.id_saldo', 'DESC');
 
-            $i = 0;
-            foreach ($this->column_search as $trx) {
-                if(@$_POST['search']['value']) {
-                    if($i===0) {
-                        $this->db->group_start();
-                        $this->db->like($trx, $_POST['search']['value']);
-                    } else {
-                        $this->db->or_like($trx, $_POST['search']['value']);
-                    }
-                    if(count($this->column_search) - 1 == $i)
-                        $this->db->group_end();
+        $i = 0;
+        foreach ($this->column_search as $trx) {
+            if (@$_POST['search']['value']) {
+                if ($i === 0) {
+                    $this->db->group_start();
+                    $this->db->like($trx, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($trx, $_POST['search']['value']);
                 }
-                $i++;
+                if (count($this->column_search) - 1 == $i)
+                    $this->db->group_end();
             }
-
-            if(isset($_POST['order'])) {
-                $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-            }  else if(isset($this->order)) {
-                $order = $this->order;
-                $this->db->order_by(key($order), $order[key($order)]);
-            }
+            $i++;
         }
-    function get_datatablest($id_perum, $id) {
+
+        if (isset($_POST['order'])) {
+            $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order)) {
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+    }
+    function get_datatablest($id_perum, $id)
+    {
         $this->_get_datatables_tf($id_perum, $id);
-        if(@$_POST['length'] != -1)
-        $this->db->limit(@$_POST['length'], @$_POST['start']);
+        if (@$_POST['length'] != -1)
+            $this->db->limit(@$_POST['length'], @$_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
-    function count_filtereds($id_perum, $id) {
+    function count_filtereds($id_perum, $id)
+    {
         $this->_get_datatables_tf($id_perum, $id);
         $query = $this->db->get();
         return $query->num_rows();
     }
 
-    function count_all_tf() {
+    function count_all_tf()
+    {
         $this->db->from('saldo');
         return $this->db->count_all_results();
     }
@@ -174,42 +177,44 @@ class M_saldo extends CI_Model
     // datatable serverside untuk transaksi tari saldo admin
     private function _get_datatables_sal($id_perum)
     {
-            $this->db->select('*');
-            $this->db->from('saldo');
-            $this->db->join('perumahan', 'saldo.id_perum = perumahan.id_perumahan');
-            $this->db->join('rt-rw', 'saldo.id_rtrw = rt-rw.id_rtrw');
-            $this->db->where('saldo.id_perum', $id_perum);
+        $this->db->select('*');
+        $this->db->from('saldo');
+        $this->db->join('perumahan', 'saldo.id_perum = perumahan.id_perumahan');
+        $this->db->join('rt-rw', 'saldo.id_rtrw = rt-rw.id_rtrw');
+        $this->db->where('saldo.id_perum', $id_perum);
 
-            $i = 0;
-            foreach ($this->column_search as $trx) {
-                if(@$_POST['search']['value']) {
-                    if($i===0) {
-                        $this->db->group_start();
-                        $this->db->like($trx, $_POST['search']['value']);
-                    } else {
-                        $this->db->or_like($trx, $_POST['search']['value']);
-                    }
-                    if(count($this->column_search) - 1 == $i)
-                        $this->db->group_end();
+        $i = 0;
+        foreach ($this->column_search as $trx) {
+            if (@$_POST['search']['value']) {
+                if ($i === 0) {
+                    $this->db->group_start();
+                    $this->db->like($trx, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($trx, $_POST['search']['value']);
                 }
-                $i++;
+                if (count($this->column_search) - 1 == $i)
+                    $this->db->group_end();
             }
-
-            if(isset($_POST['order'])) {
-                $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-            }  else if(isset($this->order)) {
-                $order = $this->order;
-                $this->db->order_by(key($order), $order[key($order)]);
-            }
+            $i++;
         }
-    function get_datatables($id_perum) {
+
+        if (isset($_POST['order'])) {
+            $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order)) {
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+    }
+    function get_datatables($id_perum)
+    {
         $this->_get_datatables_sal($id_perum);
-        if(@$_POST['length'] != -1)
-        $this->db->limit(@$_POST['length'], @$_POST['start']);
+        if (@$_POST['length'] != -1)
+            $this->db->limit(@$_POST['length'], @$_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
-    function count_filtered($id_perum) {
+    function count_filtered($id_perum)
+    {
         $this->_get_datatables_sal($id_perum);
         $query = $this->db->get();
         return $query->num_rows();
