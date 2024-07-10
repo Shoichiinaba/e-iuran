@@ -82,14 +82,14 @@ $db['default'] = array(
 	// 'database' => 'kina3126_e-iuran',
 
 	// Demo Production testing
-	'username' => 'hicr4985_demo',
-	'password' => 'hicare2020',
-	'database' => 'hicr4985_demo',
+	// 'username' => 'hicr4985_demo',
+	// 'password' => 'hicare2020',
+	// 'database' => 'hicr4985_demo',
 
 	// online hi-care Production
-	// 'username' => 'hicr4985_hi-care',
-	// 'password' => 'hicare2020',
-	// 'database' => 'hicr4985_hi-care',
+	'username' => 'hicr4985_hi-care',
+	'password' => 'hicare2020',
+	'database' => 'hicr4985_hi-care',
 
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

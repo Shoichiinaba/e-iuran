@@ -335,6 +335,7 @@ class M_transaksi extends CI_Model
 
             if ($status_saldo !== '') {
                 $this->db->where('transaksi.status_saldo', $status_saldo);
+                $this->db->where('transaksi.foto_bukti !=', 'CASH');
             }
 
             $i = 0;
