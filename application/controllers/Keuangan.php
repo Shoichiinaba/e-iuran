@@ -225,6 +225,7 @@ class Keuangan extends AUTH_Controller
     {
         $config['upload_path'] = './upload/foto_bukti/';
         $config['allowed_types'] = 'jpg|png|jpeg|';
+        $config['encrypt_name'] = TRUE;
         $config['max_size'] = 2048;
         $this->load->library('upload', $config);
 
@@ -242,7 +243,7 @@ class Keuangan extends AUTH_Controller
             'tanggal' => $this->input->post('tanggal'),
             'nominal' => $this->input->post('nominal'),
             'keterangan' => $this->input->post('keterangan'),
-            'file_path' => $file_path
+            'foto_bukti' => $file_path
         );
 
         $this->load->model('M_keuangan');

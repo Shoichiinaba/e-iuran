@@ -204,7 +204,13 @@ class Data_tagihan extends AUTH_Controller
         $total_nominal = 0;
 
         foreach ($list as $trx) {
-            $status = ($trx->status == 1) ? '<td class="font-weight-medium"><div class="badge badge-warning">Menunggu Pembayaran </div></td>' : ($trx->status == 2 ? '<td class="font-weight-medium"><div class="badge badge-success">Lunas</div></td>' : '<td class="font-weight-medium"><div class="badge badge-info">Status Lain</div></td>');
+
+            $status = ($trx->status == 1)
+                ? '<td class="font-weight-medium"><div class="badge badge-warning"><a href="' . $trx->url_payment . '" target="_blank">Menunggu Pembayaran</a></div></td>'
+                : ($trx->status == 2
+                    ? '<td class="font-weight-medium"><div class="badge badge-success text-white"><a href="' . $trx->url_payment . '" target="_blank" class="text-white">Lunas</a></div></td>'
+                    : '<td class="font-weight-medium"><div class="badge badge-info">Status Lain</div></td>');
+
             $total = $trx->jumlah;
             $Rp_total = 'Rp. ' . number_format($total, 0, ',', '.');
             $total_nominal += $trx->jumlah;
