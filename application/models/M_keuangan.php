@@ -361,9 +361,30 @@ class M_Keuangan extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('deposit');
+        $this->db->where('deposit.status', 0);
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function get_data_warga($search = '')
+    {
+        $this->db->select('*');
+        $this->db->from('warga');
+        $this->db->group_by('id_warga');
+
+        if (!empty($search)) {
+            $this->db->group_start();
+            $this->db->like('warga.no_rumah', $search);
+            $this->db->or_like('warga.nama', $search);
+            $this->db->group_end();
+        }
+
+        $this->db->order_by("id_warga", "ASC");
+        $query = $this->db->get();
+
+        return $query;
+    }
+
 
     // akhir controller untuk Fiture deposit
 

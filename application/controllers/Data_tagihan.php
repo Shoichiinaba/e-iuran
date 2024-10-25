@@ -136,9 +136,12 @@ class Data_tagihan extends AUTH_Controller
         $list = $this->M_transaksi->get_datatables($id, $role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum);
         $data = array();
         $no = @$_POST['start'];
+        $total_nominal = 0;
+
         foreach ($list as $tagih) {
             $status = ($tagih->status == 0) ? '<td class="font-weight-medium"><div class="badge badge-danger">Belum Bayar</div></td>' : ($tagih->status == 2 ? '<td class="font-weight-medium"><div class="badge badge-success">Lunas</div></td>' : '<td class="font-weight-medium"><div class="badge badge-info">Status Lain</div></td>');
             $total = $tagih->nominal + $tagih->lain_lain;
+            $total_nominal += $total;
 
             $formatted_nominal = 'Rp. ' . number_format($tagih->nominal, 0, ',', '.');
             $formatted_lain = 'Rp. ' . number_format($tagih->lain_lain, 0, ',', '.');
@@ -164,11 +167,14 @@ class Data_tagihan extends AUTH_Controller
             $data[] = $row;
         }
 
+        $totalNominalFormatted = 'Rp. ' . number_format($total_nominal, 0, ',', '.');
+
         $output = array(
             "draw" => @$_POST['draw'],
             "recordsTotal" => $this->M_transaksi->count_all(),
             "recordsFiltered" => $this->M_transaksi->count_filtered($id, $role, $bulan_filter, $status_filter, $tahun_filter, $filter_perum),
             "data" => $data,
+            "totalNominal" => $totalNominalFormatted
         );
         // output to json format
         echo json_encode($output);
@@ -227,7 +233,6 @@ class Data_tagihan extends AUTH_Controller
 
             $row[] = $trx->nama_warga . ' &nbsp; ' . '<td class="font-weight-medium"><div class="badge badge-info">' . $trx->no_rumah . '</div></td>';
             $row[] = $trx->foto_bukti;
-            $row[] = $trx->tgl_upload;
             $row[] = $trx->tgl_byr;
             $row[] = $trx->periode . " Bulan";
             $row[] = $status;

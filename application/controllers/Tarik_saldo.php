@@ -149,9 +149,10 @@ class Tarik_saldo extends AUTH_Controller
 
     public function buat_tarik()
     {
-        $status        = '2';
-        $id_perum      = $this->input->post('id_perum');
-        $id_rtrw       = $this->input->post('id_rtrw');
+        $status             = '2';
+        $status_saldo       = '2';
+        $id_perum           = $this->input->post('id_perum');
+        $id_rtrw            = $this->input->post('id_rtrw');
 
         $data = array(
             'id_perum'       => $this->input->post('id_perum'),

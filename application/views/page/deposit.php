@@ -6,6 +6,38 @@
         flex-wrap: wrap;
     }
 
+    .file-upload-wrapper input[type="file"] {
+        width: 154%;
+    }
+
+
+    .file-upload-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .file-upload-wrapper {
+        width: 100%;
+    }
+
+    .image-preview-container {
+        display: flex;
+        justify-content: flex-start;
+        width: 325%;
+        margin-top: 5px;
+        padding-left: 98px;
+    }
+
+    .image-preview-container img {
+        max-width: 50%;
+        /* Atur lebar maksimum gambar preview */
+        max-height: 200px;
+        object-fit: cover;
+    }
+
     .dataTables_wrapper select {
         width: 140px;
         height: 30px;
@@ -326,6 +358,7 @@ $current_year = date('Y');
                                                     <th>Keterangan</th>
                                                     <th>Foto Bukti</th>
                                                     <th>Nominal</th>
+                                                    <th>Status</th>
                                                 </tr>
                                             </thead>
                                             <tfoot>
@@ -356,12 +389,32 @@ $current_year = date('Y');
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body pt-3 pl-2 pr-2 pb-1">
-                    <form id="input-deposit" enctype="multipart/form-data" method="post">
+                    <div class="popover-static-demo">
+                        <div class="col-lg-12 col-xxl-10 col-md-10 col-sm-12 pl-2 pr-2 pb-4">
+                            <div class="justify-content-center d-flex">
+                                <div class="input-group input-group-sm filter">
+                                    <span class="input-group-text text-body bg-gradient-info">
+                                        <i class="fa fa-search" style="color:white;" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="search-tagihan" name="search" placeholder=" Masukan Blok Atau Nama">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="input-deposit" enctype="multipart/form-data" method="post" style="display:none;">
                         <div class="input-group pb-0">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0">
                                 <div class="input-wrapper">
                                     <input type="text" id="no-depo" name="no_depo" class="col-lg-12" required>
                                     <label class="label-in">No transaksi</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0">
+                                <div class="input-wrapper">
+                                    <input type="text" id="nama-warga" class="col-lg-12">
+                                    <input type="text" id="id_warga" name="id_warga" class="col-lg-12 mb-3" hidden>
+                                    <label class="label-in">Nama</label>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt-1 mb-2 p-0">
@@ -376,19 +429,26 @@ $current_year = date('Y');
                                     <label class="label-in">Nominal</label>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt-2 mb-2 p-0">
+                            <div class="col-lg-12 col-md-6 col-sm-12 col-xs-12 mt-2 mb-2 p-0">
                                 <div class="input-wrapper">
                                     <textarea id="keterangan" name="keterangan" class="col-lg-12" required></textarea>
                                     <label class="label-in">Keterangan</label>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-0 mb-0 p-0">
-                                <div class="card-body m-1 p-1">
+                                <div class="card-body m-1 p-1 file-upload-container">
                                     <div class="file-upload-wrapper">
                                         <input type="file" id="file-upload" name="file_upload" required>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-0 mb-0 p-0">
+                                <div class="image-preview-container">
+                                    <img id="image-preview" src="" alt="Image Preview" style="display:none;">
+                                </div>
+                            </div>
+
                         </div>
                         <div class="modal-footer pr-0">
                             <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
@@ -417,6 +477,23 @@ $current_year = date('Y');
     <!-- <script src="<?= base_url('assets'); ?>/vendors/jquery-file-upload/jquery.uploadfile.min.js"></script>
     <script src="<?= base_url('assets'); ?>/js/jquery-file-upload.js"></script> -->
     <script>
+        // kode preview
+        document.getElementById('file-upload').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const imagePreview = document.getElementById('image-preview');
+                    imagePreview.src = event.target.result;
+                    imagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('image-preview').style.display = 'none';
+            }
+        });
+
+
         $(document).ready(function() {
             $('#deposit').on('shown.bs.modal', function() {
                 $.ajax({
@@ -427,6 +504,38 @@ $current_year = date('Y');
                         $('#no-depo').val(response.nomer);
                     }
                 });
+            });
+
+            $('#search-tagihan').on('input', function() {
+                var search = $(this).val();
+                if (search.length > 0) {
+                    $.ajax({
+                        url: '<?php echo base_url('Keuangan/get_warga') ?>',
+                        method: 'POST',
+                        data: {
+                            search: search
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.length > 0) {
+                                $('#nama-warga').val(data[0].nama);
+                                $('#id_warga').val(data[0].id_warga);
+                                $('#input-deposit').show();
+                            } else {
+                                $('#nama-warga').val('');
+                                $('#id_warga').val('');
+                                $('#input-deposit').hide();
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log(textStatus, errorThrown);
+                        }
+                    });
+                } else {
+                    $('#nama-warga').val('');
+                    $('#id_warga').val('');
+                    $('#input-deposit').hide();
+                }
             });
 
         });
@@ -568,38 +677,18 @@ $current_year = date('Y');
 
         });
 
-
-        $('#penerimaan').on('hidden.bs.modal', function(e) {
-            $('#buat-penerimaan')[0].reset();
+        $('#deposit').on('hidden.bs.modal', function(e) {
+            $('#input-deposit')[0].reset();
+            $('#input-deposit').hide();
+            $('#search-tagihan').val('');
             $('#btn-penerimaan').show();
             $('#btn-penerimaan').attr('disabled', false);
             $('#btn-text-penerimaan').show();
             $('#loading-icon-penerimaan').hide();
+
+            const imagePreview = document.getElementById('image-preview');
+            imagePreview.src = '';
+            imagePreview.style.display = 'none';
+
         });
-
-        // menset filter bulan & tahun ke hari sekarang
-        document.addEventListener('DOMContentLoaded', function() {
-            var currentMonth = "<?= $current_month ?>";
-            var currentYear = "<?= $current_year ?>";
-
-            document.getElementById('fil-bulan').value = currentMonth;
-            document.getElementById('fil-tahun').value = currentYear;
-        });
-
-        // kode untuk print pdf
-        $('#print').on('click', function() {
-            printFilteredData();
-        });
-
-        function printFilteredData() {
-
-            var fil_bulan = $('#fil-bulan').val();
-            var fil_tahun = $('#fil-tahun').val();
-            var fil_daterange = $('#fil-daterange').val();
-
-            var printUrl = "<?php echo site_url('Lap_segel/lap_keuangan'); ?>";
-            printUrl += "?fil_bulan=" + fil_bulan + "&fil_tahun=" + fil_tahun + "&fil_daterange=" + fil_daterange;
-
-            window.open(printUrl, '_blank');
-        }
     </script>

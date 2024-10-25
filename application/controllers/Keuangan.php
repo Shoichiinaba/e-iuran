@@ -240,6 +240,7 @@ class Keuangan extends AUTH_Controller
 
         $data = array(
             'no_transaksi' => $this->input->post('no_depo'),
+            'id_warga' => $this->input->post('id_warga'),
             'tanggal' => $this->input->post('tanggal'),
             'nominal' => $this->input->post('nominal'),
             'keterangan' => $this->input->post('keterangan'),
@@ -271,6 +272,7 @@ class Keuangan extends AUTH_Controller
 
         foreach ($list as $dep) {
             $tanggal = date('d-m-Y', strtotime($dep->tanggal));
+            $status = ($dep->status == 0) ? '<td class="font-weight-medium"><div class="badge badge-success">Belum Terpakai</div></td>' : ($dep->status == 1 ? '<td class="font-weight-medium"><div class="badge badge-primary">Terpakai</div></td>' : '<td class="font-weight-medium"><div class="badge badge-info">Status Lain</div></td>');
 
             $total_nominal += $dep->nominal;
 
@@ -285,6 +287,7 @@ class Keuangan extends AUTH_Controller
                          <img src="' . base_url('upload/foto_bukti/') . $dep->foto_bukti . '" alt="Foto Bukti" class="border border-primary m-0 p-0 img-lg rounded">
                       </a>';
             $row[] = 'Rp. ' . number_format($dep->nominal, 0, ',', '.');
+            $row[] = $status;
 
             $data[] = $row;
         }
@@ -311,6 +314,24 @@ class Keuangan extends AUTH_Controller
         $data['saldo_deposit'] = $Rp_saldo_deposit;
         echo json_encode($data);
     }
+
+    public function get_warga()
+    {
+        $search = $this->input->post('search');
+        $data = $this->M_keuangan->get_data_warga($search);
+
+        $result = array();
+        if ($data->num_rows() > 0) {
+            foreach ($data->result() as $warga) {
+                $result[] = array(
+                    'id_warga' => $warga->id_warga,
+                    'nama' => $warga->nama
+                );
+            }
+        }
+        echo json_encode($result);
+    }
+
 
     // akhir controller untuk Fiture deposit
 

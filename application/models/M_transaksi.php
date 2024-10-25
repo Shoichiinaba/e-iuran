@@ -11,6 +11,7 @@ class M_transaksi extends CI_Model
         $this->db->from('warga');
         $this->db->join('perumahan', 'warga.id_perum = perumahan.id_perumahan');
         $this->db->where('id_rtrw', $id_rtrw);
+        $this->db->where('warga.keterangan !=', 'Dijual');
         $query = $this->db->get();
         return $query->result();
 

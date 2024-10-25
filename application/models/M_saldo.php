@@ -97,7 +97,7 @@ class M_saldo extends CI_Model
         $bulan = date("m");
         $kode_max_ = str_pad($kode_, 4, "0", STR_PAD_LEFT);
 
-        $no_invoice = "IV-SAL-$bulan-$tahun-$kode_max_";
+        $no_invoice = "TFSAL-$bulan-$tahun-$kode_max_";
         return $no_invoice;
     }
 
